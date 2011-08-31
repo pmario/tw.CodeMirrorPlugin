@@ -1,0 +1,29 @@
+#!/bin/sh
+
+# This is a sample ginsu script to be used with the build scripts
+# and Makefile for TiddlyWiki. Adjust this script and then install
+# it somewhere on your $PATH, such as ~/bin.
+#
+# You will need to adjust COOKER_TRUNK below.
+
+# Change this to where you have the cooker code installed
+COOKER_TRUNK=/media/Daten/Git/tiddly/tools/cooker
+
+DEST=$PWD
+TW_NAME=$PWD/$1 && shift
+
+ruby -Ku -C $COOKER_TRUNK ginsu.rb -s -q $TW_NAME -d $DEST "$@"
+
+
+# Ginsu Version: 1.1.0 (Revision)
+# Usage: ginsu.rb tiddlywikiname [...] [options]
+#
+# Specific options:
+#    -d, --dest DESTINATION           Destination directory
+#    -q, --[no-]quiet                 Quiet mode, do not output file names
+#    -s, --[no-]subdirectories        Split tidders into subdirectories by type
+#    -t, --tag TAGDIRECTORY           Split tidders into subdirectories by type
+#    -c, --charset CHARSET            Character set of filesystem.
+#    -h, --help                       Show this message
+#        --version                    Show version
+
