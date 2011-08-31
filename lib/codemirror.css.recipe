@@ -1,0 +1,3 @@
+template: ../t/x.template
+meta: ../t/meta.txt
+body:  ../tmp/codemirror.css

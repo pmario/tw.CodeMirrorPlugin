@@ -2,7 +2,8 @@ modifier: PMario
 created: 201108311212
 modified: 201108311213
 
-/*{{{*/
+
+//{{{
 .CodeMirror {
   line-height: 1em;
   font-family: monospace;
@@ -71,4 +72,4 @@ span.CodeMirror-selected {
 .CodeMirror-matchingbracket {color: #0f0 !important;}
 .CodeMirror-nonmatchingbracket {color: #f22 !important;}
 
-/*}}}*/
+//}}}

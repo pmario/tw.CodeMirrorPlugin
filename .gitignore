@@ -1,7 +1,6 @@
 tmp
 backups
-**.html
-**.html.**
-**.js
-**.zip
-**.jar
+*.html
+*.html.**
+*.zip
+*.jar

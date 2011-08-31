@@ -19,6 +19,13 @@ CM_MODE_DIR = $(CM_RAW)/$(CM_TAG)/mode
 # uglify options
 UGLIFY_OPTS = --overwrite
 
+CSS_TEMPLATE = "template: ../t/x.template\nmeta: ../t/meta.txt\nbody:  ../tmp/"
+
+CM_TEMPLATE  = "template: ../t/x.template\nmeta: ../t/meta.txt\ntags: ../t/tags.txt\nbody: ../tmp/"
+
+JS_TEMPLATE  = "template: ../t/x.template\nmeta: ../t/meta.txt\ntags: ../t/tags.txt\nintro: ../t/dependsOnCodeMirror.js.txt\nbody: ../tmp/"
+
+
 help:
 	@echo "make getall .... creates all dependencies"
 	@echo "make test ...... creates tests.htmlmixed"
@@ -41,7 +48,7 @@ tests.html:
 upstream.html: 
 	cook $(PWD)/upstream.html.recipe upstream.html
 
-getall: getlibs getmodes uglify tiddlers
+getall: tiddlers
 	cp ./t/split.recipe ./lib
 	@echo "--- done! ---"
 
@@ -53,7 +60,7 @@ getlibs:
 	curl -o "tmp/overlay.js" $(CM_LIB_DIR)/overlay.js	
 	curl -o "tmp/runmode.js" $(CM_LIB_DIR)/runmode.js
 	
-getmodes:
+getmodes: getlibs
 	@echo ""
 	@echo "--- get highlighting modules used for TW ---"
 	curl -o "tmp/css.js" $(CM_MODE_DIR)/css/css.js
@@ -62,7 +69,7 @@ getmodes:
 	curl -o "tmp/python.js" $(CM_MODE_DIR)/python/python.js
 	curl -o "tmp/xml.js" $(CM_MODE_DIR)/xml/xml.js
 
-uglify:
+uglify: getmodes
 	@echo ""
 	@echo "--- compress libraries ---"
 	uglifyjs $(UGLIFY_OPTS) tmp/codemirror.js 
@@ -74,18 +81,36 @@ uglify:
 	uglifyjs $(UGLIFY_OPTS) tmp/python.js 
 	uglifyjs $(UGLIFY_OPTS) tmp/xml.js 
 	
-tiddlers:		
+recipes: uglify
 	@echo ""
-	@echo "--- create tiddlers for cook ---"
-	cat ./t/css.tid ./tmp/codemirror.css ./t/css.end > ./lib/codemirror.css.tid
+	@echo "--- create recipes for single js tiddlers ---"
+	@echo $(CSS_TEMPLATE)codemirror.css > lib/codemirror.css.recipe
 
-	cat ./t/js.tid ./tmp/codemirror.js ./t/js.end > ./lib/codemirror.js.tid
-	cat ./t/js.tid ./tmp/overlay.js    ./t/js.end > ./lib/overlay.js.tid
-	cat ./t/js.tid ./tmp/runmode.js    ./t/js.end > ./lib/runmode.js.tid
-	cat ./t/js.tid ./tmp/css.js        ./t/js.end > ./lib/css.js.tid
-	cat ./t/js.tid ./tmp/javascript.js ./t/js.end > ./lib/javascript.js.tid
-	cat ./t/js.tid ./tmp/htmlmixed.js  ./t/js.end > ./lib/htmlmixed.js.tid
-	cat ./t/js.tid ./tmp/python.js     ./t/js.end > ./lib/python.js.tid
-	cat ./t/js.tid ./tmp/xml.js        ./t/js.end > ./lib/xml.js.tid
+	@echo $(CM_TEMPLATE)codemirror.js  > lib/codemirror.js.recipe
+
+	@echo $(JS_TEMPLATE)overlay.js     > lib/overlay.js.recipe
+	@echo $(JS_TEMPLATE)runmode.js     > lib/runmode.js.recipe
+	@echo $(JS_TEMPLATE)css.js         > lib/css.js.recipe
+	@echo $(JS_TEMPLATE)javascript.js  > lib/javascript.js.recipe
+	@echo $(JS_TEMPLATE)htmlmixed.js   > lib/htmlmixed.js.recipe
+	@echo $(JS_TEMPLATE)python.js      > lib/python.js.recipe
+	@echo $(JS_TEMPLATE)xml.js         > lib/xml.js.recipe
+
+tiddlers: recipes
+	@echo ""
+	@echo "--- create tiddlers with cook ---"
+
+	cook $(PWD)/lib/codemirror.css.recipe /lib/codemirror.css.tid
+	
+	cook $(PWD)/lib/codemirror.js.recipe  /lib/codemirror.js.tid
+	cook $(PWD)/lib/overlay.js.recipe     /lib/overlay.js.tid
+	cook $(PWD)/lib/runmode.js.recipe     /lib/runmode.js.tid
+	cook $(PWD)/lib/css.js.recipe         /lib/css.js.tid
+	cook $(PWD)/lib/javascript.js.recipe  /lib/javascript.js.tid
+	cook $(PWD)/lib/htmlmixed.js.recipe   /lib/htmlmixed.js.tid
+	cook $(PWD)/lib/python.js.recipe      /lib/python.js.tid
+	cook $(PWD)/lib/xml.js.recipe         /lib/xml.js.tid
+
+
 
 

@@ -1,0 +1,4 @@
+template: ../t/x.template
+meta: ../t/meta.txt
+tags: ../t/tags.txt
+body: ../tmp/codemirror.js

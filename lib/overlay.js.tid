@@ -3,6 +3,10 @@ created: 201108311212
 modified: 201108311213
 tags: systemConfig
 
+/***
+|''Requires''| codemirror.js|
+***/
+
 //{{{
 // Utility function that allows modes to be combined. The mode given
 // as the base argument takes care of most of the normal mode
