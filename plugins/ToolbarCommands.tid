@@ -1,0 +1,4 @@
+modifier: PMario
+
+|~ViewToolbar|closeTiddler closeOthers +cmEdit editTiddler > fields syncing permalink references jump|
+|~EditToolbar|+cmSave saveTiddler -cancelTiddler deleteTiddler|

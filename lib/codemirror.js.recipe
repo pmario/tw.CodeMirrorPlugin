@@ -1,4 +1,4 @@
-template: ../t/x.template
+template: ../t/js.template
 meta: ../t/meta.txt
 tags: ../t/tags.txt
 body: ../tmp/codemirror.js

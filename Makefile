@@ -15,15 +15,16 @@ CM_TAG = v2.13
 CM_RAW = https://raw.github.com/marijnh/CodeMirror2
 CM_LIB_DIR = $(CM_RAW)/$(CM_TAG)/lib
 CM_MODE_DIR = $(CM_RAW)/$(CM_TAG)/mode
+CM_THEME_DIR = $(CM_RAW)/$(CM_TAG)/theme
 
 # uglify options
 UGLIFY_OPTS = --overwrite
 
-CSS_TEMPLATE = "template: ../t/x.template\nmeta: ../t/meta.txt\nbody:  ../tmp/"
+CSS_TEMPLATE = "template: ../t/css.template\nmeta: ../t/meta.txt\nbody:  ../tmp/"
 
-CM_TEMPLATE  = "template: ../t/x.template\nmeta: ../t/meta.txt\ntags: ../t/tags.txt\nbody: ../tmp/"
+CM_TEMPLATE  = "template: ../t/js.template\nmeta: ../t/meta.txt\ntags: ../t/tags.txt\nbody: ../tmp/"
 
-JS_TEMPLATE  = "template: ../t/x.template\nmeta: ../t/meta.txt\ntags: ../t/tags.txt\nintro: ../t/dependsOnCodeMirror.js.txt\nbody: ../tmp/"
+JS_TEMPLATE  = "template: ../t/js.template\nmeta: ../t/meta.txt\ntags: ../t/tags.txt\nintro: ../t/dependsOnCodeMirror.js.txt\nbody: ../tmp/"
 
 
 help:
@@ -55,6 +56,8 @@ getall: tiddlers
 getlibs: 
 	@echo ""
 	@echo "--- get basic codemirror libraries ---"
+	curl -o "tmp/default.css" $(CM_THEME_DIR)/default.css
+	
 	curl -o "tmp/codemirror.css" $(CM_LIB_DIR)/codemirror.css
 	curl -o "tmp/codemirror.js" $(CM_LIB_DIR)/codemirror.js
 	curl -o "tmp/overlay.js" $(CM_LIB_DIR)/overlay.js	
@@ -85,6 +88,7 @@ recipes: uglify
 	@echo ""
 	@echo "--- create recipes for single js tiddlers ---"
 	@echo $(CSS_TEMPLATE)codemirror.css > lib/codemirror.css.recipe
+	@echo $(CSS_TEMPLATE)default.css > lib/default.css.recipe
 
 	@echo $(CM_TEMPLATE)codemirror.js  > lib/codemirror.js.recipe
 
@@ -101,6 +105,7 @@ tiddlers: recipes
 	@echo "--- create tiddlers with cook ---"
 
 	cook $(PWD)/lib/codemirror.css.recipe /lib/codemirror.css.tid
+	cook $(PWD)/lib/default.css.recipe    /lib/default.css.tid
 	
 	cook $(PWD)/lib/codemirror.js.recipe  /lib/codemirror.js.tid
 	cook $(PWD)/lib/overlay.js.recipe     /lib/overlay.js.tid

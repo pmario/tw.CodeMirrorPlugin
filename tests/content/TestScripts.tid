@@ -1,0 +1,37 @@
+modifier: PMario
+created: 201109011212
+
+<html>
+<div id="x"></div>
+</html>
+<script label="runmode">
+var text = jQuery(story.getTiddler('TestCM')).find('textarea[edit=text]');
+
+console.log(jQuery(text[0]).text());
+
+		CodeMirror.runMode(jQuery(text[0]).text(), 
+	  		{
+				lineNumbers: true,
+				matchBrackets: true,
+				mode:  "javascript"
+			},
+			document.getElementById('x'));
+
+</script>
+
+<script label="edit">
+var text = jQuery(story.getTiddler('TestCM')).find('textarea[edit=text]');
+
+config.macros.cm = {};
+config.macros.cm.editor = CodeMirror.fromTextArea(text[0], {
+    lineNumbers: true,
+    matchBrackets: true,
+    mode:  "javascript"
+});
+</script>
+
+<script label="save">
+config.macros.cm.editor.save();
+</script>
+
+
