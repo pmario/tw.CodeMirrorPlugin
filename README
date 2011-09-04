@@ -1,6 +1,13 @@
 ! This is work in progress.
 
-* "make" uses "uglifyjs" for compressing the *.js files.
-* To create a working TW you need to install "cook". "ginsu" is optional.
+ * "make" uses "uglifyjs" for compressing the *.js files.
+ * To create a working TW you need to install "cook". "ginsu" is optional.
 
-!! It doesn't do anything usefull yet :) !!
+ * Editing is hardcoded to "javascript" mode.
+ * ViewMode uses syntaxhighlighting allready
+    * `{{{` .. plain text
+    * `//{{{` .. code
+    * `/*{{{*/` .. css
+    * `<!--{{{-->` .. xml
+    
+
