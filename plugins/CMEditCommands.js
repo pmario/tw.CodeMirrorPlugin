@@ -16,8 +16,7 @@ eg:
 |~ViewToolbar|tagSearch cmEdit +editTiddler  ...
 }}}
 <<<
-...
-<<<
+
 !!!Code
 ***/
 //{{{

@@ -8,10 +8,15 @@
 # gnome-open  .. if you use ubuntu gnome OR
 # open .. if you use OSX
 
+# just to keep the structure
+# https://raw.github.com/marijnh/CodeMirror2/master/mode/python/python.js
+
+
 OPEN=`cat OPEN_COMMAND`
 
 # codemirror settings
-CM_TAG = v2.13
+# CM_TAG = v2.13
+CM_TAG = master
 CM_RAW = https://raw.github.com/marijnh/CodeMirror2
 CM_LIB_DIR = $(CM_RAW)/$(CM_TAG)/lib
 CM_MODE_DIR = $(CM_RAW)/$(CM_TAG)/mode
