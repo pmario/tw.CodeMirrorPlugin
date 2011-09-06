@@ -53,8 +53,8 @@ config.commands.cmEdit.handler = function(event,src,title)
 	// TODO onChange will need special handling. aka Hijacking if config also contains a onChange
 	var cmOptions = {
 		'readOnly': readOnly,
-		onChange: cmOnChange,
-	}
+		onChange: cmOnChange
+	};
 
 	// check for content-type
 	var modes = CodeMirror.listModes();
@@ -69,7 +69,9 @@ config.commands.cmEdit.handler = function(event,src,title)
 	// set global settings
 	jQuery.extend(cmOptions, conf['global']);
 
+	// shadow tiddlers don't have tags, fields ...
 	if (tid && tid.fields) {
+console.log('noshadow tid:', tid);	
 		if (tid.fields['server.content-type'] && mimes.contains(tid.fields['server.content-type'])) {
 		jQuery.extend(cmOptions, conf[CodeMirror.getModeName(tid.fields['server.content-type'])]);
 		}
@@ -93,13 +95,14 @@ console.log('ct: ', cmOptions, conf[CodeMirror.getModeName(tid.fields['content-t
 				// if one tag is the same, pushUnique above will eliminate one or more tags.
 				if ((tl + tid.tags.length) != tags.length) {
 					jQuery.extend(cmOptions, conf[modes[i]]);
-					break	// modes.length loop. first found wins.
+					break;	// modes.length loop. first found wins.
 				}					
 			} // if 
 		} // for
 	} // if tid
 	
 	// if no mode was found, init with null -> text/plain
+	// TODO init with TW syntax highlighter, if available :)
 	if (!cmOptions.mode) {
 		jQuery.extend(cmOptions, conf['null']);
 	}
@@ -122,7 +125,7 @@ config.commands.cmSave.handler = function(event,src,title)
 	var text = jQuery(story.getTiddler(title)).find('textarea[edit=text]');
 	var editor = jQuery(text[0]).data('editor');
 
-	if (editor) editor.save();
+	if (editor) {editor.save();}
 	
 	config.commands.saveTiddler.handler.call(this,event,src,title); 
 	

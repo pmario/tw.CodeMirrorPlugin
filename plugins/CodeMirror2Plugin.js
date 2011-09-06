@@ -7,7 +7,7 @@
 |''Source''||
 |''License''|CC-BY-SA|
 |''CoreVersion''|2.5.0|
-|''Requires''|codemirror.js runmode.js AConfig|
+|''Requires''|codemirror.js overlay.js runmode.js xml.js python.js javascript.js css.js htmlmixed.js |
 |''Keywords''|syntax highlighting color code mirror codemirror|
 !Documentation
 * see: [[CodeMirror2Info]]
@@ -22,15 +22,13 @@ Enables syntax highlighting for <pre> and <code> blocks. Adds a new formatter fo
 [[default.css]]
 }}}
 <<<
+
 !!!!Macro
 <<<
-Modes: <<cmModes>> ... displays the initialized modes.
-<<<
+Modes: {{{<<cmModes>>}}} ... displays the initialized modes.
 Modes: <<cmModes>>
 
-<<<
-MIMEs: <<cmMIMEs>> ... displays the initialized mime types. Same order as modes.
-<<<
+MIMEs: {{{<<cmMIMEs>>}}} ... displays the initialized mime types. Same order as modes.
 Modes: <<cmMIMEs>>
 <<<
 !!!!Global Settings
@@ -53,7 +51,7 @@ Guess syntax: <<option chkGuessSyntax>> .. If activated, ~TiddlyWiky <pre> block
 Expert mode: <<option chkExpertSyntax>> .. If activated, additional values below will be used. see [[CodeMirror2Info]]
 
 {{{ {{{ }}} txtShText: <<option txtShText>> eg: 'text + options'
-{{{ /*{{{* / }}} txtShCss: <<option txtShCss>> eg: 'css  + options'
+{{{ / *{{{* / }}} txtShCss: <<option txtShCss>> eg: 'css  + options'
 {{{ //{{{ }}} txtShPlugin: <<option txtShPlugin>> 'js  + options'
 {{{ <!--{{{-->> }}} txtShXml: <<option txtShXml>> 'xml  + options'
 
@@ -62,8 +60,9 @@ Additional options ???????????????????
 !!!!Revision History
 <<<
 * V 0.1.0 2011-09-05
-
 <<<
+
+
 !!!!ToDo
 <<<
 *
@@ -72,7 +71,7 @@ Additional options ???????????????????
 ***/
 
 //{{{
-version.extensions.CodeMirror2Plugin = {major: 0, minor: 0, revision: 3, date: new Date(2011,9,03)};
+version.extensions.CodeMirror2Plugin = {major: 0, minor: 0, revision: 3, date: new Date(2011,9,3)};
 
 (function($) {
 
@@ -100,8 +99,8 @@ config.macros.cmMIMEs = {
 config.macros.highlightSyntax = {
 	getElementsByClass: function (searchClass,node,tag) {
 		var classElements = [];
-        if ( node == null ) node = document;
-        if ( tag == null )  tag = '*';
+        if ( node === null ) {node = document;}
+        if ( tag === null )  {tag = '*';}
 		
 		var els = node.getElementsByTagName(tag);
 		var elsLen = els.length;
@@ -146,8 +145,9 @@ config.formatters.push({
 		if(lookaheadMatch && lookaheadMatch.index == w.matchStart) {
             var options = lookaheadMatch[1];
 			var text = lookaheadMatch[2];
-			if(config.browser.isIE)
+			if(config.browser.isIE) {
 				text = text.replace(/\n/g,"\r");
+			}
 			var element = createTiddlyElement(w.output,this.element,null,options +' cm-s-default','');	// TODO check for theme
 			
             CodeMirror.runMode(text, options, element);
@@ -165,16 +165,16 @@ config.formatters.push({
 	helper.enclosedTextHelper = function(w){
 		var attr;
 		var co = config.options;
-		var expert = (co.chkExpertSyntax != undefined)? co.chkExpertSyntax : false;
-		var guess  = (co.chkGuessSyntax != undefined)? co.chkGuessSyntax : true;
+		var expert = (co.chkExpertSyntax !== undefined)? co.chkExpertSyntax : false;
+		var guess  = (co.chkGuessSyntax !== undefined)? co.chkGuessSyntax : true;
 		
 		this.lookaheadRegExp.lastIndex = w.matchStart;
 		var lookaheadMatch = this.lookaheadRegExp.exec(w.source);
 		if(lookaheadMatch && lookaheadMatch.index == w.matchStart) {
 			var text = lookaheadMatch[1];
-			if(config.browser.isIE)
+			if(config.browser.isIE) {
 				text = text.replace(/\n/g,"\r");
-
+			}
 			switch(w.matchText) {
 			case "{{{\n": // text
 				attr = (expert) ? (co.txtShText) ? (co.txtShText) : 'text/plain' : 'text/plain' ;
@@ -212,7 +212,7 @@ config.formatters.push({
 		helper : {
 			'true': true,
 			'false': false,
-			'null': null,
+			'null': null
 		},
 
 		calcTextSlices: function (text) {
@@ -290,14 +290,14 @@ config.formatters.push({
 	var secSep = config.textPrimitives.sectionSeparator;
 
 	// global settings need to be read seperately	
-	conf['global'] = me.rdSettings(cm + secSep + 'global')
+	conf['global'] = me.rdSettings(cm + secSep + 'global');
 
 	// check CM for installed modes and get usre config if available
 	modes = CodeMirror.listModes();
 	for (var i=0; i < modes.length; i += 1) {
-		conf[modes[i]] = me.rdSettings(cm + secSep + modes[i])
+		conf[modes[i]] = me.rdSettings(cm + secSep + modes[i]);
 	}
-	console.log({'config.tools.cm2.conf' : config.tools.cm2.conf})
+	console.log({'config.tools.cm2.conf' : config.tools.cm2.conf});
 })(jQuery);
 
 

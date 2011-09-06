@@ -67,7 +67,11 @@ getlibs:
 	curl -o "tmp/codemirror.js" $(CM_LIB_DIR)/codemirror.js
 	curl -o "tmp/overlay.js" $(CM_LIB_DIR)/overlay.js	
 	curl -o "tmp/runmode.js" $(CM_LIB_DIR)/runmode.js
-	
+
+patch:
+	cp ../../../CodeMirror2/lib/codemirror.js tmp/codemirror.js
+	uglifyjs $(UGLIFY_OPTS) tmp/codemirror.js 
+		
 getmodes: getlibs
 	@echo ""
 	@echo "--- get highlighting modules used for TW ---"
@@ -77,7 +81,7 @@ getmodes: getlibs
 	curl -o "tmp/python.js" $(CM_MODE_DIR)/python/python.js
 	curl -o "tmp/xml.js" $(CM_MODE_DIR)/xml/xml.js
 
-uglify: getmodes
+uglify: getmodes patch
 	@echo ""
 	@echo "--- compress libraries ---"
 	uglifyjs $(UGLIFY_OPTS) tmp/codemirror.js 

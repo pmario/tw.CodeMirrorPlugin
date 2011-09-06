@@ -1,4 +1,8 @@
 tiddler: StyleSheet.tid
+tiddler: HelloWorld.tid
+tiddler: testTag.tid
+tiddler: testContentType.tid
+tiddler: testServerContentType.tid
 tiddler: runModeCSS.tiddler
 tiddler: runModeJS.tiddler
 tiddler: runModePython.tiddler

@@ -1,10 +1,24 @@
 modifier: PMario
 
-!Test the dummy plugin
-<<helloWorldButton>>
+! Configuration
+see: CodeMirror2Config
 
-!ExternalScripts
-Edit the ExternalScripts tiddler!
+! runMode
+All tiddlers named "runMode*" are for testing CodeMirror.runMode() and
+CodeMirror2Plugin formatter function
 
-!Info about Licenses
-[[Usefull Links]]
+<<list filter [tag[runMode]]>>
+
+! ToolbarCommands
+CMEditCommands contains "cmEdit" and "cmSave" toolbar commands
+
+! Edit Mode Testing
+[[testTag]] .. the tage defined at CodeMirror2Plugin define the edit mode.
+[[testContentType]] .. toolbar command: more: fields shows the content-type field 
+[[testServerContentType]]  .. toolbar command: more: fields shows the server.content-type field
+
+The tag has the highest priority.
+
+This tiddler will be edited as "plain/text"
+
+
