@@ -1,3 +1,4 @@
 postscript: MarkupPostBody.tiddler
 shadow: MarkupPostBody.tiddler
+shadow: CodeMirror2Config.tiddler
 

@@ -1,8 +1,10 @@
 modifier: PMario
 created: 201109061212
+server.content-type: text/javascript
 
 /***
 ! heading 1
+server.content-type: <<view server.content-type>>
 ***/
 
 //{{{
