@@ -2,8 +2,8 @@
 |''Name''|CodeMirror2Plugin|
 |''Description''|Enables syntax highlighting using CodeMirror2|
 |''Author''|PMario|
-|''Version''|0.0.3|
-|''Status''|''experimental''|
+|''Version''|0.0.9|
+|''Status''|''beta''|
 |''Source''||
 |''License''|CC-BY-SA|
 |''CoreVersion''|2.5.0|
@@ -59,7 +59,8 @@ Additional options ???????????????????
 <<<
 !!!!Revision History
 <<<
-* V 0.1.0 2011-09-05
+* V 0.1.0 2011-09-07
+** inital release
 <<<
 
 
@@ -71,7 +72,7 @@ Additional options ???????????????????
 ***/
 
 //{{{
-version.extensions.CodeMirror2Plugin = {major: 0, minor: 0, revision: 3, date: new Date(2011,9,3)};
+version.extensions.CodeMirror2Plugin = {major: 0, minor: 1, revision: 0, date: new Date(2011,9,7)};
 
 (function($) {
 
@@ -114,15 +115,27 @@ config.macros.highlightSyntax = {
 		return classElements;
 	},
 	
+	// <<highlightSyntax tagName>>
+	// <<highlightSyntax code>>  || <<highlightSyntax div>>
 	handler: function(place, macroName, params, wikifier, paramString, tiddler) {
+
 		// the configured tagName can be temporarily overwritten by the macro.
-//		var tagName = params[0] || SyntaxHighlighter.config.tagName;
+		var output, cStr, modeName;
 		var tagName = params[0] || 'pre';
 		var arr = this.getElementsByClass('brush', story.findContainingTiddler(place), tagName);
+		
+		var src;
 		for (i=0; i<arr.length; i++) {
-//			SyntaxHighlighter.highlight(null, arr[i]);
-console.log('handler:' , arr);
-//			CodeMirror.runMode(arr[i], 'javascript', output);
+			$output = $('<'+ tagName +' class="cm-s-default">'); // TODO theme handling
+			$src = $(arr[i]);
+
+			cStr = $src.attr('class');
+			cStr = cStr.parseParams(null, null, true);
+
+			modeName = getParam(cStr, 'brush', 'null');
+			
+			CodeMirror.runMode($src.text(), modeName, $output[0]);
+			$src.replaceWith($output[0]);
 		}			
 	} // handler
 };
@@ -145,12 +158,18 @@ config.formatters.push({
 		if(lookaheadMatch && lookaheadMatch.index == w.matchStart) {
             var options = lookaheadMatch[1];
 			var text = lookaheadMatch[2];
+			var cmMode;
+			
 			if(config.browser.isIE) {
 				text = text.replace(/\n/g,"\r");
 			}
 			var element = createTiddlyElement(w.output,this.element,null,options +' cm-s-default','');	// TODO check for theme
+
+			// may be there will be additional params in the future.
+			cmMode = options.parseParams(null, null, true);
+			cmMode = getParam(cmMode, 'brush', 'null');
 			
-            CodeMirror.runMode(text, options, element);
+            CodeMirror.runMode(text, cmMode, element);
 			w.nextMatch = lookaheadMatch.index + lookaheadMatch[0].length;
 		}
 	}
@@ -209,6 +228,13 @@ config.formatters.push({
 	config.tools.cm2 = {};
 	config.tools.cm2.addOns = {};
 	config.tools.cm2 = me = {
+
+		// TODO fix this hack ...		
+		resizeEditor : function() {
+			var jqe = $('.editor');
+			jqe.find('.CodeMirror').width(jqe.width());
+		},
+	
 		helper : {
 			'true': true,
 			'false': false,
@@ -297,7 +323,13 @@ config.formatters.push({
 	for (var i=0; i < modes.length; i += 1) {
 		conf[modes[i]] = me.rdSettings(cm + secSep + modes[i]);
 	}
-	console.log({'config.tools.cm2.conf' : config.tools.cm2.conf});
+// console.log({'config.tools.cm2.conf' : config.tools.cm2.conf});
+
+	// TODO fix editor resize hack.	
+	jQuery(window).resize(function() {
+		config.tools.cm2.resizeEditor(); 
+	});
+
 })(jQuery);
 
 

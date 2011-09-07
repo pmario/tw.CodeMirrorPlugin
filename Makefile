@@ -125,6 +125,7 @@ tiddlers: recipes
 	cook $(PWD)/lib/python.js.recipe      /lib/python.js.tid
 	cook $(PWD)/lib/xml.js.recipe         /lib/xml.js.tid
 
-
+deploy:
+	cp upstream.html /media/Daten/DropBox/Dropbox/Public
 
 

@@ -71,14 +71,14 @@ config.commands.cmEdit.handler = function(event,src,title)
 
 	// shadow tiddlers don't have tags, fields ...
 	if (tid && tid.fields) {
-console.log('noshadow tid:', tid);	
+// console.log('noshadow tid:', tid);	
 		if (tid.fields['server.content-type'] && mimes.contains(tid.fields['server.content-type'])) {
 		jQuery.extend(cmOptions, conf[CodeMirror.getModeName(tid.fields['server.content-type'])]);
 		}
 		
 		if (tid.fields['content-type'] && mimes.contains(tid.fields['content-type'])) {
 			jQuery.extend(cmOptions, conf[CodeMirror.getModeName(tid.fields['content-type'])]);
-console.log('ct: ', cmOptions, conf[CodeMirror.getModeName(tid.fields['content-type'])]);
+// console.log('ct: ', cmOptions, conf[CodeMirror.getModeName(tid.fields['content-type'])]);
 		}
 
 		for (var i=0; i < modes.length; i += 1) {
@@ -107,7 +107,7 @@ console.log('ct: ', cmOptions, conf[CodeMirror.getModeName(tid.fields['content-t
 		jQuery.extend(cmOptions, conf['null']);
 	}
 
-console.log('cmOptions',cmOptions);
+// console.log('cmOptions',cmOptions);
 	
 	config.commands.editTiddler.handler.call(this,event,src,title); 
 
@@ -116,6 +116,8 @@ console.log('cmOptions',cmOptions);
 	var editor = CodeMirror.fromTextArea(text[0], cmOptions);
 
 	jQuery(text[0]).data('editor', editor);
+	
+	config.tools.cm2.resizeEditor();
 	
 	return false;
 };
