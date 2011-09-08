@@ -2,10 +2,6 @@ modifier: PMario
 created: 201109061212
 content-type: text/x-python
 
-content-type: <<view content-type>>
-
-<code class="python">
-
 # Some Example code
 import os
 from package import ParentClass
@@ -24,4 +20,4 @@ class ExampleClass(ParentClass):
     def __init__(self, mixin = 'Hello'):
         self.mixin = mixin
 
-</code>
+

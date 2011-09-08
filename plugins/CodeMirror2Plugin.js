@@ -2,7 +2,7 @@
 |''Name''|CodeMirror2Plugin|
 |''Description''|Enables syntax highlighting using CodeMirror2|
 |''Author''|PMario|
-|''Version''|0.0.9|
+|''Version''|0.1.0|
 |''Status''|''beta''|
 |''Source''||
 |''License''|CC-BY-SA|
@@ -10,7 +10,7 @@
 |''Requires''|codemirror.js overlay.js runmode.js xml.js python.js javascript.js css.js htmlmixed.js |
 |''Keywords''|syntax highlighting color code mirror codemirror|
 !Documentation
-* see: [[CodeMirror2Info]]
+* see: [[CodeMirror2PluginInfo]]
 !Description
 Enables syntax highlighting for <pre> and <code> blocks. Adds a new formatter for {{{<code class='???'>}}} 
 !Usage
@@ -50,14 +50,21 @@ Modes: <<cmMIMEs>>
 Guess syntax: <<option chkGuessSyntax>> .. If activated, ~TiddlyWiky <pre> blocks will be rendered according to there block braces. see [[CodeMirror2Info]]
 Expert mode: <<option chkExpertSyntax>> .. If activated, additional values below will be used. see [[CodeMirror2Info]]
 
-{{{ {{{ }}} txtShText: <<option txtShText>> eg: 'text + options'
-{{{ / *{{{* / }}} txtShCss: <<option txtShCss>> eg: 'css  + options'
-{{{ //{{{ }}} txtShPlugin: <<option txtShPlugin>> 'js  + options'
-{{{ <!--{{{-->> }}} txtShXml: <<option txtShXml>> 'xml  + options'
+{{{ {{{ }}} txtShText: <<option txtShText>> eg: 'brush:text'
+{{{ / *{{{* / }}} txtShCss: <<option txtShCss>> eg: 'brush:css'
+{{{ //{{{ }}} txtShPlugin: <<option txtShPlugin>> 'brush:javascript'
+{{{ <!--{{{-->> }}} txtShXml: <<option txtShXml>> 'brush:xml'
 
 Additional options ???????????????????
 <<<
-!!!!Revision History
+!!!! Known Issues
+* Theme switching not supported yet
+* Detecting content-type in ViewMode, EditMode has some inconsistencies
+* Code is ugly
+** Uses too many different namespaces
+** Lots of TODOs 
+
+!!!! Revision History
 <<<
 * V 0.1.0 2011-09-07
 ** inital release
@@ -72,7 +79,7 @@ Additional options ???????????????????
 ***/
 
 //{{{
-version.extensions.CodeMirror2Plugin = {major: 0, minor: 1, revision: 0, date: new Date(2011,9,7)};
+version.extensions.CodeMirror2Plugin = {major: 0, minor: 1, revision: 0, date: new Date(2011,9,8)};
 
 (function($) {
 
@@ -83,7 +90,6 @@ else if(!window.CodeMirror.runMode) {
 	throw "Missing dependency: CodeMirror-runmode library";
 }
 
-
 config.macros.cmModes = {
 	handler: function(place, macroName, params, wikifier, paramString, tiddler) {
 		jQuery("<span/>").text(CodeMirror.listModes().join(', ')).appendTo(place);
@@ -93,6 +99,119 @@ config.macros.cmModes = {
 config.macros.cmMIMEs = {
 	handler: function(place, macroName, params, wikifier, paramString, tiddler) {
 		jQuery("<span/>").text(CodeMirror.listMIMEs().join(', ')).appendTo(place);
+	}
+};
+
+config.macros.typeChooser = {};
+config.views.editor.typeChooser = {};
+merge(config.views.editor.typeChooser,{
+	text: "content-type",
+	tooltip: "Choose existing types to add to this tiddler",
+	popupNone: "There are no content-types defined",
+	typeTooltip: "Add the content-type '%0'"});
+
+
+config.macros.typeChooser.onClick = function(ev)
+{
+	var e = ev || window.event;
+	var lingo = config.views.editor.typeChooser;
+	var popup = Popup.create(this);
+
+	var data = $(this).data("data");
+
+// console.log('onClick', data);
+
+	var types = CodeMirror.listMIMEs();
+	types.push('-none-');
+	if(types.length === 0) {
+		$("<li/>").text(lingo.popupNone).appendTo(popup);
+	}
+	var t;
+	for(t=0; t<types.length; t++) {
+		var type = createTiddlyButton(createTiddlyElement(popup,"li"),types[t],lingo.typeTooltip.format([types[t]]),config.macros.typeChooser.onTypeClick);
+
+		$(type).data('data', data);
+
+		type.setAttribute("type",types[t]);
+		type.setAttribute("tiddler",this.getAttribute("tiddler"));
+	}
+	Popup.show();
+	e.cancelBubble = true;
+	if(e.stopPropagation) {e.stopPropagation();}
+	return false;
+};
+
+config.macros.typeChooser.onTypeClick = function(ev)
+{
+	var e = ev || window.event;
+	if(e.metaKey || e.ctrlKey) {stopEvent(e);} //# keep popup open on CTRL-click
+
+	var data = $(this).data("data");
+
+// console.log('onTypeClick', data);
+	var type = this.getAttribute("type");
+	var title = this.getAttribute("tiddler");
+	var conf = config.tools.cm2.conf;
+	var cmOptions = {}, mode;
+	
+	if(!readOnly) {		// TODO doesn't seem to be right here!
+			// clear the input .. 
+			$(data.input).val('');
+
+			if (type == '-none-' || type == 'content-type') {
+				story.setTiddlerField(title, '', '+1', data.ctfield);
+			}
+			else {
+				story.setTiddlerField(title, type, '+1', data.ctfield);
+			}
+
+			$(data.btn).text(type);
+			
+			var text = $(story.getTiddler(title)).find('textarea[edit=text]');
+			var editor = $(text[0]).data('editor');
+			// save changes to textarea.
+			if (editor) {editor.save();}
+			
+			// TODO do nothing, if mode didn't change
+			// TODO if a tag overwrites the content-type, gray out the content-type button.
+			
+			$(editor.getWrapperElement()).remove();
+
+			mode = CodeMirror.getModeName(type);
+
+			if (conf[mode]) {
+				cmOptions = conf[mode];
+			}
+			else {cmOptions = {mode : 'null'};}
+
+			$.extend(cmOptions, conf['global']);
+			
+			editor = CodeMirror.fromTextArea(text[0], cmOptions);
+
+			$(text[0]).data('editor', editor);
+			config.tools.cm2.resizeEditor();					
+	}
+	return false;
+};
+
+config.macros.typeChooser.handler = function(place,macroName,params,wikifier,paramString,tiddler)
+{
+	var ctfield = params[0] || 'content-type';
+	
+	if(tiddler instanceof Tiddler) {
+		var lingo = config.views.editor.typeChooser;
+		var btnText = (tiddler.fields[ctfield]) ? tiddler.fields[ctfield] : lingo.text;
+		var inpText = (tiddler.fields[ctfield]) ? tiddler.fields[ctfield] : '';
+
+		// createTiddlyElement(parent, element, id, className, text, attribs)
+		var $inp = $('<input type="text" edit="'+ctfield+'" size="20">').appendTo(place).val(inpText).hide();
+// 		console.log($inp);
+		
+		var btn = createTiddlyButton(place, btnText, lingo.tooltip, this.onClick);
+		$(btn).data('data', {'input':$inp, 'btn':btn, 'ctfield':ctfield});
+		
+		btn.setAttribute("tiddler", tiddler.title);
+		btn.setAttribute("exclude", params[0]);
 	}
 };
 
@@ -329,6 +448,45 @@ config.formatters.push({
 	jQuery(window).resize(function() {
 		config.tools.cm2.resizeEditor(); 
 	});
+
+})(jQuery);
+
+
+// Check, if there is the BinaryTiddlersPlugin TODO and use it. 
+// If not check for content-type == text/....
+(function($) {
+var ctfield = "content-type";
+
+config.extensions.cm2 = me = {
+	isTextual : function(ctype) {
+		return ctype.indexOf("text/") === 0
+			|| this.endsWith(ctype, "+xml")
+			|| ctype == 'application/json'
+			|| ctype == 'application/javascript';
+	}
+};
+
+// hijack text viewer to add special handling for binary tiddlers
+var _view = config.macros.view.views.wikified;
+config.macros.view.views.wikified = function(value, place, params, wikifier,
+		paramString, tiddler) {
+	var el;
+	var ctype = tiddler.fields[ctfield];
+
+	// TODO next line matches are ugly
+	if(params[0] == "text" && ctype && !tiddler.text.match('{{'+'{') && !tiddler.text.match('<code')) {
+		if (me.isTextual(ctype)) {
+			el = $('<pre class="cm-s-default">').appendTo(place); // TODO theme
+			
+			CodeMirror.runMode(tiddler.text, CodeMirror.getModeName(ctype), el[0]);
+			
+//			el = $("<pre />").text(tiddler.text);
+//			el.appendTo(place);
+		} 
+		else _view.apply(this, arguments);
+	} // if
+	else  _view.apply(this, arguments);		
+}; // _view
 
 })(jQuery);
 

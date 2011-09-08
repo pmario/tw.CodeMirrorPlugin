@@ -4,7 +4,9 @@
 <<<
 * Learn more at: http://codemirror.net/manual.html
 * If this list is missing something, just have a look at the above page and add it :)
-* Every parameter that is a (function) @@needs a corresponding CM addOn function@@.
+* Every parameter that is a (function) @@needs a corresponding CM addOn function@@ to work with TW.
+* This tiddler is a shadow tiddler. If you mess it up, just delete it, and you'll get a "vanilla" copy :)
+
 <<<
 
 ! Settings

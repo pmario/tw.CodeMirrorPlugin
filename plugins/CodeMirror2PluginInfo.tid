@@ -1,0 +1,174 @@
+modifier: PMario
+tags: mainMenu
+
+|''Name''|CodeMirror2PluginInfo|
+|''Description''|Documentation for [[CodeMirror2Plugin]]|
+|''Author''|PMario|
+|''Version''|0.1.0|
+|''Source''||
+|''Documentation''||
+|''License''|CC-BY-SA|
+|''Keywords''|syntax highlighting color code|
+!Usage
+!!!!StyleSheet
+<<<
+*add this to your StyleSheet
+{{{
+[[codemirror.css]]
+[[default.css]]
+}}}
+<<<
+!! Feedback / Support
+Feedback is very welcome at [[TiddlyWiki group|http://groups.google.com/group/tiddlywiki]]
+!!Examples
+<<<
+Supported Modes: {{{<<cmModes>>}}} <<cmModes>>
+Supported MIMEs: {{{<<cmMIMIEs>>}}} <<cmMIMEs>>
+<<<
+!!!!Code sample
+<<<
+<!--{{{-->
+<code class="brush:javascript">
+// comment
+var a = b = 0;
+a = 17;
+</code>
+<!--}}}-->
+will render like 
+<code class="brush:javascript">
+// comment
+var a = b = 0;
+a = 17;
+</code>
+<<<
+!!!!Text
+<<<
+{{{
+ {{{
+ this will be rendered as text!
+ }}}
+}}}
+<<<
+!!!!CSS
+<<<
+{{{
+ /*{{{*/
+ .cssClass {
+	display: block; !important;
+ }
+ /*}}}*/
+}}}
+will render like:
+/*{{{*/
+.cssClass {
+	display: block; !important;
+}
+/*}}}*/
+<<<
+!!!!XML
+<<<
+{{{
+<!--{{{-->
+<html>
+	<div id='myId' class='dp50'>some text </div>
+</html>
+<!--}}}-->
+}}}
+will render like:
+<!--{{{-->
+<html>
+	<div id='myId' class='dp50'>some text </div>
+</html>
+<!--}}}-->
+<<<
+!!!!Plugin
+<<<
+{{{
+//{{{
+(function($) {
+	config.macros.highlightSyntax = {
+		var a = b = 0;
+		// your code here!
+	}
+})(jQuery);
+//}}}
+}}}
+will render like:
+//{{{
+(function($) {
+	config.macros.highlightSyntax = {
+		var a = b = 0;
+		// your code here!
+	}
+})(jQuery);
+//}}}
+<<<
+!!Advanced Options
+<<<
+Guess syntax: <<option chkGuessSyntax>> .. If activated, ~TiddlyWiky <pre> blocks will be rendered according to there block braces, like described obove.
+Expert mode: <<option chkExpertSyntax>> .. If activated, additional values below will be used
+
+{{{ {{{ }}} txtShText: <<option txtShText>> eg: 'brush:text + options'
+{{{ /*{{{*/ }}} txtShCss: <<option txtShCss>> eg: 'brush:css  + options'
+{{{ //{{{ }}} txtShPlugin: <<option txtShPlugin>> 'brush:js  + options'
+{{{ <!--{{{-->> }}} txtShXml: <<option txtShXml>> 'brush:xml  + options'
+
+If you want to change the default values eg for C++, add the following to a [[zzConfig]] tiddler and tag it "systemConfig"
+//{{{
+config.options.chkGuessSyntax = true;
+config.options.chkExpertSyntax = true;
+
+config.options.txtShPlugin = 'brush:clike';
+//}}}
+and use the following backets to cover your code
+{{{
+//{{{
+   cpp code comes here.
+//}}}
+}}}
+
+All possible options can be found at: [[CodeMirror homepage|http://codemirror.net]]
+<<<
+!! You need a different mode?
+* Go to [[CodeMirror compression API page| http://codemirror.net/compress.html]] 
+* Select your mode
+* Create a minified version
+* Copy paste it into a tiddler eg: clike.js
+** Tag the new tiddler ''systemConfig''
+** Save and reload
+* Have a look at Advanced options or use the {{{<code class="brush: ... >}}} tag described above.
+
+!!Needed: list tagged syntax
+TODO -- < <list filter [tag[syntax]]>>
+
+!!!Macro
+<<<
+*The {{{highlightSyntax}}} macro is only needed if you have inline html blocks, like shown below.
+<!--{{{-->
+<html>
+	<pre class='brush:pascal tab-size:3'>
+		// your code 
+	<pre>
+</html>
+
+<<highlightSyntax>> .. will render the <pre> blocks shown above.
+<!--}}}-->
+<<<
+!!!!ViewTemplate
+<<<
+*Same as macro, but will be executed automatically for every tiddler.
+<!--{{{-->
+<div class='tagging' macro='tagging'></div>
+<div macro='highlightSyntax'></div>  <!-- insert this line -->
+<div class='tagClear'></div>
+<!--}}}-->
+<<<
+!!!!Parameters
+<<<
+{{{<<highlightSyntax [tagName]>>}}}
+*will render all blocks, with any defined tag name. eg: tagName = code.
+*[tagName] is optional. Default is "pre".
+<<<
+!!!Revision History
+..
+

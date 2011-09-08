@@ -3,5 +3,6 @@ tiddler: PasswordOptionsPlugin.js
 tiddler: SimpleSearchPlugin.js
 tiddler: TspotSetupPlugin.js
 tiddler: UploadPlugin.js
+tiddler: FieldsEditorPlugin.js
 tiddler: zzConfig.js
 

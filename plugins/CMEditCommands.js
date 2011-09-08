@@ -1,9 +1,9 @@
 /***
 |''Name''|CMEditCommands|
 |''Description''|Opens a tiddler in edit mode and starts CodeMirror editor.|
-|''Version''|0.0.1|
-|''Date''|2011-09-01|
-|''Status''|@@experimental@@|
+|''Version''|0.1.0|
+|''Date''|2011-09-08|
+|''Status''|''beta''|
 |''Source''||
 |''License''|CC-BY-SA|
 |''CoreVersion''|2.5|
@@ -71,14 +71,14 @@ config.commands.cmEdit.handler = function(event,src,title)
 
 	// shadow tiddlers don't have tags, fields ...
 	if (tid && tid.fields) {
-// console.log('noshadow tid:', tid);	
+ // console.log('noshadow tid:', tid);	
 		if (tid.fields['server.content-type'] && mimes.contains(tid.fields['server.content-type'])) {
 		jQuery.extend(cmOptions, conf[CodeMirror.getModeName(tid.fields['server.content-type'])]);
 		}
 		
 		if (tid.fields['content-type'] && mimes.contains(tid.fields['content-type'])) {
 			jQuery.extend(cmOptions, conf[CodeMirror.getModeName(tid.fields['content-type'])]);
-// console.log('ct: ', cmOptions, conf[CodeMirror.getModeName(tid.fields['content-type'])]);
+ // console.log('ct: ', cmOptions, conf[CodeMirror.getModeName(tid.fields['content-type'])]);
 		}
 
 		for (var i=0; i < modes.length; i += 1) {
@@ -107,7 +107,7 @@ config.commands.cmEdit.handler = function(event,src,title)
 		jQuery.extend(cmOptions, conf['null']);
 	}
 
-// console.log('cmOptions',cmOptions);
+//  console.log('cmOptions',cmOptions);
 	
 	config.commands.editTiddler.handler.call(this,event,src,title); 
 

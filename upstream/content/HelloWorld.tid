@@ -1,20 +1,28 @@
 modifier: PMario
+tags: default mainMenu
 
-! Alpha - Alpha - Alpha - Alpha - Alpha - Alpha
+! Beta - Beta - Beta - Beta - Beta - 
 * This TW is work in progress, so ''don't use for production.''
+
 * This TW contains 2 plugins( CodeMirror2Plugin and CMEditCommands)
 ** CodeMirror2Plugin .. wraps the wonderful CodeMirror library into TW
 ** CMEditCommands .. creates the "cmEdit" and "cmSave" buttons.
+** CodeMirror2PluginInfo .. read this, to get info about the "view mode"
+** EditMode docu .. TODO :)
 
-* Feedback is very welcome at [[TW Dev goup|http://groups.google.com/group/tiddlywikidev/browse_thread/thread/1a85d5fb07ac717?hl=en]]
+* Feedback is very welcome at [[TW Dev goup|http://groups.google.com/group/tiddlywikidev]]
 
 ! Modes
 At the moment, there are 2 modes:
 * view mode
+** view mode mainly depends on TW code block indicators. Learn more at: CodeMirror2PluginInfo
 * edit mode
+** edit mode depends on: ''tags'', ''content-type'' and ''server.content-type'' fields
+** tag has the highest priority and can be adjusted at: CodeMirror2Config 
+** content-type can be edited in "edit mode :)". The selector button is near the toolbar commands.
 
-! View / runMode
-All tiddlers named "runMode*" are for testing the CodeMirror runMode() function. They don't have any edit mode identifier assigned. So it will be "text/plain".
+! View Mode Test Tiddlers
+All tiddlers named "runMode*" are for testing the CodeMirror runMode() function. They don't have any edit mode identifier assigned. So it initially will be "text/plain".
 
 <<list filter [tag[runMode]]>>
 
