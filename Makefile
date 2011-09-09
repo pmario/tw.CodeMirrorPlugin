@@ -40,9 +40,17 @@ JS_TEMPLATE  = "template: ../t/js.template\nmeta: ../t/meta.txt\ntags: ../t/tags
 # test stuff
 
 tt:
-	ls -C1 commits | awk '{print "commits/"$$1}' > li.list
-	egrep -h -o 'lib/.*(\.js|\.svg|\.tid|\.tiddler)$$' `cat li.list` > x.list
+	ls -C1 commits | awk '{print "commits/"$$1}' > c.list
 
+	egrep -h -o 'lib/.*(\.js|\.svg|\.tid|\.tiddler)$$' `cat c.list` > lib.list
+	sort lib.list | uniq > upload-lib.list
+
+	egrep -h -o 'plugins/.*(\.js|\.svg|\.tid|\.tiddler)$$' `cat c.list` > plugins.list
+	sort lib.list | uniq > upload-plugins.list
+
+	egrep -h -o 'upstream/content/.*(\.js|\.svg|\.tid|\.tiddler)$$' `cat c.list` > upstream.list
+	sort lib.list | uniq > upload-upstream.list
+	
 # ---------------
 help:
 	@echo "make getall .... load all dependencies from internet"
