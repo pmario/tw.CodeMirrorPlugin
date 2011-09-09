@@ -1,0 +1,11 @@
+creator: PMario
+modifier: PMario
+tags: runMode
+
+!!!! PageTemplate
+<<tiddler PageTemplate>>
+!!!! ViewTemplate
+<<tiddler ViewTemplate>>
+!!!! EditTemplate
+<<tiddler EditTemplate>>
+

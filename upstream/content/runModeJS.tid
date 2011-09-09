@@ -1,5 +1,8 @@
-<div title="runModeJS" modifier="PMario" tags="runMode" created="201109021102" creator="PMario">
-<pre>//{{{
+creator: PMario
+modifier: PMario
+tags: runMode
+
+//{{{
 // Demo code (the actual new parser character stream implementation)
 
 function StringStream(string) {
@@ -47,5 +50,5 @@ StringStream.prototype = {
     }
   }
 };
-//}}}</pre>
-</div>
+//}}}
+

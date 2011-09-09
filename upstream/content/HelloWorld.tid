@@ -3,6 +3,8 @@ tags: default mainMenu
 
 ! Beta - Beta - Beta - Beta - Beta - 
 * This TW is work in progress, so ''don't use for production.''
+* This is the presentation spce of the TiddlyWiki implementaion of CodeMirror Library. »The in-browser code editing library«
+ 
 
 * This TW contains 2 plugins( CodeMirror2Plugin and CMEditCommands)
 ** CodeMirror2Plugin .. wraps the wonderful CodeMirror library into TW

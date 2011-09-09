@@ -7,3 +7,4 @@ tiddler: CMEditCommands.js
 tiddler: MainMenu.tid
 tiddler: DefaultTiddlers.tid
 tiddler: StyleSheet.tid
+tiddler: CodeMirror2Config.tid

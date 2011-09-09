@@ -2,10 +2,10 @@
 |''Name''|CodeMirror2Plugin|
 |''Description''|Enables syntax highlighting using CodeMirror2|
 |''Author''|PMario|
-|''Version''|0.1.0|
+|''Version''|0.1.1|
 |''Status''|''beta''|
-|''Source''||
-|''License''|CC-BY-SA|
+|''Source''|https://github.com/pmario/tw.CodeMirrorPlugin|
+|''License''|[[CC-BY-NC-SA|http://creativecommons.org/licenses/by-nc-sa/3.0/]]|
 |''CoreVersion''|2.5.0|
 |''Requires''|codemirror.js overlay.js runmode.js xml.js python.js javascript.js css.js htmlmixed.js |
 |''Keywords''|syntax highlighting color code mirror codemirror|
@@ -16,24 +16,20 @@ Enables syntax highlighting for <pre> and <code> blocks. Adds a new formatter fo
 !Usage
 !!!!StyleSheet
 <<<
-*add this to your StyleSheet
-{{{
-[[codemirror.css]]
-[[default.css]]
-}}}
+* The plugin automatically creates a shadow StyleSheetCodeMirror2 tiddler, that can be adjusted to your needs.
 <<<
 
-!!!!Macro
+!!!!Macros
 <<<
-Modes: {{{<<cmModes>>}}} ... displays the initialized modes.
+Modes: {{{<<cmModes>>}}} ... displays the usable modes.
 Modes: <<cmModes>>
 
-MIMEs: {{{<<cmMIMEs>>}}} ... displays the initialized mime types. Same order as modes.
+MIMEs: {{{<<cmMIMEs>>}}} ... displays the usable mime types. Same order as modes.
 Modes: <<cmMIMEs>>
 <<<
 !!!!Global Settings
 <<<
-* have a look at: CodeMirror2Config
+* Have a look at: CodeMirror2Config
 <<<
 !!!!ViewTemplate
 <<<
@@ -42,8 +38,8 @@ Modes: <<cmMIMEs>>
 !!!!Parameters
 <<<
 {{{<<highlightSyntax [tagName]>> }}}
-*will render all blocks, with any defined tag name. eg: tagName = code.
-*[tagName] is optional. Default is "pre".
+* will render all blocks, with any defined tag name. eg: tagName = {{{code}}}.
+* [tagName] is optional. Default is "pre".
 <<<
 !!!!Configuration options
 <<<
@@ -70,7 +66,6 @@ Additional options ???????????????????
 ** inital release
 <<<
 
-
 !!!!ToDo
 <<<
 *
@@ -79,7 +74,7 @@ Additional options ???????????????????
 ***/
 
 //{{{
-version.extensions.CodeMirror2Plugin = {major: 0, minor: 1, revision: 0, date: new Date(2011,9,8)};
+version.extensions.CodeMirror2Plugin = {major: 0, minor: 1, revision: 1, date: new Date(2011,9,9)};
 
 (function($) {
 
@@ -445,7 +440,9 @@ config.formatters.push({
 // console.log({'config.tools.cm2.conf' : config.tools.cm2.conf});
 
 	// TODO fix editor resize hack.	
-	jQuery(window).resize(function() {
+	// Probably not needed with TiddlySpace themes.
+	// Deffinitely not needed with neui-em theme. The layout deals with it.
+	$(window).resize(function() {
 		config.tools.cm2.resizeEditor(); 
 	});
 
@@ -490,5 +487,16 @@ config.macros.view.views.wikified = function(value, place, params, wikifier,
 
 })(jQuery);
 
-
+config.shadowTiddlers["StyleSheetCodeMirror2"]="/*{{{*/\n"+
+	"[[codemirror.css]]\n"+
+	"[[default.css]]\n"+
+	"\n"+
+	".CodeMirror {\n"+
+	"	border: 1px solid [[ColorPalette::PrimaryMid]];\n"+
+	"	background: [[ColorPalette::PrimaryPale]];\n"+
+	"}\n"+
+	"/*}}}*/";
+store.addNotification("StyleSheetCodeMirror2",refreshStyles);
+store.addNotification("codemirror.css",refreshStyles);
+store.addNotification("default.css",refreshStyles);
 //}}}

@@ -4,19 +4,14 @@ tags: mainMenu
 |''Name''|CodeMirror2PluginInfo|
 |''Description''|Documentation for [[CodeMirror2Plugin]]|
 |''Author''|PMario|
-|''Version''|0.1.0|
-|''Source''||
-|''Documentation''||
-|''License''|CC-BY-SA|
+|''Version''|0.1.1|
+|''Source''|https://github.com/pmario/tw.CodeMirrorPlugin|
+|''License''|see: CodeMirror2Plugin|
 |''Keywords''|syntax highlighting color code|
 !Usage
 !!!!StyleSheet
 <<<
-*add this to your StyleSheet
-{{{
-[[codemirror.css]]
-[[default.css]]
-}}}
+* The plugin automatically creates a shadow StyleSheetCodeMirror2 tiddler, that can be adjusted to your needs.
 <<<
 !! Feedback / Support
 Feedback is very welcome at [[TiddlyWiki group|http://groups.google.com/group/tiddlywiki]]
@@ -139,7 +134,7 @@ All possible options can be found at: [[CodeMirror homepage|http://codemirror.ne
 * Have a look at Advanced options or use the {{{<code class="brush: ... >}}} tag described above.
 
 !!Needed: list tagged syntax
-TODO -- < <list filter [tag[syntax]]>>
+TODO -- < <list filter [tag[cm2]]>>
 
 !!!Macro
 <<<
@@ -170,5 +165,11 @@ TODO -- < <list filter [tag[syntax]]>>
 *[tagName] is optional. Default is "pre".
 <<<
 !!!Revision History
-..
+<<<
+* V 0.1.0 2011-09-09
+** minor adjustments
+* V 0.1.0 2011-09-07
+** inital release
+<<<
+
 

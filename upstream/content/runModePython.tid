@@ -1,5 +1,7 @@
-<div title="runModePython" modifier="PMario" tags="runMode" created="201109012135" modified="201109021110" creator="PMario">
-<pre>
+creator: PMario
+modifier: PMario
+tags: runMode
+
 {{{
 <code class="brush:python">
 	some code ..
@@ -95,5 +97,4 @@ class ExampleClass(ParentClass):
         self.mixin = mixin
 
 
-</code></pre>
-</div>
+</code>

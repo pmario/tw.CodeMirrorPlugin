@@ -2,13 +2,6 @@ modifier: PMario
 created: 201109011212
 
 /*{{{*/
-[[codemirror.css]]
-[[default.css]]
-
-.CodeMirror {
-    border: 1px solid blue;
-]
-
 .CodeMirror {
     font-family: Inconsolata, monospace;
 }
