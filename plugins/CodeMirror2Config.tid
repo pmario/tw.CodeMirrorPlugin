@@ -1,5 +1,5 @@
-<div title="CodeMirror2Config" modifier="PMario">
-<pre>
+modifier: PMario
+
 ! CodeMirror Info
 <<<
 * Learn more at: http://codemirror.net/manual.html
@@ -165,4 +165,4 @@ mode: velocity
 tags: 
 mode: r
 }}}
-</pre></div>
+

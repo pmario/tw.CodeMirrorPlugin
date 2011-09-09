@@ -1,4 +1,1 @@
-modifier: PMario
-
-|~ViewToolbar|closeTiddler closeOthers +cmEdit > fields syncing permalink references jump|
-|~EditToolbar|cmSave cancelTiddler deleteTiddler|
+/media/Daten/Git/tiddly/pmario/tw.CodeMirrorPlugin/upstream/content/ToolbarCommands.tid

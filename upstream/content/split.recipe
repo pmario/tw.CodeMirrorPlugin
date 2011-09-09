@@ -3,8 +3,9 @@ tiddler: HelloWorld.tid
 tiddler: testTag.tid
 tiddler: testContentType.tid
 tiddler: testServerContentType.tid
-tiddler: runModeCSS.tiddler
-tiddler: runModeJS.tiddler
-tiddler: runModePython.tiddler
-tiddler: runModeXML.tiddler
+tiddler: runModeCSS.tid
+tiddler: runModeJS.tid
+tiddler: runModePython.tid
+tiddler: runModeXML.tid
+tiddler: CodeMirror.tid
 
