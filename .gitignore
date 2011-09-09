@@ -4,4 +4,4 @@ backups
 *.html.**
 *.zip
 *.jar
-hook.list
+commits
