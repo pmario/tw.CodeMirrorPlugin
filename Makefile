@@ -37,6 +37,13 @@ CM_TEMPLATE  = "template: ../t/js.template\nmeta: ../t/meta.txt\ntags: ../t/tags
 JS_TEMPLATE  = "template: ../t/js.template\nmeta: ../t/meta.txt\ntags: ../t/tags.txt\nintro: ../t/dependsOnCodeMirror.js.txt\nbody: ../tmp/"
 
 
+# test stuff
+
+tt:
+	ls -C1 commits | awk '{print "commits/"$$1}' > li.list
+	egrep -h -o 'lib/.*(\.js|\.svg|\.tid|\.tiddler)$$' `cat li.list` > x.list
+
+# ---------------
 help:
 	@echo "make getall .... load all dependencies from internet"
 	@echo "make test ...... creates tests.html"
@@ -47,6 +54,7 @@ help:
 	@echo "make distlibs ..... uploads cm libraries to codemirror-plugins space"
 	@echo ""
 	@echo "make clean ..... remove all auto generated stuff"
+
 
 clean: clean-list
 	rm *.html || true
