@@ -46,10 +46,10 @@ tt:
 	sort lib.list | uniq > upload-lib.list
 
 	egrep -h -o 'plugins/.*(\.js|\.svg|\.tid|\.tiddler)$$' `cat c.list` > plugins.list
-	sort lib.list | uniq > upload-plugins.list
+	sort plugins.list | uniq > upload-plugins.list
 
 	egrep -h -o 'upstream/content/.*(\.js|\.svg|\.tid|\.tiddler)$$' `cat c.list` > upstream.list
-	sort lib.list | uniq > upload-upstream.list
+	sort upstream.list | uniq > upload-upstream.list
 	
 # ---------------
 help:
