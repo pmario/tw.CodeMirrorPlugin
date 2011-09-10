@@ -4,13 +4,15 @@
 |''Author''|PMario|
 |''Version''|0.1.1|
 |''Status''|''beta''|
+|''Info''|CodeMirror2PluginInfo|
 |''Source''|https://github.com/pmario/tw.CodeMirrorPlugin|
+|''Documentation''|http://codemirror.tiddlyspace.com/|
 |''License''|[[CC-BY-NC-SA|http://creativecommons.org/licenses/by-nc-sa/3.0/]]|
 |''CoreVersion''|2.5.0|
 |''Requires''|codemirror.js overlay.js runmode.js xml.js python.js javascript.js css.js htmlmixed.js |
 |''Keywords''|syntax highlighting color code mirror codemirror|
 !Documentation
-* see: [[CodeMirror2PluginInfo]]
+* Advanced info, see: [[CodeMirror2PluginInfo]]
 !Description
 Enables syntax highlighting for <pre> and <code> blocks. Adds a new formatter for {{{<code class='???'>}}} 
 !Usage
@@ -21,19 +23,19 @@ Enables syntax highlighting for <pre> and <code> blocks. Adds a new formatter fo
 
 !!!!Macros
 <<<
-Modes: {{{<<cmModes>>}}} ... displays the usable modes.
+Modes: {{{<<cmModes>>}}} ... displays the usable modes seen below
 Modes: <<cmModes>>
 
-MIMEs: {{{<<cmMIMEs>>}}} ... displays the usable mime types. Same order as modes.
+MIMEs: {{{<<cmMIMEs>>}}} ... displays the usable mime types seen below. Same order as modes.
 Modes: <<cmMIMEs>>
 <<<
 !!!!Global Settings
 <<<
-* Have a look at: CodeMirror2Config
+* Have a look at: [[CodeMirror2Config]]
 <<<
 !!!!ViewTemplate
 <<<
-* Same as macro, but will be executed automatically for every tiddler. see: [[CodeMirror2Info]]
+* Same as macro, but will be executed automatically for every tiddler. see: [[CodeMirror2PluginInfo]]
 <<<
 !!!!Parameters
 <<<
@@ -493,7 +495,7 @@ config.shadowTiddlers["StyleSheetCodeMirror2"]="/*{{{*/\n"+
 	"\n"+
 	".CodeMirror {\n"+
 	"	border: 1px solid [[ColorPalette::PrimaryMid]];\n"+
-	"	background: [[ColorPalette::PrimaryPale]];\n"+
+	"	background: [[ColorPalette::Background]];\n"+
 	"}\n"+
 	"/*}}}*/";
 store.addNotification("StyleSheetCodeMirror2",refreshStyles);

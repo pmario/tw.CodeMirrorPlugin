@@ -1,7 +1,4 @@
 tiddler: ExternalScripts.tid
 tiddler: TestCM.tid
 tiddler: TestScripts.tid
-tiddler: DefaultTiddlers.tid
-tiddler: ToolbarCommands.tid
-recipe: ../../upstream/content/split.recipe
 

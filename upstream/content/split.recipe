@@ -1,5 +1,6 @@
 tiddler: StyleSheet.tid
 tiddler: HelloWorld.tid
+tiddler: MainMenu.tid
 tiddler: testTag.tid
 tiddler: testContentType.tid
 tiddler: testServerContentType.tid
@@ -8,4 +9,9 @@ tiddler: runModeJS.tid
 tiddler: runModePython.tid
 tiddler: runModeXML.tid
 tiddler: CodeMirror.tid
+tiddler: ToolbarCommands.tid
+tiddler: ViewTemplate.tid
+tiddler: EditTemplate.tid
+tiddler: UsefullLinks.tid
+tiddler: DefaultTiddlers.tid
 

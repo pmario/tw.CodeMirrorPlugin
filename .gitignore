@@ -1,7 +1,9 @@
-tmp
 backups
+commts
+tmp
 *.html
 *.html.**
 *.zip
 *.jar
-hook.list
+*.list
+

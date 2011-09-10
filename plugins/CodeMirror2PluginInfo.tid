@@ -6,10 +6,23 @@ tags: mainMenu
 |''Author''|PMario|
 |''Version''|0.1.1|
 |''Source''|https://github.com/pmario/tw.CodeMirrorPlugin|
+|''Documentation''|http://codemirror.tiddlyspace.com/|
 |''License''|see: CodeMirror2Plugin|
 |''Keywords''|syntax highlighting color code|
 !Usage
-!!!!StyleSheet
+!!!! Macros
+<<<
+Modes: {{{<<cmModes>>}}} ... displays the usable modes seen below.
+Modes: <<cmModes>>
+
+MIMEs: {{{<<cmMIMEs>>}}} ... displays the usable mime types seen below. Same order as modes.
+Modes: <<cmMIMEs>>
+<<<
+!!!! Global Settings
+<<<
+* Have a look at: CodeMirror2Config
+<<<
+!!!! StyleSheet
 <<<
 * The plugin automatically creates a shadow StyleSheetCodeMirror2 tiddler, that can be adjusted to your needs.
 <<<
@@ -17,8 +30,73 @@ tags: mainMenu
 Feedback is very welcome at [[TiddlyWiki group|http://groups.google.com/group/tiddlywiki]]
 !!Examples
 <<<
-Supported Modes: {{{<<cmModes>>}}} <<cmModes>>
-Supported MIMEs: {{{<<cmMIMIEs>>}}} <<cmMIMEs>>
+Available Modes: <<cmModes>>
+Available MIMEs: <<cmMIMEs>>
+<<<
+!!!! Text
+<<<
+{{{
+ {{{
+ This is some plain text!
+ }}}
+}}}
+{{{
+This is some plain text!
+}}}
+<<<
+!!!! CSS
+<<<
+{{{
+ /*{{{*/
+ .cssClass {
+	display: block; !important;
+ }
+ /*}}}*/
+}}}
+will render like:
+/*{{{*/
+.cssClass {
+	display: block; !important;
+}
+/*}}}*/
+<<<
+!!!! XML
+<<<
+{{{
+<!--{{{-->
+<html>
+	<div id='myId' class='dp50'>some text </div>
+</html>
+<!--}}}-->
+}}}
+will render like:
+<!--{{{-->
+<html>
+	<div id='myId' class='dp50'>some text </div>
+</html>
+<!--}}}-->
+<<<
+!!!! Plugin
+<<<
+{{{
+//{{{
+(function($) {
+	config.macros.highlightSyntax = {
+		var a = b = 0;
+		// your code here!
+	}
+})(jQuery);
+//}}}
+}}}
+will render like:
+//{{{
+(function($) {
+	config.macros.highlightSyntax = {
+		var a = b = 0;
+		// your code here!
+	}
+})(jQuery);
+//}}}
 <<<
 !!!!Code sample
 <<<
@@ -36,77 +114,16 @@ var a = b = 0;
 a = 17;
 </code>
 <<<
-!!!!Text
-<<<
-{{{
- {{{
- this will be rendered as text!
- }}}
-}}}
-<<<
-!!!!CSS
-<<<
-{{{
- /*{{{*/
- .cssClass {
-	display: block; !important;
- }
- /*}}}*/
-}}}
-will render like:
-/*{{{*/
-.cssClass {
-	display: block; !important;
-}
-/*}}}*/
-<<<
-!!!!XML
-<<<
-{{{
-<!--{{{-->
-<html>
-	<div id='myId' class='dp50'>some text </div>
-</html>
-<!--}}}-->
-}}}
-will render like:
-<!--{{{-->
-<html>
-	<div id='myId' class='dp50'>some text </div>
-</html>
-<!--}}}-->
-<<<
-!!!!Plugin
-<<<
-{{{
-//{{{
-(function($) {
-	config.macros.highlightSyntax = {
-		var a = b = 0;
-		// your code here!
-	}
-})(jQuery);
-//}}}
-}}}
-will render like:
-//{{{
-(function($) {
-	config.macros.highlightSyntax = {
-		var a = b = 0;
-		// your code here!
-	}
-})(jQuery);
-//}}}
-<<<
-!!Advanced Options
+
+!! Advanced Options
 <<<
 Guess syntax: <<option chkGuessSyntax>> .. If activated, ~TiddlyWiky <pre> blocks will be rendered according to there block braces, like described obove.
 Expert mode: <<option chkExpertSyntax>> .. If activated, additional values below will be used
 
-{{{ {{{ }}} txtShText: <<option txtShText>> eg: 'brush:text + options'
-{{{ /*{{{*/ }}} txtShCss: <<option txtShCss>> eg: 'brush:css  + options'
-{{{ //{{{ }}} txtShPlugin: <<option txtShPlugin>> 'brush:js  + options'
-{{{ <!--{{{-->> }}} txtShXml: <<option txtShXml>> 'brush:xml  + options'
+{{{ {{{ }}} txtShText: <<option txtShText>> eg: 'brush:text'
+{{{ /*{{{*/ }}} txtShCss: <<option txtShCss>> eg: 'brush:css'
+{{{ //{{{ }}} txtShPlugin: <<option txtShPlugin>> 'brush:js'
+{{{ <!--{{{-->> }}} txtShXml: <<option txtShXml>> 'brush:xml'
 
 If you want to change the default values eg for C++, add the following to a [[zzConfig]] tiddler and tag it "systemConfig"
 //{{{
@@ -141,7 +158,7 @@ TODO -- < <list filter [tag[cm2]]>>
 *The {{{highlightSyntax}}} macro is only needed if you have inline html blocks, like shown below.
 <!--{{{-->
 <html>
-	<pre class='brush:pascal tab-size:3'>
+	<pre class='brush:clike'>
 		// your code 
 	<pre>
 </html>
@@ -149,24 +166,16 @@ TODO -- < <list filter [tag[cm2]]>>
 <<highlightSyntax>> .. will render the <pre> blocks shown above.
 <!--}}}-->
 <<<
-!!!!ViewTemplate
-<<<
-*Same as macro, but will be executed automatically for every tiddler.
-<!--{{{-->
-<div class='tagging' macro='tagging'></div>
-<div macro='highlightSyntax'></div>  <!-- insert this line -->
-<div class='tagClear'></div>
-<!--}}}-->
-<<<
-!!!!Parameters
+
+!!!! Parameters
 <<<
 {{{<<highlightSyntax [tagName]>>}}}
 *will render all blocks, with any defined tag name. eg: tagName = code.
 *[tagName] is optional. Default is "pre".
 <<<
-!!!Revision History
+!!! Revision History
 <<<
-* V 0.1.0 2011-09-09
+* V 0.1.1 2011-09-09
 ** minor adjustments
 * V 0.1.0 2011-09-07
 ** inital release

@@ -8,9 +8,6 @@
 # gnome-open  .. if you use ubuntu gnome OR
 # open .. if you use OSX
 
-# just to keep the structure
-# https://raw.github.com/marijnh/CodeMirror2/master/mode/python/python.js
-
 
 OPEN=`cat OPEN_COMMAND`
 
@@ -19,6 +16,8 @@ PLUGINS_LIST= `cat plugins.list`
 LIBS_LIST=    `cat libs.list`
 CM_LIST=      `cat cm.list`
 
+# just to keep the structure
+# https://raw.github.com/marijnh/CodeMirror2/master/mode/python/python.js
 # codemirror settings
 # CM_TAG = v2.13
 CM_TAG = master
@@ -37,6 +36,8 @@ CM_TEMPLATE  = "template: ../t/js.template\nmeta: ../t/meta.txt\ntags: ../t/tags
 JS_TEMPLATE  = "template: ../t/js.template\nmeta: ../t/meta.txt\ntags: ../t/tags.txt\nintro: ../t/dependsOnCodeMirror.js.txt\nbody: ../tmp/"
 
 
+# ---------------
+
 help:
 	@echo "make getall .... load all dependencies from internet"
 	@echo "make test ...... creates tests.html"
@@ -45,15 +46,16 @@ help:
 	@echo "make distcm ....... uploads documentation to codemirror.tiddyspace.com"
 	@echo "make distplugins .. uploads plugins to codemirror-plugins space"
 	@echo "make distlibs ..... uploads cm libraries to codemirror-plugins space"
+	@echo "make distgit ...... uploads files, that have been recently commited to git."
 	@echo ""
 	@echo "make clean ..... remove all auto generated stuff"
 
-clean: clean-list
+clean: clean-lists
 	rm *.html || true
 	rm *.jar || true
 	rm *.js || true
 
-clean-list:
+clean-lists:
 	rm *.list || true
 
 upstream: clean upstream.html
@@ -71,7 +73,7 @@ upstream.html:
 # ---------
 # tiddyspace deploy
 
-cm-list: 
+cm.list:
 	@echo ""
 	@echo "# cm-list: files used - dir upstream/content/ *.js, *.svg, *.tid, *.tiddler"
 
@@ -82,31 +84,59 @@ cm-list:
 	cat cm.list
 
 
-plugins-list: 
+plugins.list:
 	@echo ""
 	@echo "# plugin-list: files used - dir plugins/ *.js, *.svg, *.tid, *.tiddler"
 
 	cat plugins/tiddlyspace.recipe | awk '{print "plugins/"$$2}' > plugins.list
 	cat plugins.list
 
-libs-list: 
+libs.list:
 	@echo ""
 	@echo "# CodeMirror library-list: files used - dir lib/ *.js, *.svg, *.tid, *.tiddler"
 
 	ls -C1 lib | awk '{print "lib/"$$1}' > names.list
 	
 	egrep -o 'lib/.*(\.js|\.svg|\.tid|\.tiddler)$$' names.list > libs.list
-	@echo ""
+	@echo ""git 
 	cat libs.list
 
-distcm: cm-list
+distcm: cm.list
+	@echo ""
+	@echo "-- upload content --"
 	./upload.sh codemirror $(CM_LIST)
 
-distplugins: plugins-list
+distplugins: plugins.list
+	@echo ""
+	@echo "-- upload plugins --"
 	./upload.sh codemirror-plugins $(PLUGINS_LIST)
 	
-distlibs: libs-list
+distlibs: libs.list
+	@echo ""
+	@echo "-- upload libraries --"
 	./upload.sh codemirror-plugins $(LIBS_LIST)
+
+# ---------------
+# git-hooks/pre-commit creates some info in ./commits dir. These file contain info about,
+# what has been changed. The following lines create 
+
+distgit: commited distlibs distplugins distcm
+	@echo " -- uploading recently commited "	
+#	rm /commits/*.list || true
+	
+commited: clean-lists
+	ls -C1 commits | awk '{print "commits/"$$1}' > tmp.list
+
+#-- get list of deleted files
+	egrep -h 'D.*$$' `cat tmp.list` > deleted.list
+
+#-- invers deleted -> what we want
+	egrep -v -h 'D.*$$' `cat tmp.list` > all-commits.list
+	sort all-commits.list | uniq > uniqe-commits.list
+
+	egrep -h -o '(lib|plugins)/.*(\.js|\.svg|\.tid|\.tiddler)$$' uniqe-commits.list > plugins.list
+
+	egrep -h -o 'upstream/.*(\.js|\.svg|\.tid|\.tiddler)$$' uniqe-commits.list > cm.list
 	
 # ---------
 
@@ -151,7 +181,7 @@ uglify: getmodes patch
 	uglifyjs $(UGLIFY_OPTS) tmp/python.js 
 	uglifyjs $(UGLIFY_OPTS) tmp/xml.js 
 	
-recipes: uglify
+recipes: uglifymamak
 	@echo ""
 	@echo "--- create recipes for single js tiddlers ---"
 	@echo $(CSS_TEMPLATE)codemirror.css > lib/codemirror.css.recipe
