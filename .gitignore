@@ -1,9 +1,9 @@
-tmp
 backups
+commits
+tmp
 *.html
 *.html.**
 *.zip
 *.jar
 *.list
-.fuse*
-commits
+
