@@ -37,21 +37,12 @@ CM_TEMPLATE  = "template: ../t/js.template\nmeta: ../t/meta.txt\ntags: ../t/tags
 JS_TEMPLATE  = "template: ../t/js.template\nmeta: ../t/meta.txt\ntags: ../t/tags.txt\nintro: ../t/dependsOnCodeMirror.js.txt\nbody: ../tmp/"
 
 
-# test stuff
+# git-hooks/pre-commit creates some info in ./commits dir. These file contain info about,
+# what has been changed. The following lines create 
 
-tt:
-	ls -C1 commits | awk '{print "commits/"$$1}' > c.list
-
-	egrep -h -o 'lib/.*(\.js|\.svg|\.tid|\.tiddler)$$' `cat c.list` > lib.list
-	sort lib.list | uniq > upload-lib.list
-
-	egrep -h -o 'plugins/.*(\.js|\.svg|\.tid|\.tiddler)$$' `cat c.list` > plugins.list
-	sort plugins.list | uniq > upload-plugins.list
-
-	egrep -h -o 'upstream/content/.*(\.js|\.svg|\.tid|\.tiddler)$$' `cat c.list` > upstream.list
-	sort upstream.list | uniq > upload-upstream.list
-	
+EXTENSIONS = (\.js|\.svg|\.tid|\.tiddler)
 # ---------------
+
 help:
 	@echo "make getall .... load all dependencies from internet"
 	@echo "make test ...... creates tests.html"
@@ -61,8 +52,9 @@ help:
 	@echo "make distplugins .. uploads plugins to codemirror-plugins space"
 	@echo "make distlibs ..... uploads cm libraries to codemirror-plugins space"
 	@echo ""
+	@echo "make commited ..... uploads files, that have been recently commited to git."
+	@echo ""
 	@echo "make clean ..... remove all auto generated stuff"
-
 
 clean: clean-list
 	rm *.html || true
@@ -87,7 +79,7 @@ upstream.html:
 # ---------
 # tiddyspace deploy
 
-cm-list: 
+cm-list: cm.list
 	@echo ""
 	@echo "# cm-list: files used - dir upstream/content/ *.js, *.svg, *.tid, *.tiddler"
 
@@ -98,14 +90,14 @@ cm-list:
 	cat cm.list
 
 
-plugins-list: 
+plugins-list: plugins.list
 	@echo ""
 	@echo "# plugin-list: files used - dir plugins/ *.js, *.svg, *.tid, *.tiddler"
 
 	cat plugins/tiddlyspace.recipe | awk '{print "plugins/"$$2}' > plugins.list
 	cat plugins.list
 
-libs-list: 
+libs-list: libs.list
 	@echo ""
 	@echo "# CodeMirror library-list: files used - dir lib/ *.js, *.svg, *.tid, *.tiddler"
 
@@ -123,6 +115,22 @@ distplugins: plugins-list
 	
 distlibs: libs-list
 	./upload.sh codemirror-plugins $(LIBS_LIST)
+
+# ---------------
+
+commited:
+	ls -C1 commits | awk '{print "commits/"$$1}' > c.list
+
+#-- get list of deleted files
+	egrep -h 'D.*$$' `cat c.list` > deleted.list
+
+#-- invers deleted -> what we want
+	egrep -v -h 'D.*$$' `cat c.list` > all-commits.list
+	sort all-commits.list | uniq > uniqe-commits.list
+
+	egrep -h -o '(lib|plugins)/.*' $(EXTENSIONS) '$$' uniqe-commits.list > plugins.list
+
+	egrep -h -o 'upstream/.*' $(EXTENSIONS) '$$' uniqe-commits.list > cm.list
 	
 # ---------
 

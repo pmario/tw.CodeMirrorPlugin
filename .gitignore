@@ -5,4 +5,5 @@ backups
 *.zip
 *.jar
 *.list
+.fuse*
 commits
