@@ -6,15 +6,16 @@ tags: mainMenu
 |''Author''|PMario|
 |''Version''|0.1.1|
 |''Source''|https://github.com/pmario/tw.CodeMirrorPlugin|
+|''Documentation''|http://codemirror.tiddlyspace.com/|
 |''License''|see: CodeMirror2Plugin|
 |''Keywords''|syntax highlighting color code|
 !Usage
 !!!! Macros
 <<<
-Modes: {{{<<cmModes>>}}} ... displays the usable modes.
+Modes: {{{<<cmModes>>}}} ... displays the usable modes seen below.
 Modes: <<cmModes>>
 
-MIMEs: {{{<<cmMIMEs>>}}} ... displays the usable mime types. Same order as modes.
+MIMEs: {{{<<cmMIMEs>>}}} ... displays the usable mime types seen below. Same order as modes.
 Modes: <<cmMIMEs>>
 <<<
 !!!! Global Settings

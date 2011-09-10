@@ -1,3 +1,5 @@
 recipe: shadows/split.recipe
 recipe: content/split.recipe
 recipe: plugins/split.recipe
+recipe: ../upstream/content/split.recipe
+recipe: ../upstream/shadows/split.recipe
