@@ -7,6 +7,8 @@ tags: default mainMenu
 * ''Include the http://codemirror-plugins space into your TW if you want to use it!''
 * Then carefully read the documentation.
 * ''Do not include this "codemirror" space into your space! Most TS themes don't like it, if there StyleSheet tiddler is overwritten.''
+!! ~ToolbarCommands
+''Your ToolbarCommands tiddler has to contain "cmEdit" and "cmSave" commands!'' This is not automatically updated by the plugin!
 ! Info
 * This is the presentation space of the TiddlyWiki implementaion of CodeMirror Library. »The in-browser code editing library«
  
@@ -34,8 +36,6 @@ The following tiddlers are used to test the edit mode identification process
 * [[testContentType]] .. toolbar command: more: fields shows the content-type field 
 * [[testServerContentType]]  .. toolbar command: more: fields shows the server.content-type field
 * The tag has the highest priority.
-!! ToolbarCommands
-''Your ToolbarCommands tiddler contains "cmEdit" and "cmSave" commands!''
 !! Configuration
 CodeMirror has a lot of configuration options, which can be seen at [[CodeMirror manual page|http://codemirror.net/manual.html]]
 This TW uses CodeMirror2Config tiddler, to make them available.

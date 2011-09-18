@@ -29,7 +29,7 @@ CM_THEME_DIR = $(CM_RAW)/$(CM_TAG)/theme
 # uglify options
 UGLIFY_OPTS = --overwrite
 
-CSS_TEMPLATE = "template: ../t/css.template\nmeta: ../t/meta.txt\nbody:  ../tmp/"
+CSS_TEMPLATE = "template: ../t/css.template\nmeta: ../t/meta.txt\ntags: ../t/tags.css.txt\nbody:  ../tmp/"
 
 CM_TEMPLATE  = "template: ../t/js.template\nmeta: ../t/meta.txt\ntags: ../t/tags.txt\nintro: ../t/LicenseCM.txt\nbody: ../tmp/"
 
@@ -61,6 +61,9 @@ clean-lists:
 upstream: clean upstream.html
 	$(OPEN) upstream.html
 
+vanilla: clean vanilla.html
+	$(OPEN) vanilla.html
+
 test: clean tests.html
 	$(OPEN) tests.html
 	
@@ -69,6 +72,9 @@ tests.html:
 
 upstream.html: 
 	cook $(PWD)/upstream.html.recipe upstream.html
+
+vanilla.html: 
+	cook $(PWD)/vanilla.html.recipe vanilla.html
 
 # ---------
 # tiddyspace deploy
@@ -120,9 +126,9 @@ distlibs: libs.list
 # git-hooks/pre-commit creates some info in ./commits dir. These file contain info about,
 # what has been changed. The following lines create 
 
-distgit: commited distlibs distplugins distcm
+distgit: commited distplugins distcm
 	@echo " -- uploading recently commited "	
-#	rm /commits/*.list || true
+	rm /commits/*.list || true
 	
 commited: clean-lists
 	ls -C1 commits | awk '{print "commits/"$$1}' > tmp.list
@@ -180,12 +186,14 @@ uglify: getmodes patch
 	uglifyjs $(UGLIFY_OPTS) tmp/htmlmixed.js 
 	uglifyjs $(UGLIFY_OPTS) tmp/python.js 
 	uglifyjs $(UGLIFY_OPTS) tmp/xml.js 
+	uglifyjs $(UGLIFY_OPTS) tmp/tiddlywiki.js 
 	
-recipes: uglifymamak
+recipes: uglify
 	@echo ""
 	@echo "--- create recipes for single js tiddlers ---"
 	@echo $(CSS_TEMPLATE)codemirror.css > lib/codemirror.css.recipe
 	@echo $(CSS_TEMPLATE)default.css > lib/default.css.recipe
+	@echo $(CSS_TEMPLATE)tiddlywiki.css > lib/tiddlywiki.css.recipe
 
 	@echo $(CM_TEMPLATE)codemirror.js  > lib/codemirror.js.recipe
 
@@ -196,6 +204,7 @@ recipes: uglifymamak
 	@echo $(JS_TEMPLATE)htmlmixed.js   > lib/htmlmixed.js.recipe
 	@echo $(JS_TEMPLATE)python.js      > lib/python.js.recipe
 	@echo $(JS_TEMPLATE)xml.js         > lib/xml.js.recipe
+	@echo $(JS_TEMPLATE)tiddlywiki.js  > lib/tiddlywiki.js.recipe
 
 tiddlers: recipes
 	@echo ""
@@ -203,6 +212,7 @@ tiddlers: recipes
 
 	cook $(PWD)/lib/codemirror.css.recipe /lib/codemirror.css.tid
 	cook $(PWD)/lib/default.css.recipe    /lib/default.css.tid
+	cook $(PWD)/lib/tiddlywiki.css.recipe /lib/tiddlywiki.css.tid
 	
 	cook $(PWD)/lib/codemirror.js.recipe  /lib/codemirror.js.tid
 	cook $(PWD)/lib/overlay.js.recipe     /lib/overlay.js.tid
@@ -212,6 +222,7 @@ tiddlers: recipes
 	cook $(PWD)/lib/htmlmixed.js.recipe   /lib/htmlmixed.js.tid
 	cook $(PWD)/lib/python.js.recipe      /lib/python.js.tid
 	cook $(PWD)/lib/xml.js.recipe         /lib/xml.js.tid
+	cook $(PWD)/lib/tiddlywiki.js.recipe  /lib/tiddlywiki.js.tid
 
 dropbox:
 	cp upstream.html /media/Daten/DropBox/Dropbox/Public

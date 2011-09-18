@@ -1,13 +1,13 @@
 modifier: PMario
-tags: mainMenu
+tags: mainMenu cm2tw
 
 |''Name''|CodeMirror2PluginInfo|
-|''Description''|Documentation for [[CodeMirror2Plugin]]|
+|''Description''|Documentation for [[zCodeMirror2Plugin]]|
 |''Author''|PMario|
 |''Version''|0.1.1|
 |''Source''|https://github.com/pmario/tw.CodeMirrorPlugin|
 |''Documentation''|http://codemirror.tiddlyspace.com/|
-|''License''|see: CodeMirror2Plugin|
+|''License''|see: zCodeMirror2Plugin|
 |''Keywords''|syntax highlighting color code|
 !Usage
 !!!! Macros
@@ -160,7 +160,7 @@ TODO -- < <list filter [tag[cm2]]>>
 <html>
 	<pre class='brush:clike'>
 		// your code 
-	<pre>
+	</pre>
 </html>
 
 <<highlightSyntax>> .. will render the <pre> blocks shown above.

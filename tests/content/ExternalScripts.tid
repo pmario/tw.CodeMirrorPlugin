@@ -1,4 +1,4 @@
 modifier: PMario
 
-./plugins/CodeMirror2Plugin.js
+./plugins/zCodeMirror2Plugin.js
 ./plugins/CMEditCommands.js

@@ -1,10 +1,11 @@
 modifier: PMario
 created: 201108311212
 modified: 201108311213
-tags: systemConfig
+tags: systemConfig cm2tw
 
 /***
-|''Requires''| codemirror.js|
+|''Requires''|codemirror.js|
+|''License''|[[codemirror.js]]|
 ***/
 
 //{{{

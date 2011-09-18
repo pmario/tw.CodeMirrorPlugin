@@ -1,5 +1,6 @@
 tiddler: default.css.tid
 tiddler: codemirror.css.tid 
+tiddler: tiddlywiki.css.tid
 tiddler: codemirror.js.tid
 tiddler: overlay.js.tid
 tiddler: runmode.js.tid
@@ -8,5 +9,4 @@ tiddler: javascript.js.tid
 tiddler: python.js.tid
 tiddler: xml.js.tid
 tiddler: htmlmixed.js.tid
-
-
+tiddler: tiddlywiki.js.tid

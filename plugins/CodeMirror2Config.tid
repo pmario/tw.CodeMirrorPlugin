@@ -1,4 +1,5 @@
 modifier: PMario
+tags: cm2tw
 
 ! CodeMirror Info
 <<<
@@ -43,7 +44,14 @@ electricChars: false
 >default mode has an unlucky name
 {{{
 tags: 
-mode: text/plain
+mode: tiddlywiki
+indentUnit: 1
+}}}
+
+!!! tiddlywiki
+{{{
+tags: 
+mode: tiddlywiki
 }}}
 
 !!! javascript
@@ -165,5 +173,3 @@ mode: velocity
 tags: 
 mode: r
 }}}
-
-
