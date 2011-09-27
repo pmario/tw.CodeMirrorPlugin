@@ -94,7 +94,7 @@ plugins.list:
 	@echo ""
 	@echo "# plugin-list: files used - dir plugins/ *.js, *.svg, *.tid, *.tiddler"
 
-	cat plugins/tiddlyspace.recipe | awk '{print "plugins/"$$2}' > plugins.list
+	cat plugins/split.recipe | awk '{print "plugins/"$$2}' > plugins.list
 	cat plugins.list
 
 libs.list:

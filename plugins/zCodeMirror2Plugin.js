@@ -2,7 +2,7 @@
 |''Name''|zCodeMirror2Plugin|
 |''Description''|Enables syntax highlighting using CodeMirror2|
 |''Author''|PMario|
-|''Version''|0.1.3|
+|''Version''|0.1.5|
 |''Status''|''beta''|
 |''Info''|CodeMirror2PluginInfo|
 |''Source''|https://github.com/pmario/tw.CodeMirrorPlugin|
@@ -63,6 +63,9 @@ Additional options ???????????????????
 
 !!!! Revision History
 <<<
+* V 0.1.4 2011-09-25
+** resize hack changed
+
 * V 0.1.0 2011-09-07
 ** inital release
 <<<
@@ -75,7 +78,7 @@ Additional options ???????????????????
 ***/
 
 //{{{
-version.extensions.CodeMirror2Plugin = {major: 0, minor: 1, revision: 1, date: new Date(2011,9,9)};
+version.extensions.CodeMirror2Plugin = {major: 0, minor: 1, revision: 5, date: new Date(2011,9,26)};
 
 (function($) {
 
@@ -115,8 +118,6 @@ config.macros.typeChooser.onClick = function(ev)
 
 	var data = $(this).data("data");
 
-// console.log('onClick', data);
-
 	var types = CodeMirror.listMIMEs();
 	types.push('-none-');
 	if(types.length === 0) {
@@ -144,7 +145,6 @@ config.macros.typeChooser.onTypeClick = function(ev)
 
 	var data = $(this).data("data");
 
-// console.log('onTypeClick', data);
 	var type = this.getAttribute("type");
 	var title = this.getAttribute("tiddler");
 	var conf = config.tools.cm2.conf;
@@ -201,7 +201,6 @@ config.macros.typeChooser.handler = function(place,macroName,params,wikifier,par
 
 		// createTiddlyElement(parent, element, id, className, text, attribs)
 		var $inp = $('<input type="text" edit="'+ctfield+'" size="20">').appendTo(place).val(inpText).hide();
-// 		console.log($inp);
 		
 		var btn = createTiddlyButton(place, btnText, lingo.tooltip, this.onClick);
 		$(btn).data('data', {'input':$inp, 'btn':btn, 'ctfield':ctfield});
@@ -346,8 +345,8 @@ config.formatters.push({
 
 		// TODO fix this hack ...		
 		resizeEditor : function() {
-			var jqe = $('.editor');
-			jqe.find('.CodeMirror').width(jqe.width());
+			var $cm =  $('.CodeMirror');
+			$cm.width($cm.closest('.editor').width())
 		},
 	
 		helper : {
@@ -438,7 +437,6 @@ config.formatters.push({
 	for (var i=0; i < modes.length; i += 1) {
 		conf[modes[i]] = me.rdSettings(cm + secSep + modes[i]);
 	}
-// console.log({'config.tools.cm2.conf' : config.tools.cm2.conf});
 
 	// TODO fix editor resize hack.	
 	// Probably not needed with TiddlySpace themes.
@@ -475,11 +473,7 @@ config.macros.view.views.wikified = function(value, place, params, wikifier,
 	if(params[0] == "text" && ctype && !tiddler.text.match('{{'+'{') && !tiddler.text.match('<code')) {
 		if (me.isTextual(ctype)) {
 			el = $('<pre class="cm-s-default">').appendTo(place); // TODO theme
-			
 			CodeMirror.runMode(tiddler.text, CodeMirror.getModeName(ctype), el[0]);
-			
-//			el = $("<pre />").text(tiddler.text);
-//			el.appendTo(place);
 		} 
 		else _view.apply(this, arguments);
 	} // if
