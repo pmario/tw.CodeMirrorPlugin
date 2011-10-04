@@ -19,7 +19,7 @@ CM_LIST=      `cat cm.list`
 # just to keep the structure
 # https://raw.github.com/marijnh/CodeMirror2/master/mode/python/python.js
 # codemirror settings
-# CM_TAG = v2.13
+# CM_TAG = v2.15
 CM_TAG = master
 CM_RAW = https://raw.github.com/marijnh/CodeMirror2
 CM_LIB_DIR =   $(CM_RAW)/$(CM_TAG)/lib
@@ -66,7 +66,7 @@ vanilla: clean vanilla.html
 
 test: clean tests.html
 	$(OPEN) tests.html
-	
+
 tests.html:
 	cook $(PWD)/tests.html.recipe tests.html
 
@@ -84,7 +84,7 @@ cm.list:
 	@echo "# cm-list: files used - dir upstream/content/ *.js, *.svg, *.tid, *.tiddler"
 
 	ls -C1 upstream/content | awk '{print "upstream/content/"$$1}' > names.list
-	
+
 	egrep -o 'upstream/content/.*(\.js|\.svg|\.tid|\.tiddler)$$' names.list > cm.list
 	@echo ""
 	cat cm.list
@@ -102,7 +102,7 @@ libs.list:
 	@echo "# CodeMirror library-list: files used - dir lib/ *.js, *.svg, *.tid, *.tiddler"
 
 	ls -C1 lib | awk '{print "lib/"$$1}' > names.list
-	
+
 	egrep -o 'lib/.*(\.js|\.svg|\.tid|\.tiddler)$$' names.list > libs.list
 	@echo ""git 
 	cat libs.list
@@ -116,7 +116,7 @@ distplugins: plugins.list
 	@echo ""
 	@echo "-- upload plugins --"
 	./upload.sh codemirror-plugins $(PLUGINS_LIST)
-	
+
 distlibs: libs.list
 	@echo ""
 	@echo "-- upload libraries --"
@@ -129,7 +129,7 @@ distlibs: libs.list
 distgit: commited distplugins distcm
 	@echo " -- uploading recently commited "	
 	rm /commits/*.list || true
-	
+
 commited: clean-lists
 	ls -C1 commits | awk '{print "commits/"$$1}' > tmp.list
 
@@ -143,7 +143,7 @@ commited: clean-lists
 	egrep -h -o '(lib|plugins)/.*(\.js|\.svg|\.tid|\.tiddler)$$' uniqe-commits.list > plugins.list
 
 	egrep -h -o 'upstream/.*(\.js|\.svg|\.tid|\.tiddler)$$' uniqe-commits.list > cm.list
-	
+
 # ---------
 
 getall: tiddlers
@@ -154,18 +154,18 @@ getlibs:
 	@echo ""
 	@echo "--- get basic codemirror libraries ---"
 	curl -o "tmp/default.css" $(CM_THEME_DIR)/default.css
-	
+
 	curl -o "tmp/codemirror.css" $(CM_LIB_DIR)/codemirror.css
 	curl -o "tmp/codemirror.js"  $(CM_LIB_DIR)/codemirror.js
 	curl -o "tmp/overlay.js"     $(CM_LIB_DIR)/overlay.js	
 	curl -o "tmp/runmode.js"     $(CM_LIB_DIR)/runmode.js
 
 patch:
-	@echo ""
-	@echo "--- patch CodeMirror.getModeName() function ---"
-	cp ../../../CodeMirror2/lib/codemirror.js tmp/codemirror.js
-	uglifyjs $(UGLIFY_OPTS) tmp/codemirror.js 
-		
+#	@echo ""
+#	@echo "--- patch CodeMirror.getModeName() function ---"
+#	cp ../../../CodeMirror2/lib/codemirror.js tmp/codemirror.js
+#	uglifyjs $(UGLIFY_OPTS) tmp/codemirror.js 
+
 getmodes: getlibs
 	@echo ""
 	@echo "--- get highlighting modules used for TW ---"
@@ -187,7 +187,7 @@ uglify: getmodes patch
 	uglifyjs $(UGLIFY_OPTS) tmp/python.js 
 	uglifyjs $(UGLIFY_OPTS) tmp/xml.js 
 	uglifyjs $(UGLIFY_OPTS) tmp/tiddlywiki.js 
-	
+
 recipes: uglify
 	@echo ""
 	@echo "--- create recipes for single js tiddlers ---"
@@ -213,7 +213,7 @@ tiddlers: recipes
 	cook $(PWD)/lib/codemirror.css.recipe /lib/codemirror.css.tid
 	cook $(PWD)/lib/default.css.recipe    /lib/default.css.tid
 	cook $(PWD)/lib/tiddlywiki.css.recipe /lib/tiddlywiki.css.tid
-	
+
 	cook $(PWD)/lib/codemirror.js.recipe  /lib/codemirror.js.tid
 	cook $(PWD)/lib/overlay.js.recipe     /lib/overlay.js.tid
 	cook $(PWD)/lib/runmode.js.recipe     /lib/runmode.js.tid
