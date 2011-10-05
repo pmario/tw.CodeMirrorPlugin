@@ -1,8 +1,8 @@
 /***
 |''Name''|CMEditCommands|
 |''Description''|Opens a tiddler in edit mode and starts CodeMirror editor.|
-|''Version''|0.1.0|
-|''Date''|2011-09-08|
+|''Version''|0.1.1|
+|''Date''|2011-10-05|
 |''Status''|''beta''|
 |''Source''||
 |''License''|CC-BY-SA|
@@ -57,28 +57,35 @@ config.commands.cmEdit.handler = function(event,src,title)
 	};
 
 	// check for content-type
-	var modes = CodeMirror.listModes();
-	var mimes = CodeMirror.listMIMEs();
+	var cm2 = config.tools.cm2;
+	var conf = cm2.conf;
+	var tags = [], tl, mode;
 
-	var conf = config.tools.cm2.conf;
-	var tags = [], tl;
-	
+	var modes = CodeMirror.listModes();
+	var mimes = cm2.listMimeNames();
+		
 	// doesn't set tid if title is a shadow tiddler
 	var tid = store.getTiddler(title);
 
 	// set global settings
 	jQuery.extend(cmOptions, conf['global']);
+// console.log('global: ', conf.global);
 
 	// shadow tiddlers don't have tags, fields ...
-	if (tid && tid.fields) {
- // console.log('noshadow tid:', tid);	
+	if (tid && tid.fields) {		
+
 		if (tid.fields['server.content-type'] && mimes.contains(tid.fields['server.content-type'])) {
-		jQuery.extend(cmOptions, conf[CodeMirror.getModeName(tid.fields['server.content-type'])]);
+			mode = cm2.getModeObject(tid.fields['server.content-type']);
+			jQuery.extend(cmOptions, conf[mode.name]);
+			jQuery.extend(cmOptions.mode, mode);
+		console.log('server mode: ',mode);
 		}
 		
 		if (tid.fields['content-type'] && mimes.contains(tid.fields['content-type'])) {
-			jQuery.extend(cmOptions, conf[CodeMirror.getModeName(tid.fields['content-type'])]);
- // console.log('ct: ', cmOptions, conf[CodeMirror.getModeName(tid.fields['content-type'])]);
+			mode = cm2.getModeObject(tid.fields['content-type']);
+			jQuery.extend(cmOptions, conf[mode.name]);
+			jQuery.extend(cmOptions.mode, mode);
+		console.log('local mode: ',mode, 'conf: ', conf[mode.name] , 'cmo:', cmOptions);
 		}
 
 		for (var i=0; i < modes.length; i += 1) {
@@ -107,7 +114,7 @@ config.commands.cmEdit.handler = function(event,src,title)
 		jQuery.extend(cmOptions, conf['null']);
 	}
 
-//  console.log('cmOptions',cmOptions);
+  console.log('command cmOptions',cmOptions);
 	
 	config.commands.editTiddler.handler.call(this,event,src,title); 
 

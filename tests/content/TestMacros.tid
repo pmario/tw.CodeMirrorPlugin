@@ -1,0 +1,11 @@
+modifier: PMario
+created: 201109061212
+
+Modes: {{{<<cmModes>>}}} ... displays the usable modes seen below
+Modes: <<cmModes>>
+
+MIMEs: {{{<<cmMimes>>}}} ... displays the usable mime types seen below. Same order as modes.
+Modes: <<cmMimes>>
+
+MIMEs: {{{<<cmMimeObjects>>}}} ... displays the usable mime types seen below. Same order as modes. Shows the structure as a JSON.
+Modes: <<cmMimeObjects>>

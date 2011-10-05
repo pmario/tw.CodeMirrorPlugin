@@ -19,8 +19,9 @@ CM_LIST=      `cat cm.list`
 # just to keep the structure
 # https://raw.github.com/marijnh/CodeMirror2/master/mode/python/python.js
 # codemirror settings
-# CM_TAG = v2.15
-CM_TAG = master
+# CM_TAG = master
+
+CM_TAG = v2.15
 CM_RAW = https://raw.github.com/marijnh/CodeMirror2
 CM_LIB_DIR =   $(CM_RAW)/$(CM_TAG)/lib
 CM_MODE_DIR =  $(CM_RAW)/$(CM_TAG)/mode
@@ -164,7 +165,7 @@ patch:
 #	@echo ""
 #	@echo "--- patch CodeMirror.getModeName() function ---"
 #	cp ../../../CodeMirror2/lib/codemirror.js tmp/codemirror.js
-#	uglifyjs $(UGLIFY_OPTS) tmp/codemirror.js 
+#	uglifyjs $(UGLIFY_OPTS) tmp/codemirror.js
 
 getmodes: getlibs
 	@echo ""
@@ -174,6 +175,9 @@ getmodes: getlibs
 	curl -o "tmp/htmlmixed.js"  $(CM_MODE_DIR)/htmlmixed/htmlmixed.js
 	curl -o "tmp/python.js"     $(CM_MODE_DIR)/python/python.js
 	curl -o "tmp/xml.js"        $(CM_MODE_DIR)/xml/xml.js
+
+	cp ../../../CodeMirror2/mode/tiddlywiki/tiddlywiki.js tmp/tiddlywiki.js
+	cp ../../../CodeMirror2/mode/tiddlywiki/tiddlywiki.css tmp/tiddlywiki.css
 
 uglify: getmodes patch
 	@echo ""

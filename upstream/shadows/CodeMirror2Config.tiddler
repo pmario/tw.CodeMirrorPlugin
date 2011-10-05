@@ -1,5 +1,8 @@
 <div title="CodeMirror2Config" modifier="PMario">
 <pre>
+modifier: PMario
+tags: cm2tw
+
 ! CodeMirror Info
 <<<
 * Learn more at: http://codemirror.net/manual.html
@@ -12,8 +15,8 @@
 ! Settings
 ''Active Modes'' .. {{{<<cmModes>>}}}
 ><<cmModes>>
-''Active MIMEs'' .. {{{<<cmMIMEs>>}}}
-><<cmMIMEs>>
+''Active MIMEs'' .. {{{<<cmMimes>>}}}
+><<cmMimes>>
 
 !!! global
 {{{
@@ -26,7 +29,7 @@ indentUnit: 2
 enterMode: keep
 // (d) 'indent' || 'keep' || 'flat'
 
-indentWithTabs: true
+indentWithTabs: false
 // (d) false || true
 
 lineNumbers: true
@@ -43,7 +46,8 @@ electricChars: false
 >default mode has an unlucky name
 {{{
 tags: 
-mode: tiddlywiki
+mode: text/plain
+indentWithTabs: true
 indentUnit: 1
 }}}
 
@@ -51,12 +55,16 @@ indentUnit: 1
 {{{
 tags: 
 mode: tiddlywiki
+indentWithTabs: true
+indentUnit: 1
 }}}
 
 !!! javascript
 {{{
 tags: systemConfig
 mode: javascript
+indentWithTabs: true
+indentUnit: 1
 }}}
 
 !!! xml

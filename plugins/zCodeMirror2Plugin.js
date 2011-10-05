@@ -2,7 +2,7 @@
 |''Name''|zCodeMirror2Plugin|
 |''Description''|Enables syntax highlighting using CodeMirror2|
 |''Author''|PMario|
-|''Version''|0.1.5|
+|''Version''|0.1.6|
 |''Status''|''beta''|
 |''Info''|CodeMirror2PluginInfo|
 |''Source''|https://github.com/pmario/tw.CodeMirrorPlugin|
@@ -17,7 +17,7 @@ Enables syntax highlighting for <pre> and <code> blocks. Adds a new formatter fo
 !Usage
 !!!!StyleSheet
 <<<
-* The plugin automatically creates a shadow StyleSheetCodeMirror2 tiddler, that can be adjusted to your needs.
+* The plugin automatically creates a shadow tiddler: StyleSheetCodeMirror2, that can be adjusted to your needs.
 <<<
 
 !!!!Macros
@@ -25,8 +25,11 @@ Enables syntax highlighting for <pre> and <code> blocks. Adds a new formatter fo
 Modes: {{{<<cmModes>>}}} ... displays the usable modes seen below
 Modes: <<cmModes>>
 
-MIMEs: {{{<<cmMIMEs>>}}} ... displays the usable mime types seen below. Same order as modes.
-Modes: <<cmMIMEs>>
+MIMEs: {{{<<cmMimes>>}}} ... displays the usable mime types seen below. Same order as modes.
+Modes: <<cmMimes>>
+
+MIMEs: {{{<<cmMimeObjects>>}}} ... displays the usable mime types seen below. Same order as modes. Shows the structure as a JSON.
+Modes: <<cmMimeObjects>>
 <<<
 !!!!Global Settings
 <<<
@@ -78,12 +81,12 @@ Additional options ???????????????????
 ***/
 
 //{{{
-version.extensions.CodeMirror2Plugin = {major: 0, minor: 1, revision: 5, date: new Date(2011,9,26)};
+version.extensions.CodeMirror2Plugin = {major: 0, minor: 1, revision: 6, date: new Date(2011,10,05)};
 
 (function($) {
 
 if(!window.CodeMirror) {
-// 	throw "Missing dependency: CodeMirror";
+//	throw "Missing dependency: CodeMirror";
 }
 else if(!window.CodeMirror.runMode) {
 //	throw "Missing dependency: CodeMirror-runmode library";
@@ -91,15 +94,23 @@ else if(!window.CodeMirror.runMode) {
 
 config.macros.cmModes = {
 	handler: function(place, macroName, params, wikifier, paramString, tiddler) {
-		jQuery("<span/>").text(CodeMirror.listModes().join(', ')).appendTo(place);
+		jQuery('<span/>').text(CodeMirror.listModes().join(', ')).appendTo(place);
 	}
 };
 
-config.macros.cmMIMEs = {
+config.macros.cmMimeObjects = {
 	handler: function(place, macroName, params, wikifier, paramString, tiddler) {
-		jQuery("<span/>").text(CodeMirror.listMIMEs().join(', ')).appendTo(place);
+		jQuery('<span/>').text(JSON.stringify(CodeMirror.listMIMEs())).appendTo(place);
 	}
 };
+
+config.macros.cmMimes = {
+	handler: function(place, macroName, params, wikifier, paramString, tiddler) {
+		var cm2 = config.tools.cm2;
+		jQuery('<span/>').text(cm2.listMimeNames().join(', ')).appendTo(place);
+	}
+};
+
 
 config.macros.typeChooser = {};
 config.views.editor.typeChooser = {};
@@ -116,21 +127,23 @@ config.macros.typeChooser.onClick = function(ev)
 	var lingo = config.views.editor.typeChooser;
 	var popup = Popup.create(this);
 
-	var data = $(this).data("data");
+	var data = $(this).data('data');
 
 	var types = CodeMirror.listMIMEs();
-	types.push('-none-');
+	types.push({mime: '-none-', mode: 'none'});
 	if(types.length === 0) {
-		$("<li/>").text(lingo.popupNone).appendTo(popup);
+		$('<li/>').text(lingo.popupNone).appendTo(popup);
 	}
-	var t;
+	var t, type, mode, tooltipText;
 	for(t=0; t<types.length; t++) {
-		var type = createTiddlyButton(createTiddlyElement(popup,"li"),types[t],lingo.typeTooltip.format([types[t]]),config.macros.typeChooser.onTypeClick);
+	
+		tooltipText = (typeof types[t].mode === 'object') ? types[t].mode.name : types[t].mode;
+		type = createTiddlyButton(createTiddlyElement(popup,'li'), types[t].mime, lingo.typeTooltip.format([tooltipText]), config.macros.typeChooser.onTypeClick);
 
 		$(type).data('data', data);
 
-		type.setAttribute("type",types[t]);
-		type.setAttribute("tiddler",this.getAttribute("tiddler"));
+		type.setAttribute('type',types[t].mime);
+		type.setAttribute('tiddler',this.getAttribute('tiddler'));
 	}
 	Popup.show();
 	e.cancelBubble = true;
@@ -143,14 +156,15 @@ config.macros.typeChooser.onTypeClick = function(ev)
 	var e = ev || window.event;
 	if(e.metaKey || e.ctrlKey) {stopEvent(e);} //# keep popup open on CTRL-click
 
-	var data = $(this).data("data");
+	var data = $(this).data('data');
 
-	var type = this.getAttribute("type");
-	var title = this.getAttribute("tiddler");
+	var type = this.getAttribute('type');
+	var title = this.getAttribute('tiddler');
 	var conf = config.tools.cm2.conf;
+	var cm2 = config.tools.cm2;
 	var cmOptions = {}, mode;
-	
-	if(!readOnly) {		// TODO doesn't seem to be right here!
+
+	if(!readOnly) {		// TODO doesn't seem to be right here
 			// clear the input .. 
 			$(data.input).val('');
 
@@ -168,20 +182,20 @@ config.macros.typeChooser.onTypeClick = function(ev)
 			// save changes to textarea.
 			if (editor) {editor.save();}
 			
-			// TODO do nothing, if mode didn't change
-			// TODO if a tag overwrites the content-type, gray out the content-type button.
+			// TODO if a tag overwrites the content-type, gray out/disable the content-type button.
 			
 			$(editor.getWrapperElement()).remove();
 
-			mode = CodeMirror.getModeName(type);
+			mode = cm2.getModeObject(type);
+//TODO init
 
-			if (conf[mode]) {
-				cmOptions = conf[mode];
-			}
-			else {cmOptions = {mode : 'null'};}
+			$.extend( cmOptions, conf['global']);
+console.log('------ cmOptions:', cmOptions );
+			$.extend( cmOptions, conf[mode.name]);
+			$.extend( cmOptions.mode, mode);	// IMPORTANT overwrite mode, because it may be an object !!
 
-			$.extend(cmOptions, conf['global']);
-			
+console.log('cmOptions', cmOptions, 'conf: ', conf[mode.name], mode);
+
 			editor = CodeMirror.fromTextArea(text[0], cmOptions);
 
 			$(text[0]).data('editor', editor);
@@ -205,8 +219,8 @@ config.macros.typeChooser.handler = function(place,macroName,params,wikifier,par
 		var btn = createTiddlyButton(place, btnText, lingo.tooltip, this.onClick);
 		$(btn).data('data', {'input':$inp, 'btn':btn, 'ctfield':ctfield});
 		
-		btn.setAttribute("tiddler", tiddler.title);
-		btn.setAttribute("exclude", params[0]);
+		btn.setAttribute('tiddler', tiddler.title);
+		btn.setAttribute('exclude', params[0]);
 	}
 };
 
@@ -219,7 +233,7 @@ config.macros.highlightSyntax = {
 		
 		var els = node.getElementsByTagName(tag);
 		var elsLen = els.length;
-		var pattern = new RegExp("(^|\\s)"+searchClass+"(:|\\s|$)");
+		var pattern = new RegExp('(^|\\s)'+searchClass+'(:|\\s|$)');
 		for (i = 0, j = 0; i < elsLen; i++) {
 			if ( pattern.test(els[i].className) ) {
 				classElements[j] = els[i];
@@ -306,19 +320,19 @@ config.formatters.push({
 		if(lookaheadMatch && lookaheadMatch.index == w.matchStart) {
 			var text = lookaheadMatch[1];
 			if(config.browser.isIE) {
-				text = text.replace(/\n/g,"\r");
+				text = text.replace(/\n/g,'\r');
 			}
 			switch(w.matchText) {
-			case "{{{\n": // text
+			case '{{{\n': // text
 				attr = (expert) ? (co.txtShText) ? (co.txtShText) : 'text/plain' : 'text/plain' ;
 				break;
-			case "/*{{{*/\n": // CSS
+			case '/*{{{*/\n': // CSS
 				attr = (expert) ? (co.txtShCss) ? (co.txtShCss) : 'css' : 'css';
 				break;
-			case "//{{{\n": // plugin
+			case '//{{{\n': // plugin
 				attr = (expert) ? (co.txtShPlugin) ? (co.txtShPlugin) : 'javascript' : 'javascript';
 				break;
-			case "<!--{{{-->\n": //template
+			case '<!--{{{-->\n': //template
 				attr =  (expert) ? (co.txtShXml) ? (co.txtShXml) : 'xml' : 'xml';
 				break;
 			}
@@ -342,13 +356,36 @@ config.formatters.push({
 	config.tools.cm2 = {};
 	config.tools.cm2.addOns = {};
 	config.tools.cm2 = me = {
+		conf: {},
 
 		// TODO fix this hack ...		
 		resizeEditor : function() {
 			var $cm =  $('.CodeMirror');
-			$cm.width($cm.closest('.editor').width())
+			$cm.width($cm.closest('.editor').width());
 		},
-	
+
+		listMimeNames: function() {
+			return CodeMirror.listMIMEs().map(function(el){return el.mime;});
+		},
+		
+		getModeObject: function(mime) {
+			var arr = CodeMirror.listMIMEs();
+			var mode = {"name": 'null'};
+			
+			for (var i=0, iMax = arr.length; i < iMax; i += 1) {
+				if (arr[i].mime == mime) {
+					if (typeof arr[i].mode === 'object') {
+						return arr[i].mode;
+					}
+					else if (typeof arr[i].mode === 'string' ) {
+						mode.name = arr[i].mode;
+						return mode;
+					} // else if 
+				} // if
+			} // for
+			return mode;
+		},
+
 		helper : {
 			'true': true,
 			'false': false,
@@ -448,18 +485,23 @@ config.formatters.push({
 })(jQuery);
 
 
+// TiddlySpace specific stuff
 // Check, if there is the BinaryTiddlersPlugin TODO and use it. 
 // If not check for content-type == text/....
 (function($) {
-var ctfield = "content-type";
+var ctfield = 'content-type';
 
 config.extensions.cm2 = me = {
 	isTextual : function(ctype) {
-		return ctype.indexOf("text/") === 0
-			|| this.endsWith(ctype, "+xml")
+		return ctype.indexOf('text/') === 0
+			|| this.endsWith(ctype, '+xml')
 			|| ctype == 'application/json'
 			|| ctype == 'application/javascript';
-	}
+	},
+	endsWith: function(str, suffix) {
+		return str.length >= suffix.length &&
+			str.substr(str.length - suffix.length) == suffix;
+	}	
 };
 
 // hijack text viewer to add special handling for binary tiddlers
@@ -470,14 +512,14 @@ config.macros.view.views.wikified = function(value, place, params, wikifier,
 	var ctype = tiddler.fields[ctfield];
 
 	// TODO next line matches are ugly
-	if(params[0] == "text" && ctype && !tiddler.text.match('{{'+'{') && !tiddler.text.match('<code')) {
+	if(params[0] == 'text' && ctype && !tiddler.text.match('{{'+'{') && !tiddler.text.match('<code')) {
 		if (me.isTextual(ctype)) {
 			el = $('<pre class="cm-s-default">').appendTo(place); // TODO theme
-			CodeMirror.runMode(tiddler.text, CodeMirror.getModeName(ctype), el[0]);
+			CodeMirror.runMode(tiddler.text, ctype, el[0]);
 		} 
-		else _view.apply(this, arguments);
+		else { _view.apply(this, arguments);}
 	} // if
-	else  _view.apply(this, arguments);		
+	else {_view.apply(this, arguments);}
 }; // _view
 
 })(jQuery);

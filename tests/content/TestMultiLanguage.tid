@@ -1,0 +1,41 @@
+modifier: PMario
+created: 201109061212
+
+! python
+<code class="brush:python">
+# Some Example code
+import os
+from package import ParentClass
+</code>
+
+! javascript
+//{{{
+// 
+/* comment */
+var i = 3;
+function() {
+	x = i;
+}
+//}}}
+
+! xml / html
+<!--{{{-->
+<h1> Test heading </h1> 
+<!--}}}-->
+
+! JSON
+//{{{
+{
+"asdf": true;
+"asdf": {"x": 3};
+}
+//}}}
+
+! CSS
+/*{{{*/
+.test {
+	background: yellow;
+}
+/*}}}*/
+
+
