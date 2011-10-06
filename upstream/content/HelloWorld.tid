@@ -1,24 +1,22 @@
 modifier: PMario
+modified: 201110051200
 tags: default mainMenu
 
-! Beta - Beta - Beta - Beta - Beta - 
-* This TW is work in progress, so ''don't use for production.''
+! It's Beta :)
+* This TW is work in progress, but I use it with my [[pmario space|http://pmario.tiddlyspace.com]], for several weeks now, and it didn't break things :)
 ! ''Important for TiddlySpace''
-* ''Include the http://codemirror-plugins space into your TW if you want to use it!''
+* ''Include the [[codemirror-plugins]] space into your TW if you want to use it!''
 * Then carefully read the documentation.
-* ''Do not include this "codemirror" space into your space! Most TS themes don't like it, if there StyleSheet tiddler is overwritten.''
+* ''Do not include this "codemirror" space'' into your space! Most TS themes don't like it, if there StyleSheet tiddler is overwritten.
 !! ~ToolbarCommands
 ''Your ToolbarCommands tiddler has to contain "cmEdit" and "cmSave" commands!'' This is not automatically updated by the plugin!
 ! Info
 * This is the presentation space of the TiddlyWiki implementaion of CodeMirror Library. »The in-browser code editing library«
- 
-* codemirror-plugin space contains 2 plugins( {{{CodeMirror2Plugin}}} and {{{CMEditCommands}}})
-** CodeMirror2Plugin .. wraps the CodeMirror library into TW.
+* codemirror-plugin space contains 2 plugins( {{{zCodeMirror2Plugin}}} and {{{CMEditCommands}}})
+** [[zCodeMirror2Plugin]] .. wraps the CodeMirror library into TW.
 ** CMEditCommands .. creates the "cmEdit" and "cmSave" buttons.
-
-* CodeMirror2PluginInfo .. read this, to get info about the "view mode"
-
-* Feedback is very welcome at [[TW Dev goup|http://groups.google.com/group/tiddlywikidev]]
+* Read CodeMirror2PluginInfo to get more information about the "view mode"
+* Feedback is very welcome at [[TiddlyWiki group|TWGroup]]
 ! Modes
 At the moment, there are 2 modes:
 * view mode
@@ -32,7 +30,7 @@ All tiddlers named "runMode*" are for testing the CodeMirror runMode() function.
 <<list filter [tag[runMode]]>>
 ! Edit Mode
 The following tiddlers are used to test the edit mode identification process
-* [[testTag]] .. the tag defined at CodeMirror2Plugin define the edit mode.
+* [[testTag]] .. the tag defined at ~CodeMirror2Plugin define the edit mode.
 * [[testContentType]] .. toolbar command: more: fields shows the content-type field 
 * [[testServerContentType]]  .. toolbar command: more: fields shows the server.content-type field
 * The tag has the highest priority.
@@ -48,4 +46,5 @@ The global section contains the "default" behaviour, adjusted to my needs :) The
 The mode section overwrites the global setting. 
 ''tags'' parameter defines the tags, that you use to identify different edit modes.
 <<<
+
 

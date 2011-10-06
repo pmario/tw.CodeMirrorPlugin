@@ -4,10 +4,10 @@
 |''Version''|0.1.1|
 |''Date''|2011-10-05|
 |''Status''|''beta''|
-|''Source''||
+|''Source''|https://github.com/pmario/tw.CodeMirrorPlugin|
 |''License''|CC-BY-SA|
 |''CoreVersion''|2.5|
-|''Requires''|CodeMirror2Plugin|
+|''Requires''|zCodeMirror2Plugin|
 |''Keywords''|toolbar command code mirror codemirror edit|
 !!!Description
 <<<
@@ -56,12 +56,17 @@ config.commands.cmEdit.handler = function(event,src,title)
 		onChange: cmOnChange
 	};
 
-	// check for content-type
+	// define var shortcuts
 	var cm2 = config.tools.cm2;
 	var conf = cm2.conf;
 	var tags = [], tl, mode;
 
+	// read CodeMirror2Config tiddler and write to global conf var
+	cm2.init();
+	
 	var modes = CodeMirror.listModes();
+	
+	// TODO post to mailing list about it ?! It makes handling the library more difficult.
 	var mimes = cm2.listMimeNames();
 		
 	// doesn't set tid if title is a shadow tiddler
@@ -69,7 +74,6 @@ config.commands.cmEdit.handler = function(event,src,title)
 
 	// set global settings
 	jQuery.extend(cmOptions, conf['global']);
-// console.log('global: ', conf.global);
 
 	// shadow tiddlers don't have tags, fields ...
 	if (tid && tid.fields) {		
@@ -78,16 +82,14 @@ config.commands.cmEdit.handler = function(event,src,title)
 			mode = cm2.getModeObject(tid.fields['server.content-type']);
 			jQuery.extend(cmOptions, conf[mode.name]);
 			jQuery.extend(cmOptions.mode, mode);
-		console.log('server mode: ',mode);
 		}
 		
 		if (tid.fields['content-type'] && mimes.contains(tid.fields['content-type'])) {
 			mode = cm2.getModeObject(tid.fields['content-type']);
 			jQuery.extend(cmOptions, conf[mode.name]);
 			jQuery.extend(cmOptions.mode, mode);
-		console.log('local mode: ',mode, 'conf: ', conf[mode.name] , 'cmo:', cmOptions);
 		}
-
+		
 		for (var i=0; i < modes.length; i += 1) {
 			if (conf[modes[i]] && conf[modes[i]].tags) {
 				tags = conf[modes[i]].tags.split(' ');
@@ -109,23 +111,17 @@ config.commands.cmEdit.handler = function(event,src,title)
 	} // if tid
 	
 	// if no mode was found, init with null -> text/plain
-	// TODO init with TW syntax highlighter, if available :)
 	if (!cmOptions.mode) {
 		jQuery.extend(cmOptions, conf['null']);
 	}
-
-  console.log('command cmOptions',cmOptions);
-	
+	// call the TW default editor	
 	config.commands.editTiddler.handler.call(this,event,src,title); 
 
-	var text = jQuery(story.getTiddler(title)).find('textarea[edit=text]');
+	// find the default editor
+	var textArea = jQuery(story.getTiddler(title)).find('textarea[edit=text]');
 
-	var editor = CodeMirror.fromTextArea(text[0], cmOptions);
-
-	jQuery(text[0]).data('editor', editor);
-	
-	config.tools.cm2.resizeEditor();
-	
+	// create the cm2 editor
+	cm2.startEditor(textArea, cmOptions);
 	return false;
 };
 

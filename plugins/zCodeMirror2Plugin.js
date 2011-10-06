@@ -9,6 +9,7 @@
 |''Documentation''|http://codemirror.tiddlyspace.com/|
 |''License''|[[CC-BY-NC-SA|http://creativecommons.org/licenses/by-nc-sa/3.0/]]|
 |''CoreVersion''|2.5.0|
+|''Requires''|codemirror.js|
 |''Keywords''|syntax highlighting color code mirror codemirror|
 !Documentation
 * Advanced info, see: [[CodeMirror2PluginInfo]]
@@ -23,12 +24,15 @@ Enables syntax highlighting for <pre> and <code> blocks. Adds a new formatter fo
 !!!!Macros
 <<<
 Modes: {{{<<cmModes>>}}} ... displays the usable modes seen below
+
 Modes: <<cmModes>>
 
 MIMEs: {{{<<cmMimes>>}}} ... displays the usable mime types seen below. Same order as modes.
+
 Modes: <<cmMimes>>
 
 MIMEs: {{{<<cmMimeObjects>>}}} ... displays the usable mime types seen below. Same order as modes. Shows the structure as a JSON.
+
 Modes: <<cmMimeObjects>>
 <<<
 !!!!Global Settings
@@ -66,6 +70,10 @@ Additional options ???????????????????
 
 !!!! Revision History
 <<<
+* V 0.1.6 2011-10-05
+** several bug fixes
+** improved handling, initializing ...
+
 * V 0.1.4 2011-09-25
 ** resize hack changed
 
@@ -75,32 +83,20 @@ Additional options ???????????????????
 
 !!!!ToDo
 <<<
-*
+* a lot :)
 <<<
 !!!Code
-***/
 
+!!!!! {{{<<cmModes>>, <<cmMimes>>, <<cmMimeObjects>>}}}
+***/
 //{{{
 version.extensions.CodeMirror2Plugin = {major: 0, minor: 1, revision: 6, date: new Date(2011,10,05)};
 
 (function($) {
 
-if(!window.CodeMirror) {
-//	throw "Missing dependency: CodeMirror";
-}
-else if(!window.CodeMirror.runMode) {
-//	throw "Missing dependency: CodeMirror-runmode library";
-}
-
 config.macros.cmModes = {
 	handler: function(place, macroName, params, wikifier, paramString, tiddler) {
 		jQuery('<span/>').text(CodeMirror.listModes().join(', ')).appendTo(place);
-	}
-};
-
-config.macros.cmMimeObjects = {
-	handler: function(place, macroName, params, wikifier, paramString, tiddler) {
-		jQuery('<span/>').text(JSON.stringify(CodeMirror.listMIMEs())).appendTo(place);
 	}
 };
 
@@ -111,16 +107,28 @@ config.macros.cmMimes = {
 	}
 };
 
-
+config.macros.cmMimeObjects = {
+	handler: function(place, macroName, params, wikifier, paramString, tiddler) {
+		jQuery('<span/>').text(JSON.stringify(CodeMirror.listMIMEs())).appendTo(place);
+	}
+};
+//}}}
+/***
+!!!!! Type chooser to define the MIME type 
+***/
+//{{{
+// create objects for typeChooser dropDown
 config.macros.typeChooser = {};
 config.views.editor.typeChooser = {};
+
+// use this part if you need translation
 merge(config.views.editor.typeChooser,{
 	text: "content-type",
 	tooltip: "Choose existing types to add to this tiddler",
 	popupNone: "There are no content-types defined",
 	typeTooltip: "Add the content-type '%0'"});
 
-
+// content-type chooser 
 config.macros.typeChooser.onClick = function(ev)
 {
 	var e = ev || window.event;
@@ -184,22 +192,15 @@ config.macros.typeChooser.onTypeClick = function(ev)
 			
 			// TODO if a tag overwrites the content-type, gray out/disable the content-type button.
 			
-			$(editor.getWrapperElement()).remove();
+			if (editor) $(editor.getWrapperElement()).remove();
 
 			mode = cm2.getModeObject(type);
-//TODO init
-
+			
 			$.extend( cmOptions, conf['global']);
-console.log('------ cmOptions:', cmOptions );
 			$.extend( cmOptions, conf[mode.name]);
 			$.extend( cmOptions.mode, mode);	// IMPORTANT overwrite mode, because it may be an object !!
 
-console.log('cmOptions', cmOptions, 'conf: ', conf[mode.name], mode);
-
-			editor = CodeMirror.fromTextArea(text[0], cmOptions);
-
-			$(text[0]).data('editor', editor);
-			config.tools.cm2.resizeEditor();					
+			cm2.startEditor(text, cmOptions);					
 	}
 	return false;
 };
@@ -207,7 +208,7 @@ console.log('cmOptions', cmOptions, 'conf: ', conf[mode.name], mode);
 config.macros.typeChooser.handler = function(place,macroName,params,wikifier,paramString,tiddler)
 {
 	var ctfield = params[0] || 'content-type';
-	
+
 	if(tiddler instanceof Tiddler) {
 		var lingo = config.views.editor.typeChooser;
 		var btnText = (tiddler.fields[ctfield]) ? tiddler.fields[ctfield] : lingo.text;
@@ -223,8 +224,11 @@ config.macros.typeChooser.handler = function(place,macroName,params,wikifier,par
 		btn.setAttribute('exclude', params[0]);
 	}
 };
-
-
+//}}}
+/***
+!!!!! {{{<<highlightSyntax>> macro 
+***/
+//{{{
 config.macros.highlightSyntax = {
 	getElementsByClass: function (searchClass,node,tag) {
 		var classElements = [];
@@ -271,7 +275,7 @@ config.macros.highlightSyntax = {
 })(jQuery);
 //}}}
 /***
-!!!!!New formatter for {{{<code class='brush:??'>}}}
+!!!!! New formatter for {{{<code class='brush:??'>}}}
 ***/
 //{{{
 config.formatters.push({
@@ -304,7 +308,7 @@ config.formatters.push({
 });
 //}}}
 /***
-!!!!!Add class attribute to pre, if defined
+!!!!! Add class attribute to pre, if defined
 ***/
 //{{{
 (function(formatters) { //# set up alias
@@ -348,15 +352,17 @@ config.formatters.push({
 	merge(config.formatterHelpers, helper);
 
 })(config.formatters); //# end of alias
-
+//}}}
+/***
+!!!!! CM2 tools and helper functions 
+***/
+//{{{
 (function ($) {
-	var me, conf;
+	var me;
 
 	config.tools = {};
 	config.tools.cm2 = {};
-	config.tools.cm2.addOns = {};
 	config.tools.cm2 = me = {
-		conf: {},
 
 		// TODO fix this hack ...		
 		resizeEditor : function() {
@@ -458,22 +464,36 @@ config.formatters.push({
 				}
 			}
 			return settings;
+		},
+
+		// stores the global CM2 config settings 
+		conf: {},
+		
+		init: function() {
+		
+			var cm = 'CodeMirror2Config', modes;
+			var secSep = config.textPrimitives.sectionSeparator;
+
+			// global settings need to be read seperately	
+			me.conf['global'] = me.rdSettings(cm + secSep + 'global');
+
+			// check CM for installed modes and get usre config if available
+			modes = CodeMirror.listModes();
+			for (var i=0; i < modes.length; i += 1) {
+				me.conf[modes[i]] = me.rdSettings(cm + secSep + modes[i]);
+			}
+		},
+
+		startEditor: function(textArea, cmOptions) {
+			var editor = CodeMirror.fromTextArea(textArea[0], cmOptions);
+			jQuery(textArea[0]).data('editor', editor);
+			config.tools.cm2.resizeEditor();
 		}
+
 	}; // end plugin
-		
-	config.tools.cm2.conf = conf = {};
-		
-	var cm = 'CodeMirror2Config', modes;
-	var secSep = config.textPrimitives.sectionSeparator;
 
-	// global settings need to be read seperately	
-	conf['global'] = me.rdSettings(cm + secSep + 'global');
-
-	// check CM for installed modes and get usre config if available
-	modes = CodeMirror.listModes();
-	for (var i=0; i < modes.length; i += 1) {
-		conf[modes[i]] = me.rdSettings(cm + secSep + modes[i]);
-	}
+	// get and init the global CM2 settings 
+	config.tools.cm2.init();	
 
 	// TODO fix editor resize hack.	
 	// Probably not needed with TiddlySpace themes.
@@ -484,14 +504,21 @@ config.formatters.push({
 
 })(jQuery);
 
+//}}}
+/***
+!!!!! TiddlySpace specific stuff
+***/
+//{{{
 
-// TiddlySpace specific stuff
 // Check, if there is the BinaryTiddlersPlugin TODO and use it. 
 // If not check for content-type == text/....
 (function($) {
 var ctfield = 'content-type';
 
 config.extensions.cm2 = me = {
+	isTW : function(ctype) {
+		return ctype.indexOf('tiddlywiki') != -1;
+	},
 	isTextual : function(ctype) {
 		return ctype.indexOf('text/') === 0
 			|| this.endsWith(ctype, '+xml')
@@ -513,7 +540,7 @@ config.macros.view.views.wikified = function(value, place, params, wikifier,
 
 	// TODO next line matches are ugly
 	if(params[0] == 'text' && ctype && !tiddler.text.match('{{'+'{') && !tiddler.text.match('<code')) {
-		if (me.isTextual(ctype)) {
+		if (!me.isTW(ctype) && me.isTextual(ctype)) {
 			el = $('<pre class="cm-s-default">').appendTo(place); // TODO theme
 			CodeMirror.runMode(tiddler.text, ctype, el[0]);
 		} 
@@ -523,7 +550,11 @@ config.macros.view.views.wikified = function(value, place, params, wikifier,
 }; // _view
 
 })(jQuery);
-
+//}}}
+/***
+!!!!! The default StyleSheetCodeMirror2 style sheet
+***/
+//{{{
 config.shadowTiddlers["StyleSheetCodeMirror2"]="/*{{{*/\n"+
 	"[[codemirror.css]]\n"+
 	"[[default.css]]\n"+

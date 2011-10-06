@@ -14,4 +14,8 @@ tiddler: ViewTemplate.tid
 tiddler: EditTemplate.tid
 tiddler: UsefullLinks.tid
 tiddler: DefaultTiddlers.tid
-
+tiddler: TiddlyWiki.tid
+tiddler: TWGroup.tid
+tiddler: TiddlySpace.tid
+tiddler: MIMEs.tid
+tiddler: codemirror-plugins.tid

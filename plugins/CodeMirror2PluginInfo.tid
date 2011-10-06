@@ -4,19 +4,19 @@ tags: mainMenu cm2tw
 |''Name''|CodeMirror2PluginInfo|
 |''Description''|Documentation for [[zCodeMirror2Plugin]]|
 |''Author''|PMario|
-|''Version''|0.1.1|
+|''Version''|0.1.2|
 |''Source''|https://github.com/pmario/tw.CodeMirrorPlugin|
 |''Documentation''|http://codemirror.tiddlyspace.com/|
-|''License''|see: zCodeMirror2Plugin|
+|''License''|see: [[zCodeMirror2Plugin]]|
 |''Keywords''|syntax highlighting color code|
 !Usage
 !!!! Macros
 <<<
 Modes: {{{<<cmModes>>}}} ... displays the usable modes seen below.
-Modes: <<cmModes>>
+> Modes: <<cmModes>>
 
-MIMEs: {{{<<cmMIMEs>>}}} ... displays the usable mime types seen below. Same order as modes.
-Modes: <<cmMIMEs>>
+MIMEs: {{{<<cmMimes>>}}} ... displays the usable mime types seen below. Same order as modes.
+> Modes: <<cmMimes>>
 <<<
 !!!! Global Settings
 <<<
@@ -27,11 +27,11 @@ Modes: <<cmMIMEs>>
 * The plugin automatically creates a shadow StyleSheetCodeMirror2 tiddler, that can be adjusted to your needs.
 <<<
 !! Feedback / Support
-Feedback is very welcome at [[TiddlyWiki group|http://groups.google.com/group/tiddlywiki]]
+Feedback is very welcome at [[TiddlyWiki group|TWGroup]]
 !!Examples
 <<<
 Available Modes: <<cmModes>>
-Available MIMEs: <<cmMIMEs>>
+Available MIMEs: <<cmMimes>>
 <<<
 !!!! Text
 <<<
@@ -175,6 +175,8 @@ TODO -- < <list filter [tag[cm2]]>>
 <<<
 !!! Revision History
 <<<
+* V 0.1.2 2011-10-05
+** minor adjustments
 * V 0.1.1 2011-09-09
 ** minor adjustments
 * V 0.1.0 2011-09-07
