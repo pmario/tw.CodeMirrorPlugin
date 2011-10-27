@@ -4,7 +4,7 @@ tags: mainMenu cm2tw
 |''Name''|CodeMirror2PluginInfo|
 |''Description''|Documentation for [[zCodeMirror2Plugin]]|
 |''Author''|PMario|
-|''Version''|0.1.2|
+|''Version''|0.1.7|
 |''Source''|https://github.com/pmario/tw.CodeMirrorPlugin|
 |''Documentation''|http://codemirror.tiddlyspace.com/|
 |''License''|see: [[zCodeMirror2Plugin]]|
@@ -175,10 +175,16 @@ TODO -- < <list filter [tag[cm2]]>>
 <<<
 !!! Revision History
 <<<
-* V 0.1.2 2011-10-05
-** minor adjustments
-* V 0.1.1 2011-09-09
-** minor adjustments
+* V 0.1.7 2011-10-27
+** little docu fix
+
+* V 0.1.6 2011-10-05
+** several bug fixes
+** improved handling, initializing ...
+
+* V 0.1.4 2011-09-25
+** resize hack changed
+
 * V 0.1.0 2011-09-07
 ** inital release
 <<<

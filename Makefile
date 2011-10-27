@@ -36,6 +36,8 @@ CM_TEMPLATE  = "template: ../t/js.template\nmeta: ../t/meta.txt\ntags: ../t/tags
 
 JS_TEMPLATE  = "template: ../t/js.template\nmeta: ../t/meta.txt\ntags: ../t/tags.txt\nintro: ../t/dependsOnCodeMirror.js.txt\nbody: ../tmp/"
 
+PLUGIN_TEMPLATE  = "template: ../t/js.template\nmeta: ../t/meta.txt\ntags: ../t/tags.txt\nbody: ../tmp/"
+
 
 # ---------------
 
@@ -167,7 +169,7 @@ patch:
 #	cp ../../../CodeMirror2/lib/codemirror.js tmp/codemirror.js
 #	uglifyjs $(UGLIFY_OPTS) tmp/codemirror.js
 
-getmodes: getlibs
+getmodes: getlibs copymode
 	@echo ""
 	@echo "--- get highlighting modules used for TW ---"
 	curl -o "tmp/css.js"        $(CM_MODE_DIR)/css/css.js
@@ -176,6 +178,7 @@ getmodes: getlibs
 	curl -o "tmp/python.js"     $(CM_MODE_DIR)/python/python.js
 	curl -o "tmp/xml.js"        $(CM_MODE_DIR)/xml/xml.js
 
+copymode:
 	cp ../../../CodeMirror2/mode/tiddlywiki/tiddlywiki.js tmp/tiddlywiki.js
 	cp ../../../CodeMirror2/mode/tiddlywiki/tiddlywiki.css tmp/tiddlywiki.css
 
@@ -208,7 +211,8 @@ recipes: uglify
 	@echo $(JS_TEMPLATE)htmlmixed.js   > lib/htmlmixed.js.recipe
 	@echo $(JS_TEMPLATE)python.js      > lib/python.js.recipe
 	@echo $(JS_TEMPLATE)xml.js         > lib/xml.js.recipe
-	@echo $(JS_TEMPLATE)tiddlywiki.js  > lib/tiddlywiki.js.recipe
+
+	@echo $(PLUGIN_TEMPLATE)tiddlywiki.js  > lib/tiddlywiki.js.recipe
 
 tiddlers: recipes
 	@echo ""

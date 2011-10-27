@@ -2,7 +2,7 @@
 |''Name''|zCodeMirror2Plugin|
 |''Description''|Enables syntax highlighting using CodeMirror2|
 |''Author''|PMario|
-|''Version''|0.1.6|
+|''Version''|0.1.7|
 |''Status''|''beta''|
 |''Info''|CodeMirror2PluginInfo|
 |''Source''|https://github.com/pmario/tw.CodeMirrorPlugin|
@@ -26,11 +26,11 @@ Enables syntax highlighting for <pre> and <code> blocks. Adds a new formatter fo
 Modes: {{{<<cmModes>>}}} ... displays the usable modes seen below
 
 Modes: <<cmModes>>
-
+----
 MIMEs: {{{<<cmMimes>>}}} ... displays the usable mime types seen below. Same order as modes.
 
 Modes: <<cmMimes>>
-
+----
 MIMEs: {{{<<cmMimeObjects>>}}} ... displays the usable mime types seen below. Same order as modes. Shows the structure as a JSON.
 
 Modes: <<cmMimeObjects>>
@@ -70,15 +70,13 @@ Additional options ???????????????????
 
 !!!! Revision History
 <<<
-* V 0.1.6 2011-10-05
-** several bug fixes
-** improved handling, initializing ...
-
-* V 0.1.4 2011-09-25
-** resize hack changed
+* V 0.1.7 2011-10-27
+** little docu fix
 
 * V 0.1.0 2011-09-07
 ** inital release
+
+see full History at CodeMirror2PluginInfo
 <<<
 
 !!!!ToDo
@@ -90,7 +88,7 @@ Additional options ???????????????????
 !!!!! {{{<<cmModes>>, <<cmMimes>>, <<cmMimeObjects>>}}}
 ***/
 //{{{
-version.extensions.CodeMirror2Plugin = {major: 0, minor: 1, revision: 6, date: new Date(2011,10,05)};
+version.extensions.CodeMirror2Plugin = {major: 0, minor: 1, revision: 7, date: new Date(2011,10,27)};
 
 (function($) {
 
@@ -226,7 +224,7 @@ config.macros.typeChooser.handler = function(place,macroName,params,wikifier,par
 };
 //}}}
 /***
-!!!!! {{{<<highlightSyntax>> macro 
+!!!!! {{{<<highlightSyntax>>}}} macro 
 ***/
 //{{{
 config.macros.highlightSyntax = {
