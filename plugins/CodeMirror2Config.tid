@@ -55,6 +55,7 @@ tags:
 mode: tiddlywiki
 indentWithTabs: true
 indentUnit: 1
+lineWrapping: true
 }}}
 
 !!! javascript

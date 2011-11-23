@@ -1,5 +1,4 @@
 template: ../t/js.template
 meta: ../t/meta.txt
 tags: ../t/tags.txt
-intro: ../t/dependsOnCodeMirror.js.txt
 body: ../tmp/tiddlywiki.js

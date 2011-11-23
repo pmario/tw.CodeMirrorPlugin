@@ -19,9 +19,9 @@ CM_LIST=      `cat cm.list`
 # just to keep the structure
 # https://raw.github.com/marijnh/CodeMirror2/master/mode/python/python.js
 # codemirror settings
-# CM_TAG = master
+CM_TAG = master
 
-CM_TAG = v2.15
+#CM_TAG = v2.16
 CM_RAW = https://raw.github.com/marijnh/CodeMirror2
 CM_LIB_DIR =   $(CM_RAW)/$(CM_TAG)/lib
 CM_MODE_DIR =  $(CM_RAW)/$(CM_TAG)/mode
@@ -71,13 +71,13 @@ test: clean tests.html
 	$(OPEN) tests.html
 
 tests.html:
-	cook $(PWD)/tests.html.recipe tests.html
+	cook $(PWD)/tests.html.recipe -d $(PWD) -o tests.html
 
 upstream.html: 
-	cook $(PWD)/upstream.html.recipe upstream.html
+	cook $(PWD)/upstream.html.recipe -d $(PWD) -o upstream.html
 
 vanilla.html: 
-	cook $(PWD)/vanilla.html.recipe vanilla.html
+	cook $(PWD)/vanilla.html.recipe -d $(PWD) -o vanilla.html
 
 # ---------
 # tiddyspace deploy
@@ -160,8 +160,8 @@ getlibs:
 
 	curl -o "tmp/codemirror.css" $(CM_LIB_DIR)/codemirror.css
 	curl -o "tmp/codemirror.js"  $(CM_LIB_DIR)/codemirror.js
-	curl -o "tmp/overlay.js"     $(CM_LIB_DIR)/overlay.js	
-	curl -o "tmp/runmode.js"     $(CM_LIB_DIR)/runmode.js
+	curl -o "tmp/overlay.js"     $(CM_LIB_DIR)/util/overlay.js	
+	curl -o "tmp/runmode.js"     $(CM_LIB_DIR)/util/runmode.js
 
 patch:
 #	@echo ""
@@ -198,41 +198,41 @@ uglify: getmodes patch
 recipes: uglify
 	@echo ""
 	@echo "--- create recipes for single js tiddlers ---"
-	@echo $(CSS_TEMPLATE)codemirror.css > lib/codemirror.css.recipe
-	@echo $(CSS_TEMPLATE)default.css > lib/default.css.recipe
-	@echo $(CSS_TEMPLATE)tiddlywiki.css > lib/tiddlywiki.css.recipe
+	echo $(CSS_TEMPLATE)codemirror.css > lib/codemirror.css.recipe
+	echo $(CSS_TEMPLATE)default.css > lib/default.css.recipe
+	echo $(CSS_TEMPLATE)tiddlywiki.css > lib/tiddlywiki.css.recipe
 
-	@echo $(CM_TEMPLATE)codemirror.js  > lib/codemirror.js.recipe
+	echo $(CM_TEMPLATE)codemirror.js  > lib/codemirror.js.recipe
 
-	@echo $(JS_TEMPLATE)overlay.js     > lib/overlay.js.recipe
-	@echo $(JS_TEMPLATE)runmode.js     > lib/runmode.js.recipe
-	@echo $(JS_TEMPLATE)css.js         > lib/css.js.recipe
-	@echo $(JS_TEMPLATE)javascript.js  > lib/javascript.js.recipe
-	@echo $(JS_TEMPLATE)htmlmixed.js   > lib/htmlmixed.js.recipe
-	@echo $(JS_TEMPLATE)python.js      > lib/python.js.recipe
-	@echo $(JS_TEMPLATE)xml.js         > lib/xml.js.recipe
+	echo $(JS_TEMPLATE)overlay.js     > lib/overlay.js.recipe
+	echo $(JS_TEMPLATE)runmode.js     > lib/runmode.js.recipe
+	echo $(JS_TEMPLATE)css.js         > lib/css.js.recipe
+	echo $(JS_TEMPLATE)javascript.js  > lib/javascript.js.recipe
+	echo $(JS_TEMPLATE)htmlmixed.js   > lib/htmlmixed.js.recipe
+	echo $(JS_TEMPLATE)python.js      > lib/python.js.recipe
+	echo $(JS_TEMPLATE)xml.js         > lib/xml.js.recipe
 
-	@echo $(PLUGIN_TEMPLATE)tiddlywiki.js  > lib/tiddlywiki.js.recipe
+	echo $(PLUGIN_TEMPLATE)tiddlywiki.js  > lib/tiddlywiki.js.recipe
 
 tiddlers: recipes
 	@echo ""
 	@echo "--- create tiddlers with cook ---"
 
-	cook $(PWD)/lib/codemirror.css.recipe /lib/codemirror.css.tid
-	cook $(PWD)/lib/default.css.recipe    /lib/default.css.tid
-	cook $(PWD)/lib/tiddlywiki.css.recipe /lib/tiddlywiki.css.tid
+	cook $(PWD)/lib/codemirror.css.recipe -d $(PWD)/lib -o codemirror.css.tid
+	cook $(PWD)/lib/default.css.recipe    -d $(PWD)/lib -o default.css.tid
+	cook $(PWD)/lib/tiddlywiki.css.recipe -d $(PWD)/lib -o tiddlywiki.css.tid
 
-	cook $(PWD)/lib/codemirror.js.recipe  /lib/codemirror.js.tid
-	cook $(PWD)/lib/overlay.js.recipe     /lib/overlay.js.tid
-	cook $(PWD)/lib/runmode.js.recipe     /lib/runmode.js.tid
-	cook $(PWD)/lib/css.js.recipe         /lib/css.js.tid
-	cook $(PWD)/lib/javascript.js.recipe  /lib/javascript.js.tid
-	cook $(PWD)/lib/htmlmixed.js.recipe   /lib/htmlmixed.js.tid
-	cook $(PWD)/lib/python.js.recipe      /lib/python.js.tid
-	cook $(PWD)/lib/xml.js.recipe         /lib/xml.js.tid
-	cook $(PWD)/lib/tiddlywiki.js.recipe  /lib/tiddlywiki.js.tid
+	cook $(PWD)/lib/codemirror.js.recipe  -d $(PWD)/lib -o codemirror.js.tid
+	cook $(PWD)/lib/overlay.js.recipe     -d $(PWD)/lib -o overlay.js.tid
+	cook $(PWD)/lib/runmode.js.recipe     -d $(PWD)/lib -o runmode.js.tid
+	cook $(PWD)/lib/css.js.recipe         -d $(PWD)/lib -o css.js.tid
+	cook $(PWD)/lib/javascript.js.recipe  -d $(PWD)/lib -o javascript.js.tid
+	cook $(PWD)/lib/htmlmixed.js.recipe   -d $(PWD)/lib -o htmlmixed.js.tid
+	cook $(PWD)/lib/python.js.recipe      -d $(PWD)/lib -o python.js.tid
+	cook $(PWD)/lib/xml.js.recipe         -d $(PWD)/lib -o xml.js.tid
+	cook $(PWD)/lib/tiddlywiki.js.recipe  -d $(PWD)/lib -o tiddlywiki.js.tid
 
-dropbox:
+dropbox: upstream.html
 	cp upstream.html /media/Daten/DropBox/Dropbox/Public
 
 

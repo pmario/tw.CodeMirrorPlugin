@@ -150,8 +150,11 @@ All possible options can be found at: [[CodeMirror homepage|http://codemirror.ne
 ** Save and reload
 * Have a look at Advanced options or use the {{{<code class="brush: ... >}}} tag described above.
 
-!!Needed: list tagged syntax
-TODO -- < <list filter [tag[cm2]]>>
+!!Needed: list tagged "cm2tw"
+''If you want to roll your own version, the following tiddlers are needed.''
+<<<
+<<list filter [tag[cm2tw]]>>
+<<<
 
 !!!Macro
 <<<

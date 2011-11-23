@@ -30,6 +30,7 @@ tags: cm2tw
   color: #aaa;
   text-align: right;
   padding: .4em .2em .4em .4em;
+  white-space: pre !important;
 }
 .CodeMirror-lines {
   padding: .4em;
@@ -46,6 +47,14 @@ tags: cm2tw
   padding: 0; margin: 0;
   white-space: pre;
   word-wrap: normal;
+}
+
+.CodeMirror-wrap pre {
+  word-wrap: break-word;
+  white-space: pre-wrap;
+}
+.CodeMirror-wrap .CodeMirror-scroll {
+  overflow-x: hidden;
 }
 
 .CodeMirror textarea {

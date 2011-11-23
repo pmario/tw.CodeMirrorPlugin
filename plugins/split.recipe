@@ -1,4 +1,5 @@
+shadow: CodeMirror2Config.tid
 tiddler: zCodeMirror2Plugin.js
 tiddler: CodeMirror2PluginInfo.tid
 tiddler: CMEditCommands.js
-tiddler: CodeMirror2Config.tid
+

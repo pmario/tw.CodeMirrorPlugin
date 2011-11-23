@@ -12,7 +12,7 @@ tags: default mainMenu
 ''Your ToolbarCommands tiddler has to contain "cmEdit" and "cmSave" commands!'' This is not automatically updated by the plugin!
 ! Info
 * This is the presentation space of the TiddlyWiki implementaion of CodeMirror Library. »The in-browser code editing library«
-* codemirror-plugin space contains 2 plugins( {{{zCodeMirror2Plugin}}} and {{{CMEditCommands}}})
+* codemirror-plugin space contains several plugins( {{{zCodeMirror2Plugin}}} and {{{CMEditCommands}}})
 ** [[zCodeMirror2Plugin]] .. wraps the CodeMirror library into TW.
 ** CMEditCommands .. creates the "cmEdit" and "cmSave" buttons.
 * Read CodeMirror2PluginInfo to get more information about the "view mode"

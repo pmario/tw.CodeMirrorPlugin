@@ -17,7 +17,6 @@ version.extensions.LoadRemoteFileThroughProxy = {
 if (!window.bidix) window.bidix = {}; // bidix namespace
 if (!bidix.core) bidix.core = {};
 
-bidix.core.loadRemoteFile = loadRemoteFile;
 loadRemoteFile = function(url,callback,params)
 {
  if ((document.location.toString().substr(0,4) == "http") && (url.substr(0,4) == "http")){ 
@@ -25,4 +24,5 @@ loadRemoteFile = function(url,callback,params)
  }
  return bidix.core.loadRemoteFile(url,callback,params);
 }
+bidix.core.loadRemoteFile = loadRemoteFile;
 //}}}
