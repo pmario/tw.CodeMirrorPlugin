@@ -1,0 +1,5 @@
+recipe: ../../tiddlywiki/tiddlywiki.html.recipe
+recipe: upstream/split.recipe
+recipe: lib/split.recipe
+recipe: plugins/split.recipe
+

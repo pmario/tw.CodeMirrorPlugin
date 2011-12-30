@@ -4,7 +4,7 @@ tags: mainMenu cm2tw
 |''Name''|CodeMirror2PluginInfo|
 |''Description''|Documentation for [[zCodeMirror2Plugin]]|
 |''Author''|PMario|
-|''Version''|0.1.7|
+|''Version''|0.2.0|
 |''Source''|https://github.com/pmario/tw.CodeMirrorPlugin|
 |''Documentation''|http://codemirror.tiddlyspace.com/|
 |''License''|see: [[zCodeMirror2Plugin]]|
@@ -20,6 +20,7 @@ MIMEs: {{{<<cmMimes>>}}} ... displays the usable mime types seen below. Same ord
 <<<
 !!!! Global Settings
 <<<
+* <<option chkInsertTab>>chkInsertTab option cookie ''should be disabled'' to use CM key-handling. If {{{chkInsertTab}}} is active, keyhandling is hardcoded. {{{extraKeys}}} settings in CodeMirror2Config are ignored.
 * Have a look at: CodeMirror2Config
 <<<
 !!!! StyleSheet

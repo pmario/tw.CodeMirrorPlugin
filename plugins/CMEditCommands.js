@@ -119,7 +119,7 @@ config.commands.cmEdit.handler = function(event,src,title)
 
 	// find the default editor
 	var textArea = jQuery(story.getTiddler(title)).find('textarea[edit=text]');
-
+		
 	// create the cm2 editor
 	cm2.startEditor(textArea, cmOptions);
 	return false;
@@ -133,7 +133,6 @@ config.commands.cmSave.handler = function(event,src,title)
 	if (editor) {editor.save();}
 	
 	config.commands.saveTiddler.handler.call(this,event,src,title); 
-	
 	return false;
 };
 

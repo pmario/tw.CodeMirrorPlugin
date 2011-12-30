@@ -2,7 +2,7 @@
 |''Name''|zCodeMirror2Plugin|
 |''Description''|Enables syntax highlighting using CodeMirror2|
 |''Author''|PMario|
-|''Version''|0.1.7|
+|''Version''|0.2.0|
 |''Status''|''beta''|
 |''Info''|CodeMirror2PluginInfo|
 |''Source''|https://github.com/pmario/tw.CodeMirrorPlugin|
@@ -70,6 +70,10 @@ Additional options ???????????????????
 
 !!!! Revision History
 <<<
+* V 0.2.0 2011-10-23
+** update to codeMirror lib v2.2
+** indentation / tab handling fix
+
 * V 0.1.7 2011-10-27
 ** little docu fix
 
@@ -88,7 +92,7 @@ see full History at CodeMirror2PluginInfo
 !!!!! {{{<<cmModes>>, <<cmMimes>>, <<cmMimeObjects>>}}}
 ***/
 //{{{
-version.extensions.CodeMirror2Plugin = {major: 0, minor: 1, revision: 7, date: new Date(2011,10,27)};
+version.extensions.CodeMirror2Plugin = {major: 0, minor: 2, revision: 0, date: new Date(2011,12,23)};
 
 (function($) {
 
@@ -193,11 +197,11 @@ config.macros.typeChooser.onTypeClick = function(ev)
 			if (editor) $(editor.getWrapperElement()).remove();
 
 			mode = cm2.getModeObject(type);
-			
+	
 			$.extend( cmOptions, conf['global']);
 			$.extend( cmOptions, conf[mode.name]);
 			$.extend( cmOptions.mode, mode);	// IMPORTANT overwrite mode, because it may be an object !!
-
+			
 			cm2.startEditor(text, cmOptions);					
 	}
 	return false;
@@ -361,13 +365,15 @@ config.formatters.push({
 	config.tools = {};
 	config.tools.cm2 = {};
 	config.tools.cm2 = me = {
+		locale: {
+		},
 
 		// TODO fix this hack ...		
 		resizeEditor : function() {
 			var $cm =  $('.CodeMirror');
 			$cm.width($cm.closest('.editor').width());
 		},
-
+		
 		listMimeNames: function() {
 			return CodeMirror.listMIMEs().map(function(el){return el.mime;});
 		},
@@ -468,10 +474,9 @@ config.formatters.push({
 		conf: {},
 		
 		init: function() {
-		
 			var cm = 'CodeMirror2Config', modes;
 			var secSep = config.textPrimitives.sectionSeparator;
-
+			
 			// global settings need to be read seperately	
 			me.conf['global'] = me.rdSettings(cm + secSep + 'global');
 
@@ -483,6 +488,18 @@ config.formatters.push({
 		},
 
 		startEditor: function(textArea, cmOptions) {
+			// disable chkInsertTabs
+			var co = config.options;
+
+			if (co.chkInsertTabs) {
+				// whatever user says - TW setting wins ! TODO check/discuss
+				cmOptions.extraKeys = {"Tab": false, "Shift-Tab": false};
+			}
+			else {
+				// don't overwrite existing user configurations.
+				if (!cmOptions.extraKeys) cmOptions.extraKeys = {"Tab": "insertTab"};
+			}
+			
 			var editor = CodeMirror.fromTextArea(textArea[0], cmOptions);
 			jQuery(textArea[0]).data('editor', editor);
 			config.tools.cm2.resizeEditor();
@@ -555,7 +572,6 @@ config.macros.view.views.wikified = function(value, place, params, wikifier,
 //{{{
 config.shadowTiddlers["StyleSheetCodeMirror2"]="/*{{{*/\n"+
 	"[[codemirror.css]]\n"+
-	"[[default.css]]\n"+
 	"[[tiddlywiki.css]]\n"+
 	"\n"+
 	".CodeMirror {\n"+

@@ -19,9 +19,10 @@ CM_LIST=      `cat cm.list`
 # just to keep the structure
 # https://raw.github.com/marijnh/CodeMirror2/master/mode/python/python.js
 # codemirror settings
-CM_TAG = master
 
-#CM_TAG = v2.16
+#CM_TAG = master
+
+CM_TAG = v2.2
 CM_RAW = https://raw.github.com/marijnh/CodeMirror2
 CM_LIB_DIR =   $(CM_RAW)/$(CM_TAG)/lib
 CM_MODE_DIR =  $(CM_RAW)/$(CM_TAG)/mode
@@ -156,8 +157,6 @@ getall: tiddlers
 getlibs: 
 	@echo ""
 	@echo "--- get basic codemirror libraries ---"
-	curl -o "tmp/default.css" $(CM_THEME_DIR)/default.css
-
 	curl -o "tmp/codemirror.css" $(CM_LIB_DIR)/codemirror.css
 	curl -o "tmp/codemirror.js"  $(CM_LIB_DIR)/codemirror.js
 	curl -o "tmp/overlay.js"     $(CM_LIB_DIR)/util/overlay.js	
@@ -199,7 +198,6 @@ recipes: uglify
 	@echo ""
 	@echo "--- create recipes for single js tiddlers ---"
 	echo $(CSS_TEMPLATE)codemirror.css > lib/codemirror.css.recipe
-	echo $(CSS_TEMPLATE)default.css > lib/default.css.recipe
 	echo $(CSS_TEMPLATE)tiddlywiki.css > lib/tiddlywiki.css.recipe
 
 	echo $(CM_TEMPLATE)codemirror.js  > lib/codemirror.js.recipe
@@ -219,7 +217,6 @@ tiddlers: recipes
 	@echo "--- create tiddlers with cook ---"
 
 	cook $(PWD)/lib/codemirror.css.recipe -d $(PWD)/lib -o codemirror.css.tid
-	cook $(PWD)/lib/default.css.recipe    -d $(PWD)/lib -o default.css.tid
 	cook $(PWD)/lib/tiddlywiki.css.recipe -d $(PWD)/lib -o tiddlywiki.css.tid
 
 	cook $(PWD)/lib/codemirror.js.recipe  -d $(PWD)/lib -o codemirror.js.tid

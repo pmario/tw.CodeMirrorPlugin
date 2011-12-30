@@ -3,7 +3,6 @@
  * "make" uses "uglifyjs" for compressing the *.js files.
  * To create a working TW you need to install "cook". "ginsu" is optional.
 
- * Editing is hardcoded to "javascript" mode.
  * ViewMode uses syntaxhighlighting allready
     * `{{{` .. plain text
     * `//{{{` .. code

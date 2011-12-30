@@ -1,33 +1,31 @@
 modifier: PMario
 tags: cm2tw
 
-! CodeMirror Info
+! ~CodeMirror Info
 <<<
 * Learn more at: http://codemirror.net/manual.html
 * If this list is missing something, just have a look at the above page and add it :)
 * Every parameter that is a (function) @@needs a corresponding CM addOn function@@ to work with TW.
 * This tiddler is a shadow tiddler. If you mess it up, just delete it, and you'll get a "vanilla" copy :)
-
 <<<
-
 ! Settings
-''Active Modes'' .. {{{<<cmModes>>}}}
-><<cmModes>>
-''Active MIMEs'' .. {{{<<cmMimes>>}}}
-><<cmMimes>>
+<<<
+If your mode is not listed here, the corresponding library is not included at your TW. See CodeMirror2PluginInfo tiddler "How to roll your own".
 
+''Possible Modes'' .. {{{<<cmModes>>}}}
+><<cmModes>>
+''Possible MIMEs'' .. {{{<<cmMimes>>}}}
+><<cmMimes>>
+<<<
 !!! global
 {{{
-tabMode: classic
-// (d) classic || shift || indent || default
+tabSize: 4
+// (d) 4 .. if indentWithTabs is true, it should be same as indentUnit otherwise it behaves strange!
 
-indentUnit: 2
+indentUnit: 4
 // (d) 2 .. how many space a block is indented.
 
-enterMode: keep
-// (d) 'indent' || 'keep' || 'flat'
-
-indentWithTabs: false
+indentWithTabs: true
 // (d) false || true
 
 lineNumbers: true
@@ -46,7 +44,8 @@ electricChars: false
 tags: 
 mode: text/plain
 indentWithTabs: true
-indentUnit: 1
+tabSize: 4
+indentUnit: 4
 }}}
 
 !!! tiddlywiki
@@ -54,7 +53,8 @@ indentUnit: 1
 tags: 
 mode: tiddlywiki
 indentWithTabs: true
-indentUnit: 1
+tabSize: 4
+indentUnit: 4
 lineWrapping: true
 }}}
 
@@ -63,7 +63,9 @@ lineWrapping: true
 tags: systemConfig
 mode: javascript
 indentWithTabs: true
-indentUnit: 1
+tabSize: 4
+indentUnit: 4
+electricChars: true
 }}}
 
 !!! xml

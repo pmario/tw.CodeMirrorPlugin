@@ -1,8 +1,7 @@
 backups
 commits
 tmp
-*.html
-*.html.**
+**.html
 *.zip
 *.jar
 *.list

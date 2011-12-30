@@ -1,4 +1,0 @@
-template: ../t/css.template
-meta: ../t/meta.txt
-tags: ../t/tags.css.txt
-body:  ../tmp/default.css
