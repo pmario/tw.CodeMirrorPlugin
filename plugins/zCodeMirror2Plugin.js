@@ -2,7 +2,7 @@
 |''Name''|zCodeMirror2Plugin|
 |''Description''|Enables syntax highlighting using CodeMirror2|
 |''Author''|PMario|
-|''Version''|0.2.0|
+|''Version''|0.2.1|
 |''Status''|''beta''|
 |''Info''|CodeMirror2PluginInfo|
 |''Source''|https://github.com/pmario/tw.CodeMirrorPlugin|
@@ -70,6 +70,9 @@ Additional options ???????????????????
 
 !!!! Revision History
 <<<
+* V 0.2.1 2012-01-10
+** Toggle max height mode implemented hardcoded key: 'F11'
+
 * V 0.2.0 2011-10-23
 ** update to codeMirror lib v2.2
 ** indentation / tab handling fix
@@ -92,7 +95,7 @@ see full History at CodeMirror2PluginInfo
 !!!!! {{{<<cmModes>>, <<cmMimes>>, <<cmMimeObjects>>}}}
 ***/
 //{{{
-version.extensions.CodeMirror2Plugin = {major: 0, minor: 2, revision: 0, date: new Date(2011,12,23)};
+version.extensions.CodeMirror2Plugin = {major: 0, minor: 2, revision: 1, date: new Date(2012,1,10)};
 
 (function($) {
 
@@ -147,7 +150,8 @@ config.macros.typeChooser.onClick = function(ev)
 	for(t=0; t<types.length; t++) {
 	
 		tooltipText = (typeof types[t].mode === 'object') ? types[t].mode.name : types[t].mode;
-		type = createTiddlyButton(createTiddlyElement(popup,'li'), types[t].mime, lingo.typeTooltip.format([tooltipText]), config.macros.typeChooser.onTypeClick);
+		type = createTiddlyButton( createTiddlyElement(popup,'li'), 
+					types[t].mime, lingo.typeTooltip.format([tooltipText]), config.macros.typeChooser.onTypeClick);
 
 		$(type).data('data', data);
 
@@ -372,15 +376,15 @@ config.formatters.push({
 		},
 
 		// sinze TW layout is very flexible, the actual hight for the editor viewport can be guessed only
-		// formular used: window.height - header.h - title.h * 2 - toolbar.h * 2 - correction 
-		// correction is given by the user. eg cookie
+		// formular used: window.height - title.h * 2 - toolbar.h * 2 - correction 
+		// Editor scrolls into position, to be maximum visible.
+		// TODO correction may be given by the user. eg cookie
 		guessMaxHeight: function (corr) {
 			var wh = $(window).height(),
-				hh = ($('.header')) ? $('.header').height() : 0,
 				tih = ($('.title').height()) ? $('.title').height() : 0,
 				toh = ($('.toolbar').height()) ? $('.toolbar').height() : 0;
-
-			return wh - hh - (tih + toh) * 2 - ((corr) ? corr : 0); 			
+				
+			return wh - (tih + toh) * 2 - ((corr) ? corr : 0); 			
 		},
 
 		// This function is used, if there is a browser resize, 
@@ -515,8 +519,10 @@ config.formatters.push({
 			if (!oH || oH == $scroll.height()) {
 				$scroll.data('oldHeight', $scroll.height());
 				$scroll.height(me.guessMaxHeight(corr));
+				window.scrollTo(0,ensureVisible(ed.getScrollerElement())+1);	// +1 sucks
 			}
 			else {
+				window.scrollTo(0,ensureVisible(ed.getScrollerElement())-1);	// -1 sucks
 				$scroll.height(oH);
 			}
 			ed.refresh();
@@ -535,13 +541,11 @@ config.formatters.push({
 				if (!cmOptions.extraKeys) cmOptions.extraKeys = {"Tab": "insertTab"};
 			}
 			
-			$.extend(cmOptions.extraKeys, {"F11": me.toggleMaxHeight, "Esc": me.toggleMaxHeight});
+			$.extend(cmOptions.extraKeys, {"F11": me.toggleMaxHeight});
 			
 			var editor = CodeMirror.fromTextArea(textArea[0], cmOptions);
 			$(textArea[0]).data('editor', editor);
 			config.tools.cm2.resizeEditor();
-			
-console.log('cmO: ',cmOptions);
 		}
 
 	}; // end plugin
@@ -603,6 +607,7 @@ config.macros.view.views.wikified = function(value, place, params, wikifier,
 }; // _view
 
 })(jQuery);
+
 //}}}
 /***
 !!!!! The default StyleSheetCodeMirror2 style sheet
@@ -619,3 +624,5 @@ config.shadowTiddlers["StyleSheetCodeMirror2"]="/*{{{*/\n"+
 	"/*}}}*/";
 store.addNotification("StyleSheetCodeMirror2",refreshStyles);
 //}}}
+
+
