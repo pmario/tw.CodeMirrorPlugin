@@ -6,7 +6,8 @@ from http://tiddlywiki.bidix.info for a complete working Tiddlyspot site.
 //{{{
 
 // edit this if you are migrating sites or retrofitting an existing TW
-config.tiddlyspotSiteId = 'yourTiddlySpotNameHere';
+// config.tiddlyspotSiteId = 'yourTiddlySpotNameHere';
+config.tiddlyspotSiteId = 'codemirror';
 
 // make it so you can by default see edit controls via http
 config.options.chkHttpReadOnly = false;
