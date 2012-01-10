@@ -133,13 +133,12 @@ merge(config.views.editor.typeChooser,{
 // content-type chooser 
 config.macros.typeChooser.onClick = function(ev)
 {
-	var e = ev || window.event;
-	var lingo = config.views.editor.typeChooser;
-	var popup = Popup.create(this);
-
-	var data = $(this).data('data');
-
-	var types = CodeMirror.listMIMEs();
+	var e = ev || window.event,
+		lingo = config.views.editor.typeChooser,
+		popup = Popup.create(this),
+		data = $(this).data('data'),
+		types = CodeMirror.listMIMEs();
+	
 	types.push({mime: '-none-', mode: 'none'});
 	if(types.length === 0) {
 		$('<li/>').text(lingo.popupNone).appendTo(popup);
@@ -166,15 +165,20 @@ config.macros.typeChooser.onTypeClick = function(ev)
 	var e = ev || window.event;
 	if(e.metaKey || e.ctrlKey) {stopEvent(e);} //# keep popup open on CTRL-click
 
-	var data = $(this).data('data');
+	var data = $(this).data('data'),
+		type = this.getAttribute('type'),
+		title = this.getAttribute('tiddler'),
+		conf = config.tools.cm2.conf,
+		cm2 = config.tools.cm2,
+		cmOptions = {}, 
+		mode;
 
-	var type = this.getAttribute('type');
-	var title = this.getAttribute('tiddler');
-	var conf = config.tools.cm2.conf;
-	var cm2 = config.tools.cm2;
-	var cmOptions = {}, mode;
+	// TODO doesn't seem to be right here. 
+	// SyntaxHL change should work in read only too, for demo purpose. TODO
+	if(!readOnly) {		
+			// read actual global configuraiton
+			config.tools.cm2.init();
 
-	if(!readOnly) {		// TODO doesn't seem to be right here
 			// clear the input .. 
 			$(data.input).val('');
 
@@ -212,9 +216,9 @@ config.macros.typeChooser.handler = function(place,macroName,params,wikifier,par
 	var ctfield = params[0] || 'content-type';
 
 	if(tiddler instanceof Tiddler) {
-		var lingo = config.views.editor.typeChooser;
-		var btnText = (tiddler.fields[ctfield]) ? tiddler.fields[ctfield] : lingo.text;
-		var inpText = (tiddler.fields[ctfield]) ? tiddler.fields[ctfield] : '';
+		var lingo = config.views.editor.typeChooser,
+			btnText = (tiddler.fields[ctfield]) ? tiddler.fields[ctfield] : lingo.text,
+			inpText = (tiddler.fields[ctfield]) ? tiddler.fields[ctfield] : '';
 
 		// createTiddlyElement(parent, element, id, className, text, attribs)
 		var $inp = $('<input type="text" edit="'+ctfield+'" size="20">').appendTo(place).val(inpText).hide();
@@ -363,15 +367,28 @@ config.formatters.push({
 	var me;
 
 	config.tools = {};
-	config.tools.cm2 = {};
 	config.tools.cm2 = me = {
 		locale: {
 		},
 
-		// TODO fix this hack ...		
-		resizeEditor : function() {
+		// sinze TW layout is very flexible, the actual hight for the editor viewport can be guessed only
+		// formular used: window.height - header.h - title.h * 2 - toolbar.h * 2 - correction 
+		// correction is given by the user. eg cookie
+		guessMaxHeight: function (corr) {
+			var wh = $(window).height(),
+				hh = ($('.header')) ? $('.header').height() : 0,
+				tih = ($('.title').height()) ? $('.title').height() : 0,
+				toh = ($('.toolbar').height()) ? $('.toolbar').height() : 0;
+
+			return wh - hh - (tih + toh) * 2 - ((corr) ? corr : 0); 			
+		},
+
+		// This function is used, if there is a browser resize, 
+		// or user want's to have max size
+		resizeEditor : function(height) {
 			var $cm =  $('.CodeMirror');
 			$cm.width($cm.closest('.editor').width());
+			if (height) { $cm.height(height)};
 		},
 		
 		listMimeNames: function() {
@@ -487,6 +504,24 @@ config.formatters.push({
 			}
 		},
 
+		toggleMaxHeight: function (ed) {
+			var oldHeight, 
+				$scroll,
+				corr = 25;		// TODO make configurable
+			
+			$scroll = $(ed.getScrollerElement());
+			oH = $scroll.data('oldHeight');
+
+			if (!oH || oH == $scroll.height()) {
+				$scroll.data('oldHeight', $scroll.height());
+				$scroll.height(me.guessMaxHeight(corr));
+			}
+			else {
+				$scroll.height(oH);
+			}
+			ed.refresh();
+		},
+
 		startEditor: function(textArea, cmOptions) {
 			// disable chkInsertTabs
 			var co = config.options;
@@ -500,17 +535,20 @@ config.formatters.push({
 				if (!cmOptions.extraKeys) cmOptions.extraKeys = {"Tab": "insertTab"};
 			}
 			
+			$.extend(cmOptions.extraKeys, {"F11": me.toggleMaxHeight, "Esc": me.toggleMaxHeight});
+			
 			var editor = CodeMirror.fromTextArea(textArea[0], cmOptions);
-			jQuery(textArea[0]).data('editor', editor);
+			$(textArea[0]).data('editor', editor);
 			config.tools.cm2.resizeEditor();
+			
+console.log('cmO: ',cmOptions);
 		}
 
 	}; // end plugin
 
 	// get and init the global CM2 settings 
-	config.tools.cm2.init();	
+// 	config.tools.cm2.init();	
 
-	// TODO fix editor resize hack.	
 	// Probably not needed with TiddlySpace themes.
 	// Deffinitely not needed with neui-em theme. The layout deals with it.
 	$(window).resize(function() {
