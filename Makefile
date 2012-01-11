@@ -29,7 +29,8 @@ CM_MODE_DIR =  $(CM_RAW)/$(CM_TAG)/mode
 CM_THEME_DIR = $(CM_RAW)/$(CM_TAG)/theme
 
 # uglify options
-UGLIFY_OPTS = --overwrite
+# there needs to be --ascii, otherwise uglify breaks the library. 
+UGLIFY_OPTS = --overwrite --ascii
 
 CSS_TEMPLATE = "template: ../t/css.template\nmeta: ../t/meta.txt\ntags: ../t/tags.css.txt\nbody:  ../tmp/"
 
@@ -50,6 +51,8 @@ help:
 	@echo "make distcm ....... uploads documentation to codemirror.tiddyspace.com"
 	@echo "make distplugins .. uploads plugins to codemirror-plugins space"
 	@echo "make distlibs ..... uploads cm libraries to codemirror-plugins space"
+	@echo ""
+	@echo "make commited ..... create all the *.list files to use **make distgit**"
 	@echo "make distgit ...... uploads files, that have been recently commited to git."
 	@echo ""
 	@echo "make clean ..... remove all auto generated stuff"
@@ -134,18 +137,20 @@ distgit: commited distplugins distcm
 	@echo " -- uploading recently commited "	
 	rm /commits/*.list || true
 
-commited: clean-lists
+commited: 
+	@echo " -- if you need fresh *.list files, run **make clean** first "
+	@echo ""
 	ls -C1 commits | awk '{print "commits/"$$1}' > tmp.list
-
-#-- get list of deleted files
-	egrep -h 'D.*$$' `cat tmp.list` > deleted.list
-
+	
+#-- get list of deleted files, just as an info
+#	egrep -h 'D.*' `cat tmp.list` > deleted.list
+	
 #-- invers deleted -> what we want
-	egrep -v -h 'D.*$$' `cat tmp.list` > all-commits.list
+	egrep -v -h 'D.*' `cat tmp.list` > all-commits.list
 	sort all-commits.list | uniq > uniqe-commits.list
-
+	
 	egrep -h -o '(lib|plugins)/.*(\.js|\.svg|\.tid|\.tiddler)$$' uniqe-commits.list > plugins.list
-
+	
 	egrep -h -o 'upstream/.*(\.js|\.svg|\.tid|\.tiddler)$$' uniqe-commits.list > cm.list
 
 # ---------
