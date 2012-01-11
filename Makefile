@@ -117,7 +117,7 @@ libs.list:
 
 distall: distcm distplugins distlibs
 	@echo ""
-	@echo "-- upload all libraries, plugins, content to TiddlySpace --"
+	@echo "-- uploaded all libraries, plugins, content to TiddlySpace --"
 
 
 distcm: cm.list
