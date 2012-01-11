@@ -48,6 +48,7 @@ help:
 	@echo "make test ...... creates tests.html"
 	@echo "make upstream .. creates a working upstream.html"
 	@echo ""
+	@echo "make distall ...... calls the next three dist.."
 	@echo "make distcm ....... uploads documentation to codemirror.tiddyspace.com"
 	@echo "make distplugins .. uploads plugins to codemirror-plugins space"
 	@echo "make distlibs ..... uploads cm libraries to codemirror-plugins space"
@@ -113,6 +114,11 @@ libs.list:
 	egrep -o 'lib/.*(\.js|\.svg|\.tid|\.tiddler)$$' names.list > libs.list
 	@echo ""git 
 	cat libs.list
+
+distall: distcm distplugins distlibs
+	@echo ""
+	@echo "-- upload all libraries, plugins, content to TiddlySpace --"
+
 
 distcm: cm.list
 	@echo ""
