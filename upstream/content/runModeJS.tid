@@ -1,6 +1,6 @@
 creator: PMario
 modifier: PMario
-tags: runMode
+tags: runMode cmInfo
 
 //{{{
 // Demo code (the actual new parser character stream implementation)

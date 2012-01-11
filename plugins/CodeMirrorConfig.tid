@@ -10,7 +10,7 @@ tags: cmtw
 <<<
 ! Settings
 <<<
-If your mode is not listed here, the corresponding library is not included at your TW. See CodeMirrorPluginInfo tiddler "How to roll your own".
+If your mode is not listed here, the corresponding library is not included at your TW. See CodeMirrorPluginInfo tiddler at the "How to roll your own" section/heading.
 
 ''Possible Modes'' .. {{{<<cmModes>>}}}
 ><<cmModes>>

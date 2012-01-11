@@ -1,4 +1,5 @@
 modifier: PMario
+tags: cmInfo
 
 ! To use CM include this space
 use: http://codemirror-plugins.tiddlyspace.com

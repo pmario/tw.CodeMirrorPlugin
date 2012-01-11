@@ -1,22 +1,23 @@
 modifier: PMario
 modified: 201110051200
-tags: default mainMenu
+tags: default mainMenu cmInfo
 
-! It's Beta :)
-* This TW is work in progress, but I use it with my [[pmario space|http://pmario.tiddlyspace.com]], for several months now, and it didn't break things :)
-! ''Important for TiddlySpace''
-* ''Include the [[codemirror-plugins]] space into your TW if you want to use it!''
-* Then carefully read the documentation.
-* ''Do not include this "codemirror" space'' into your space! Most TS themes don't like it, if there StyleSheet tiddler is overwritten.
-!! ~ToolbarCommands
-''Your ToolbarCommands tiddler has to contain "cmEdit" and "cmSave" commands!'' This is not automatically updated by the plugin!
 ! Info
 * This is the presentation space of the TiddlyWiki implementaion of CodeMirror Library. »The in-browser code editing library«
-* codemirror-plugin space contains several plugins( {{{zCodeMirrorPlugin}}} and {{{CMEditCommands}}})
+* codemirror-plugin space contains all plugins needed. 
 ** [[zCodeMirrorPlugin]] .. wraps the CodeMirror library into TW.
-** CMEditCommands .. creates the "cmEdit" and "cmSave" buttons.
-* Read CodeMirrorPluginInfo to get more information about the "view mode"
+** CMEditCommands .. creates the "cmEdit" and "cmSave" toolbar buttons.
+* Read CodeMirrorPluginInfo to get more information about the possibilities.
 * Feedback is very welcome at [[TiddlyWiki group|TWGroup]]
+! Features
+* Realtime highlighting in edit mode for {{{tiddlywiki, javascript, css, html, xml, python}}} syntax.
+** Other modes are possible too. 
+* F11 toggles editor height.
+! It's still beta
+* ''But I don't wanna miss it :)''
+* I use the plugins with my [[pmario space|http://pmario.tiddlyspace.com]], for several months now.
+! ~ToolbarCommands
+''Your ToolbarCommands tiddler has to contain {{{cmEdit}}} and {{{cmSave}}} commands!'' This is not automatically updated by the plugin!
 ! Modes
 At the moment, there are 2 modes:
 * view mode
@@ -25,16 +26,11 @@ At the moment, there are 2 modes:
 ** edit mode depends on: ''tags'', ''content-type'' and ''server.content-type'' fields
 ** tag has the highest priority and can be adjusted at: CodeMirrorConfig 
 ** content-type can be edited in "edit mode :)". The selector button is near the toolbar commands. Have a look at the EditTemplate {{{<span macro='tagChooser excludeLists'></span>}}}
-! View Mode Test Tiddlers
-All tiddlers named "runMode*" are for testing the CodeMirror runMode() function. They don't have any edit mode identifier assigned. So it initially will be "text/plain".
-<<list filter [tag[runMode]]>>
-! Edit Mode
-The following tiddlers are used to test the edit mode identification process
-* [[testTag]] .. the tag defined at ~CodeMirrorPlugin define the edit mode.
-* [[testContentType]] .. toolbar command: more: fields shows the content-type field 
-* [[testServerContentType]]  .. toolbar command: more: fields shows the server.content-type field
-* The tag has the highest priority.
-!! Configuration
+! ''Important for TiddlySpace''
+* ''Include the [[codemirror-plugins]] space into your TW if you want to use it!''
+* Then carefully read the documentation.
+* ''Do not include this "codemirror" space'' into your space! Most TS themes don't like it, if there StyleSheet tiddler is overwritten.
+! Configuration
 CodeMirror has a lot of configuration options, which can be seen at [[CodeMirror manual page|http://codemirror.net/manual.html]]
 This TW uses CodeMirrorConfig tiddler, to make them available.
 ''global'' section
@@ -46,5 +42,13 @@ The global section contains the "default" behaviour, adjusted to my needs :) The
 The mode section overwrites the global setting. 
 ''tags'' parameter defines the tags, that you use to identify different edit modes.
 <<<
-
+! View Mode Test Tiddlers
+All tiddlers named "runMode*" are for testing the CodeMirror runMode() function. They don't have any edit mode identifier assigned. So it initially will be "text/plain".
+<<list filter [tag[runMode]]>>
+! Edit Mode
+The following tiddlers are used to test the edit mode identification process
+* [[testTag]] .. the tag defined at ~CodeMirrorPlugin define the edit mode.
+* [[testContentType]] .. toolbar command: more: fields shows the content-type field 
+* [[testServerContentType]]  .. toolbar command: more: fields shows the server.content-type field
+* The tag has the highest priority.
 

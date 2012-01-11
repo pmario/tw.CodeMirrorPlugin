@@ -4,17 +4,15 @@ tags: mainMenu cmtw
 |''Name''|CodeMirrorPluginInfo|
 |''Description''|Documentation for [[zCodeMirrorPlugin]]|
 |''Author''|PMario|
-|''Version''|0.2.1|
 |''Source''|https://github.com/pmario/tw.CodeMirrorPlugin|
 |''Documentation''|http://codemirror.tiddlyspace.com/|
 |''License''|see: [[zCodeMirrorPlugin]]|
-|''Keywords''|syntax highlighting color code|
+|''Keywords''|editro syntax highlighting color code|
 !Usage
 !!!! Macros
 <<<
 Modes: {{{<<cmModes>>}}} ... displays the usable modes seen below.
 > Modes: <<cmModes>>
-
 MIMEs: {{{<<cmMimes>>}}} ... displays the usable mime types seen below. Same order as modes.
 > Modes: <<cmMimes>>
 <<<
@@ -99,7 +97,7 @@ will render like:
 })(jQuery);
 //}}}
 <<<
-!!!!Code sample
+!!!! Code sample
 <<<
 <!--{{{-->
 <code class="brush:javascript">
@@ -115,7 +113,6 @@ var a = b = 0;
 a = 17;
 </code>
 <<<
-
 !! Advanced Options
 <<<
 Guess syntax: <<option chkGuessSyntax>> .. If activated, ~TiddlyWiky <pre> blocks will be rendered according to there block braces, like described obove.
@@ -140,24 +137,26 @@ and use the following backets to cover your code
 //}}}
 }}}
 
-All possible options can be found at: [[CodeMirror homepage|http://codemirror.net]]
+All possible "brushes" can be found at: [[CodeMirror homepage|http://codemirror.net]]
 <<<
 !! You need a different mode?
 * Go to [[CodeMirror compression API page| http://codemirror.net/compress.html]] 
 * Select your mode
 * Create a minified version
 * Copy paste it into a tiddler eg: clike.js
+** Add the line {{{|''Requires''|codemirror.js|}}} at the top of the tiddler
+*** see eg: [[css.js]]
 ** Tag the new tiddler ''systemConfig''
 ** Save and reload
 * Have a look at Advanced options or use the {{{<code class="brush: ... >}}} tag described above.
 
-!!Needed: list tagged "cmtw"
+!! Needed: list tagged "cmtw"
 ''If you want to roll your own version, the following tiddlers are needed.''
 <<<
 <<list filter [tag[cmtw]]>>
 <<<
 
-!!!Macro
+!!! highlightSyntax Macro
 <<<
 *The {{{highlightSyntax}}} macro is only needed if you have inline html blocks, like shown below.
 <!--{{{-->
@@ -170,7 +169,6 @@ All possible options can be found at: [[CodeMirror homepage|http://codemirror.ne
 <<highlightSyntax>> .. will render the <pre> blocks shown above.
 <!--}}}-->
 <<<
-
 !!!! Parameters
 <<<
 {{{<<highlightSyntax [tagName]>>}}}
@@ -179,19 +177,20 @@ All possible options can be found at: [[CodeMirror homepage|http://codemirror.ne
 <<<
 !!! Revision History
 <<<
-* V 0.2.1 2012-11-11
-** renamed everything from codemirror2 to codemirror
-
+* V 0.2.3 2012-01-11
+** renames everything from codemirror2 -> codemirror
+* V 0.2.1 2012-01-10
+** Toggle max height mode implemented hardcoded key: 'F11'
+* V 0.2.0 2011-10-23
+** update to codeMirror lib v2.2
+** indentation / tab handling fix
 * V 0.1.7 2011-10-27
 ** little docu fix
-
 * V 0.1.6 2011-10-05
 ** several bug fixes
 ** improved handling, initializing ...
-
 * V 0.1.4 2011-09-25
 ** resize hack changed
-
 * V 0.1.0 2011-09-07
 ** inital release
 <<<

@@ -2,7 +2,7 @@
 |''Name''|zCodeMirrorPlugin|
 |''Description''|Enables syntax highlighting using CodeMirror|
 |''Author''|PMario|
-|''Version''|0.2.2|
+|''Version''|0.2.3|
 |''Status''|''beta''|
 |''Info''|CodeMirrorPluginInfo|
 |''Source''|https://github.com/pmario/tw.CodeMirrorPlugin|
@@ -20,20 +20,18 @@ Enables syntax highlighting for <pre> and <code> blocks. Adds a new formatter fo
 <<<
 * The plugin automatically creates a shadow tiddler: StyleSheetCodeMirror, that can be adjusted to your needs.
 <<<
-
 !!!!Macros
-<<<
 Modes: {{{<<cmModes>>}}} ... displays the usable modes seen below
-
+<<<
 Modes: <<cmModes>>
-----
+<<<
 MIMEs: {{{<<cmMimes>>}}} ... displays the usable mime types seen below. Same order as modes.
-
+<<<
 Modes: <<cmMimes>>
-----
+<<<
 MIMEs: {{{<<cmMimeObjects>>}}} ... displays the usable mime types seen below. Same order as modes. Shows the structure as a JSON.
-
-Modes: <<cmMimeObjects>>
+<<<
+<<cmMimeObjects>>
 <<<
 !!!!Global Settings
 <<<
@@ -63,42 +61,26 @@ Additional options ???????????????????
 <<<
 !!!! Known Issues
 * Theme switching not supported yet
-* Detecting content-type in ViewMode, EditMode has some inconsistencies
-* Code is ugly
-** Uses too many different namespaces
-** Lots of TODOs 
-
+* Code can be optimized
+** Too many TODOs 
 !!!! Revision History
 <<<
-* V 0.2.2 2012-01-11
+* V 0.2.3 2012-01-11
 ** renames everything codemirror2 -> codemirror
-
-* V 0.2.1 2012-01-10
 ** Toggle max height mode implemented hardcoded key: 'F11'
-
-* V 0.2.0 2011-10-23
-** update to codeMirror lib v2.2
-** indentation / tab handling fix
-
-* V 0.1.7 2011-10-27
-** little docu fix
-
 * V 0.1.0 2011-09-07
 ** inital release
-
 see full History at CodeMirrorPluginInfo
 <<<
-
 !!!!ToDo
 <<<
-* a lot :)
 <<<
 !!!Code
 
 !!!!! {{{<<cmModes>>, <<cmMimes>>, <<cmMimeObjects>>}}}
 ***/
 //{{{
-version.extensions.CodeMirrorPlugin = {major: 0, minor: 2, revision: 2, date: new Date(2012,1,11)};
+version.extensions.CodeMirrorPlugin = {major: 0, minor: 2, revision: 3, date: new Date(2012,1,11)};
 
 (function($) {
 
