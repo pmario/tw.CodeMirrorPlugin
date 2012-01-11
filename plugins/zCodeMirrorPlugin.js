@@ -1,10 +1,10 @@
 /***
-|''Name''|zCodeMirror2Plugin|
-|''Description''|Enables syntax highlighting using CodeMirror2|
+|''Name''|zCodeMirrorPlugin|
+|''Description''|Enables syntax highlighting using CodeMirror|
 |''Author''|PMario|
-|''Version''|0.2.1|
+|''Version''|0.2.2|
 |''Status''|''beta''|
-|''Info''|CodeMirror2PluginInfo|
+|''Info''|CodeMirrorPluginInfo|
 |''Source''|https://github.com/pmario/tw.CodeMirrorPlugin|
 |''Documentation''|http://codemirror.tiddlyspace.com/|
 |''License''|[[CC-BY-NC-SA|http://creativecommons.org/licenses/by-nc-sa/3.0/]]|
@@ -12,13 +12,13 @@
 |''Requires''|codemirror.js|
 |''Keywords''|syntax highlighting color code mirror codemirror|
 !Documentation
-* Advanced info, see: [[CodeMirror2PluginInfo]]
+* Advanced info, see: [[CodeMirrorPluginInfo]]
 !Description
 Enables syntax highlighting for <pre> and <code> blocks. Adds a new formatter for {{{<code class='???'>}}} 
 !Usage
 !!!!StyleSheet
 <<<
-* The plugin automatically creates a shadow tiddler: StyleSheetCodeMirror2, that can be adjusted to your needs.
+* The plugin automatically creates a shadow tiddler: StyleSheetCodeMirror, that can be adjusted to your needs.
 <<<
 
 !!!!Macros
@@ -37,11 +37,11 @@ Modes: <<cmMimeObjects>>
 <<<
 !!!!Global Settings
 <<<
-* Have a look at: [[CodeMirror2Config]]
+* Have a look at: [[CodeMirrorConfig]]
 <<<
 !!!!ViewTemplate
 <<<
-* Same as macro, but will be executed automatically for every tiddler. see: [[CodeMirror2PluginInfo]]
+* Same as macro, but will be executed automatically for every tiddler. see: [[CodeMirrorPluginInfo]]
 <<<
 !!!!Parameters
 <<<
@@ -51,8 +51,8 @@ Modes: <<cmMimeObjects>>
 <<<
 !!!!Configuration options
 <<<
-Guess syntax: <<option chkGuessSyntax>> .. If activated, ~TiddlyWiky <pre> blocks will be rendered according to there block braces. see [[CodeMirror2Info]]
-Expert mode: <<option chkExpertSyntax>> .. If activated, additional values below will be used. see [[CodeMirror2Info]]
+Guess syntax: <<option chkGuessSyntax>> .. If activated, ~TiddlyWiky <pre> blocks will be rendered according to there block braces. see [[CodeMirrorInfo]]
+Expert mode: <<option chkExpertSyntax>> .. If activated, additional values below will be used. see [[CodeMirrorInfo]]
 
 {{{ {{{ }}} txtShText: <<option txtShText>> eg: 'brush:text'
 {{{ / *{{{* / }}} txtShCss: <<option txtShCss>> eg: 'brush:css'
@@ -70,6 +70,9 @@ Additional options ???????????????????
 
 !!!! Revision History
 <<<
+* V 0.2.2 2012-01-11
+** renames everything codemirror2 -> codemirror
+
 * V 0.2.1 2012-01-10
 ** Toggle max height mode implemented hardcoded key: 'F11'
 
@@ -83,7 +86,7 @@ Additional options ???????????????????
 * V 0.1.0 2011-09-07
 ** inital release
 
-see full History at CodeMirror2PluginInfo
+see full History at CodeMirrorPluginInfo
 <<<
 
 !!!!ToDo
@@ -95,7 +98,7 @@ see full History at CodeMirror2PluginInfo
 !!!!! {{{<<cmModes>>, <<cmMimes>>, <<cmMimeObjects>>}}}
 ***/
 //{{{
-version.extensions.CodeMirror2Plugin = {major: 0, minor: 2, revision: 1, date: new Date(2012,1,10)};
+version.extensions.CodeMirrorPlugin = {major: 0, minor: 2, revision: 2, date: new Date(2012,1,11)};
 
 (function($) {
 
@@ -107,8 +110,8 @@ config.macros.cmModes = {
 
 config.macros.cmMimes = {
 	handler: function(place, macroName, params, wikifier, paramString, tiddler) {
-		var cm2 = config.tools.cm2;
-		jQuery('<span/>').text(cm2.listMimeNames().join(', ')).appendTo(place);
+		var cm = config.tools.cm;
+		jQuery('<span/>').text(cm.listMimeNames().join(', ')).appendTo(place);
 	}
 };
 
@@ -172,8 +175,8 @@ config.macros.typeChooser.onTypeClick = function(ev)
 	var data = $(this).data('data'),
 		type = this.getAttribute('type'),
 		title = this.getAttribute('tiddler'),
-		conf = config.tools.cm2.conf,
-		cm2 = config.tools.cm2,
+		conf = config.tools.cm.conf,
+		cm = config.tools.cm,
 		cmOptions = {}, 
 		mode;
 
@@ -181,7 +184,7 @@ config.macros.typeChooser.onTypeClick = function(ev)
 	// SyntaxHL change should work in read only too, for demo purpose. TODO
 	if(!readOnly) {		
 			// read actual global configuraiton
-			config.tools.cm2.init();
+			config.tools.cm.init();
 
 			// clear the input .. 
 			$(data.input).val('');
@@ -204,13 +207,13 @@ config.macros.typeChooser.onTypeClick = function(ev)
 			
 			if (editor) $(editor.getWrapperElement()).remove();
 
-			mode = cm2.getModeObject(type);
+			mode = cm.getModeObject(type);
 	
 			$.extend( cmOptions, conf['global']);
 			$.extend( cmOptions, conf[mode.name]);
 			$.extend( cmOptions.mode, mode);	// IMPORTANT overwrite mode, because it may be an object !!
 			
-			cm2.startEditor(text, cmOptions);					
+			cm.startEditor(text, cmOptions);					
 	}
 	return false;
 };
@@ -364,14 +367,14 @@ config.formatters.push({
 })(config.formatters); //# end of alias
 //}}}
 /***
-!!!!! CM2 tools and helper functions 
+!!!!! CM tools and helper functions 
 ***/
 //{{{
 (function ($) {
 	var me;
 
 	config.tools = {};
-	config.tools.cm2 = me = {
+	config.tools.cm = me = {
 		locale: {
 		},
 
@@ -479,7 +482,7 @@ config.formatters.push({
 
 			// special handling for functions.
 			var p = ['onChange', 'onCursorActivity', 'onGutterClick', 'onFocus', 'onScroll', 'onHighlightComplete', 'onKeyEvent'];
-			var ctca = config.tools.cm2.addOns;
+			var ctca = config.tools.cm.addOns;
 
 			var x;
 			for (var i = 0, im = p.length; i<im; i += 1) {
@@ -491,11 +494,11 @@ config.formatters.push({
 			return settings;
 		},
 
-		// stores the global CM2 config settings 
+		// stores the global CM config settings 
 		conf: {},
 		
 		init: function() {
-			var cm = 'CodeMirror2Config', modes;
+			var cm = 'CodeMirrorConfig', modes;
 			var secSep = config.textPrimitives.sectionSeparator;
 			
 			// global settings need to be read seperately	
@@ -545,18 +548,18 @@ config.formatters.push({
 			
 			var editor = CodeMirror.fromTextArea(textArea[0], cmOptions);
 			$(textArea[0]).data('editor', editor);
-			config.tools.cm2.resizeEditor();
+			config.tools.cm.resizeEditor();
 		}
 
 	}; // end plugin
 
-	// get and init the global CM2 settings 
-// 	config.tools.cm2.init();	
+	// get and init the global CM settings 
+// 	config.tools.cm.init();	
 
 	// Probably not needed with TiddlySpace themes.
 	// Deffinitely not needed with neui-em theme. The layout deals with it.
 	$(window).resize(function() {
-		config.tools.cm2.resizeEditor(); 
+		config.tools.cm.resizeEditor(); 
 	});
 
 })(jQuery);
@@ -572,7 +575,7 @@ config.formatters.push({
 (function($) {
 var ctfield = 'content-type';
 
-config.extensions.cm2 = me = {
+config.extensions.cm = me = {
 	isTW : function(ctype) {
 		return ctype.indexOf('tiddlywiki') != -1;
 	},
@@ -610,10 +613,10 @@ config.macros.view.views.wikified = function(value, place, params, wikifier,
 
 //}}}
 /***
-!!!!! The default StyleSheetCodeMirror2 style sheet
+!!!!! The default StyleSheetCodeMirror style sheet
 ***/
 //{{{
-config.shadowTiddlers["StyleSheetCodeMirror2"]="/*{{{*/\n"+
+config.shadowTiddlers["StyleSheetCodeMirror"]="/*{{{*/\n"+
 	"[[codemirror.css]]\n"+
 	"[[tiddlywiki.css]]\n"+
 	"\n"+
@@ -622,7 +625,7 @@ config.shadowTiddlers["StyleSheetCodeMirror2"]="/*{{{*/\n"+
 	"	background: [[ColorPalette::Background]];\n"+
 	"}\n"+
 	"/*}}}*/";
-store.addNotification("StyleSheetCodeMirror2",refreshStyles);
+store.addNotification("StyleSheetCodeMirror",refreshStyles);
 //}}}
 
 

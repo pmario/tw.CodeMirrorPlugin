@@ -1,5 +1,5 @@
 modifier: PMario
-tags: cm2tw
+tags: cmtw
 
 <!--{{{-->
 <div class='toolbar' macro='toolbar [[ToolbarCommands::EditToolbar]]'></div>

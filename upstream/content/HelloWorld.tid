@@ -12,31 +12,31 @@ tags: default mainMenu
 ''Your ToolbarCommands tiddler has to contain "cmEdit" and "cmSave" commands!'' This is not automatically updated by the plugin!
 ! Info
 * This is the presentation space of the TiddlyWiki implementaion of CodeMirror Library. »The in-browser code editing library«
-* codemirror-plugin space contains several plugins( {{{zCodeMirror2Plugin}}} and {{{CMEditCommands}}})
-** [[zCodeMirror2Plugin]] .. wraps the CodeMirror library into TW.
+* codemirror-plugin space contains several plugins( {{{zCodeMirrorPlugin}}} and {{{CMEditCommands}}})
+** [[zCodeMirrorPlugin]] .. wraps the CodeMirror library into TW.
 ** CMEditCommands .. creates the "cmEdit" and "cmSave" buttons.
-* Read CodeMirror2PluginInfo to get more information about the "view mode"
+* Read CodeMirrorPluginInfo to get more information about the "view mode"
 * Feedback is very welcome at [[TiddlyWiki group|TWGroup]]
 ! Modes
 At the moment, there are 2 modes:
 * view mode
-** view mode mainly depends on TW code block indicators. Learn more at: CodeMirror2PluginInfo
+** view mode mainly depends on TW code block indicators. Learn more at: CodeMirrorPluginInfo
 * edit mode
 ** edit mode depends on: ''tags'', ''content-type'' and ''server.content-type'' fields
-** tag has the highest priority and can be adjusted at: CodeMirror2Config 
+** tag has the highest priority and can be adjusted at: CodeMirrorConfig 
 ** content-type can be edited in "edit mode :)". The selector button is near the toolbar commands. Have a look at the EditTemplate {{{<span macro='tagChooser excludeLists'></span>}}}
 ! View Mode Test Tiddlers
 All tiddlers named "runMode*" are for testing the CodeMirror runMode() function. They don't have any edit mode identifier assigned. So it initially will be "text/plain".
 <<list filter [tag[runMode]]>>
 ! Edit Mode
 The following tiddlers are used to test the edit mode identification process
-* [[testTag]] .. the tag defined at ~CodeMirror2Plugin define the edit mode.
+* [[testTag]] .. the tag defined at ~CodeMirrorPlugin define the edit mode.
 * [[testContentType]] .. toolbar command: more: fields shows the content-type field 
 * [[testServerContentType]]  .. toolbar command: more: fields shows the server.content-type field
 * The tag has the highest priority.
 !! Configuration
 CodeMirror has a lot of configuration options, which can be seen at [[CodeMirror manual page|http://codemirror.net/manual.html]]
-This TW uses CodeMirror2Config tiddler, to make them available.
+This TW uses CodeMirrorConfig tiddler, to make them available.
 ''global'' section
 <<<
 The global section contains the "default" behaviour, adjusted to my needs :) They may vary for your needs. The config tiddler is a shadow tiddler. So if you mess up the configuration, just delete it, reload and start over again.

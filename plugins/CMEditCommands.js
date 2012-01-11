@@ -2,12 +2,12 @@
 |''Name''|CMEditCommands|
 |''Description''|Opens a tiddler in edit mode and starts CodeMirror editor.|
 |''Version''|0.1.1|
-|''Date''|2011-10-05|
+|''Date''|2012-01-11|
 |''Status''|''beta''|
 |''Source''|https://github.com/pmario/tw.CodeMirrorPlugin|
 |''License''|CC-BY-SA|
 |''CoreVersion''|2.5|
-|''Requires''|zCodeMirror2Plugin|
+|''Requires''|zCodeMirrorPlugin|
 |''Keywords''|toolbar command code mirror codemirror edit|
 !!!Description
 <<<
@@ -57,17 +57,17 @@ config.commands.cmEdit.handler = function(event,src,title)
 	};
 
 	// define var shortcuts
-	var cm2 = config.tools.cm2;
-	var conf = cm2.conf;
+	var cm = config.tools.cm;
+	var conf = cm.conf;
 	var tags = [], tl, mode;
 
-	// read CodeMirror2Config tiddler and write to global conf var
-	cm2.init();
+	// read CodeMirrorConfig tiddler and write to global conf var
+	cm.init();
 	
 	var modes = CodeMirror.listModes();
 	
 	// TODO post to mailing list about it ?! It makes handling the library more difficult.
-	var mimes = cm2.listMimeNames();
+	var mimes = cm.listMimeNames();
 		
 	// doesn't set tid if title is a shadow tiddler
 	var tid = store.getTiddler(title);
@@ -79,13 +79,13 @@ config.commands.cmEdit.handler = function(event,src,title)
 	if (tid && tid.fields) {		
 
 		if (tid.fields['server.content-type'] && mimes.contains(tid.fields['server.content-type'])) {
-			mode = cm2.getModeObject(tid.fields['server.content-type']);
+			mode = cm.getModeObject(tid.fields['server.content-type']);
 			jQuery.extend(cmOptions, conf[mode.name]);
 			jQuery.extend(cmOptions.mode, mode);
 		}
 		
 		if (tid.fields['content-type'] && mimes.contains(tid.fields['content-type'])) {
-			mode = cm2.getModeObject(tid.fields['content-type']);
+			mode = cm.getModeObject(tid.fields['content-type']);
 			jQuery.extend(cmOptions, conf[mode.name]);
 			jQuery.extend(cmOptions.mode, mode);
 		}
@@ -120,8 +120,8 @@ config.commands.cmEdit.handler = function(event,src,title)
 	// find the default editor
 	var textArea = jQuery(story.getTiddler(title)).find('textarea[edit=text]');
 		
-	// create the cm2 editor
-	cm2.startEditor(textArea, cmOptions);
+	// create the cm editor
+	cm.startEditor(textArea, cmOptions);
 	return false;
 };
 

@@ -1,13 +1,13 @@
 modifier: PMario
-tags: mainMenu cm2tw
+tags: mainMenu cmtw
 
-|''Name''|CodeMirror2PluginInfo|
-|''Description''|Documentation for [[zCodeMirror2Plugin]]|
+|''Name''|CodeMirrorPluginInfo|
+|''Description''|Documentation for [[zCodeMirrorPlugin]]|
 |''Author''|PMario|
-|''Version''|0.2.0|
+|''Version''|0.2.1|
 |''Source''|https://github.com/pmario/tw.CodeMirrorPlugin|
 |''Documentation''|http://codemirror.tiddlyspace.com/|
-|''License''|see: [[zCodeMirror2Plugin]]|
+|''License''|see: [[zCodeMirrorPlugin]]|
 |''Keywords''|syntax highlighting color code|
 !Usage
 !!!! Macros
@@ -20,12 +20,12 @@ MIMEs: {{{<<cmMimes>>}}} ... displays the usable mime types seen below. Same ord
 <<<
 !!!! Global Settings
 <<<
-* <<option chkInsertTab>>chkInsertTab option cookie ''should be disabled'' to use CM key-handling. If {{{chkInsertTab}}} is active, keyhandling is hardcoded. {{{extraKeys}}} settings in CodeMirror2Config are ignored.
-* Have a look at: CodeMirror2Config
+* <<option chkInsertTab>>chkInsertTab option cookie ''should be disabled'' to use CM key-handling. If {{{chkInsertTab}}} is active, keyhandling is hardcoded. {{{extraKeys}}} settings in CodeMirrorConfig are ignored.
+* Have a look at: CodeMirrorConfig
 <<<
 !!!! StyleSheet
 <<<
-* The plugin automatically creates a shadow StyleSheetCodeMirror2 tiddler, that can be adjusted to your needs.
+* The plugin automatically creates a shadow StyleSheetCodeMirror tiddler, that can be adjusted to your needs.
 <<<
 !! Feedback / Support
 Feedback is very welcome at [[TiddlyWiki group|TWGroup]]
@@ -151,10 +151,10 @@ All possible options can be found at: [[CodeMirror homepage|http://codemirror.ne
 ** Save and reload
 * Have a look at Advanced options or use the {{{<code class="brush: ... >}}} tag described above.
 
-!!Needed: list tagged "cm2tw"
+!!Needed: list tagged "cmtw"
 ''If you want to roll your own version, the following tiddlers are needed.''
 <<<
-<<list filter [tag[cm2tw]]>>
+<<list filter [tag[cmtw]]>>
 <<<
 
 !!!Macro
@@ -179,6 +179,9 @@ All possible options can be found at: [[CodeMirror homepage|http://codemirror.ne
 <<<
 !!! Revision History
 <<<
+* V 0.2.1 2012-11-11
+** renamed everything from codemirror2 to codemirror
+
 * V 0.1.7 2011-10-27
 ** little docu fix
 

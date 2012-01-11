@@ -1,5 +1,5 @@
 modifier: PMario
-tags: cm2tw
+tags: cmtw
 
 ! ~CodeMirror Info
 <<<
@@ -10,7 +10,7 @@ tags: cm2tw
 <<<
 ! Settings
 <<<
-If your mode is not listed here, the corresponding library is not included at your TW. See CodeMirror2PluginInfo tiddler "How to roll your own".
+If your mode is not listed here, the corresponding library is not included at your TW. See CodeMirrorPluginInfo tiddler "How to roll your own".
 
 ''Possible Modes'' .. {{{<<cmModes>>}}}
 ><<cmModes>>

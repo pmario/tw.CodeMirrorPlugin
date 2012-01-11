@@ -1,5 +1,5 @@
 modifier: PMario
-tags: cm2tw
+tags: cmtw
 
 |~ViewToolbar|closeTiddler closeOthers +cmEdit > fields syncing permalink references jump <|
 |~EditToolbar|cmSave cancelTiddler deleteTiddler|
