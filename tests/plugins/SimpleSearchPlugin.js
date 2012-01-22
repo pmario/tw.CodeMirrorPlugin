@@ -1,1 +1,1 @@
-/media/Daten/Git/tiddly/pmario/tw.CodeMirrorPlugin/upstream/plugins/SimpleSearchPlugin.js
+../../upstream/plugins/SimpleSearchPlugin.js
