@@ -4,22 +4,8 @@
 # and Makefile for TiddlyWiki. Adjust this script and then install
 # it somewhere on your $PATH, such as ~/bin.
 #
-# You will need to adjust DEFAULT_TRUNK and COOKER_TRUNK below.
-
-# change this to where your tiddlywiki repo lives,
-# unless you have TW_TRUNKDIR set.
-DEFAULT_TRUNK=/media/Daten/Git/tiddly
 
 # Change this to where you have the cooker code installed
 COOKER_TRUNK=/media/Daten/Git/tiddly/tools/cooker
 
-if [ -z "$TW_TRUNKDIR" ]
-then
-    export TW_TRUNKDIR=$DEFAULT_TRUNK
-fi
-DEST=$PWD
-#RECIPE=$PWD/$1 && shift
-RECIPE=$1 && shift
-OUTPUT=$1 && shift
-
-ruby -Ku -C $COOKER_TRUNK cook.rb $RECIPE -o $OUTPUT -d $DEST "$@"
+ruby -Ku -C $COOKER_TRUNK cook.rb "$@"
