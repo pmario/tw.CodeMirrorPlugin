@@ -2,7 +2,7 @@
 |''Name''|zCodeMirrorPlugin|
 |''Description''|Enables syntax highlighting using CodeMirror|
 |''Author''|PMario|
-|''Version''|0.2.3|
+|''Version''|0.2.4|
 |''Status''|''beta''|
 |''Info''|CodeMirrorPluginInfo|
 |''Source''|https://github.com/pmario/tw.CodeMirrorPlugin|
@@ -65,6 +65,8 @@ Additional options ???????????????????
 ** Too many TODOs 
 !!!! Revision History
 <<<
+* V 0.2.4 2012-01-31
+** slightly better TAB key handling
 * V 0.2.3 2012-01-11
 ** renames everything codemirror2 -> codemirror
 ** Toggle max height mode implemented hardcoded key: 'F11'
@@ -80,7 +82,7 @@ see full History at CodeMirrorPluginInfo
 !!!!! {{{<<cmModes>>, <<cmMimes>>, <<cmMimeObjects>>}}}
 ***/
 //{{{
-version.extensions.CodeMirrorPlugin = {major: 0, minor: 2, revision: 3, date: new Date(2012,1,11)};
+version.extensions.CodeMirrorPlugin = {major: 0, minor: 2, revision: 4, date: new Date(2012,1,31)};
 
 (function($) {
 
@@ -523,7 +525,15 @@ config.formatters.push({
 			}
 			else {
 				// don't overwrite existing user configurations.
-				if (!cmOptions.extraKeys) cmOptions.extraKeys = {"Tab": "insertTab"};
+				if (!cmOptions.extraKeys) {
+					cmOptions.extraKeys = { "Tab" : function(instance) {
+								if (instance.somethingSelected())
+									CodeMirror.commands.indentMore(instance);
+								else
+									CodeMirror.commands.insertTab(instance);
+							}
+					}; // cmOptions
+				}; // if
 			}
 			
 			$.extend(cmOptions.extraKeys, {"F11": me.toggleMaxHeight});

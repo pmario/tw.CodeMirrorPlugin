@@ -19,10 +19,13 @@ CM_LIST=      `cat cm.list`
 # just to keep the structure
 # https://raw.github.com/marijnh/CodeMirror2/master/mode/python/python.js
 # codemirror settings
+# 
+# structure to load from tw-syntax branch
+# https://raw.github.com/pmario/CodeMirror2/tw-syntax/mode/tiddlywiki/tiddlywiki.js
 
 #CM_TAG = master
 
-CM_TAG = v2.2
+CM_TAG = v2.21
 CM_RAW = https://raw.github.com/marijnh/CodeMirror2
 CM_LIB_DIR =   $(CM_RAW)/$(CM_TAG)/lib
 CM_MODE_DIR =  $(CM_RAW)/$(CM_TAG)/mode
