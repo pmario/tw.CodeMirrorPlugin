@@ -1,1 +1,1 @@
-/media/Daten/Git/tiddly/pmario/tw.CodeMirrorPlugin/upstream/plugins/FieldsEditorPlugin.js
+../../upstream/plugins/FieldsEditorPlugin.js
