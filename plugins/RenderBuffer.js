@@ -31,7 +31,7 @@ version.extensions.RenderBufferPlugin = {
 	config.macros.renderBuffer = me = {
 		// should be done for easy localisation
 		locale: {
-			txtBtnTooltip: "Not valid at the moment."
+			txtBtnTooltip: "Just for testing at the moment!"
 		},
 		
 		// converts the named params into keys of an object. 
@@ -53,7 +53,7 @@ version.extensions.RenderBufferPlugin = {
 		// Set some default values
 		defaults: {
 			start: 0,
-			lines: 10,
+			lines: 5,
 			tag: 'span',
 			class: 'cmBuffer',
 			id: ''
@@ -62,13 +62,13 @@ version.extensions.RenderBufferPlugin = {
 		handler: function (place, macroName, params, wikifier, paramString, tiddler) {
 			params = paramString.parseParams(null, null, true);
 			// console.log('params', params);
-			var btn;			// will be the button element.
+			var btn;				// will be the button element.
 			var txtTooltip;			// button tooltip is a helper variable to make the code more readable
 			var conf = {};			// contains the named params, to work with.
 
 			// these are optional params which are used by your plugin.
 			// no 'place' param is allowed, it will be overwritten.
-			var names = ['text', 'button', 'id', 'tiddler', 'start', 'lines', 'find', 'next'];
+			var names = ['text', 'tiddler', 'start', 'lines', 'find', 'next', 'id', 'button'];
 
 			// define the default values, if needed. See: http://api.jquery.com/jQuery.extend/
 			$.extend(conf, me.defaults);
@@ -110,24 +110,10 @@ version.extensions.RenderBufferPlugin = {
 			if (!conf.button) me.refresh(conf.output);
 		}, // handler
 
-
-/*
-match = subject.match(/^!(?=[^!])/im);
-if (match != null) {
-	// matched text: match[0]
-	// match start: match.index
-	// capturing group n: match[n]
-} else {
-	// Match attempt failed
-}
-
-
-result = subject.match(/^!(?=[^!])/img);
-
-*/			
 		refresh: function (el) {
 			var tmp
 				, iMax
+				, regStart, regNext
 				, conf = $(el).data('conf');
 						
 			// if tiddler is specified, text will not be used
@@ -138,16 +124,28 @@ result = subject.match(/^!(?=[^!])/img);
 
 			if (conf.find) {
 
-				iMax = tmp.length;
-				var regStart = new RegExp('^' + conf.find, 'im');
-				var regNext  = new RegExp('^' + conf.next, 'im');
+				if (conf.find      === '!')      regStart = new RegExp('^!(?=[^!])', 'im')
+				else if (conf.find === '!!')     regStart = new RegExp('^!!(?=[^!])', 'im')
+				else if (conf.find === '!!!')    regStart = new RegExp('^!!!(?=[^!])', 'im')
+				else if (conf.find === '!!!!')   regStart = new RegExp('^!!!!(?=[^!])', 'im')
+				else if (conf.find === '!!!!!')  regStart = new RegExp('^!!!!!(?=[^!])', 'im')
+				else if (conf.find === '!!!!!!') regStart = new RegExp('^!!!!!!', 'im')
+				else regStart = new RegExp('^' + conf.find, 'im'); 
 
+				if (conf.next      === '!')      regNext = new RegExp('^!(?=[^!])', 'im')
+				else if (conf.next === '!!')     regNext = new RegExp('^!!(?=[^!])', 'im')
+				else if (conf.next === '!!!')    regNext = new RegExp('^!!!(?=[^!])', 'im')
+				else if (conf.next === '!!!!')   regNext = new RegExp('^!!!!(?=[^!])', 'im')
+				else if (conf.next === '!!!!!')  regNext = new RegExp('^!!!!!(?=[^!])', 'im')
+				else if (conf.next === '!!!!!!') regNext = new RegExp('^!!!!!!', 'im')
+				else regNext  = new RegExp('^' + conf.next, 'im');
+
+				iMax = tmp.length;
 				for (i=0, iMax=tmp.length; i < iMax; i++ ) {
-//					match = tmp[i].match(/^!(?=[^!])/im);
 					match = tmp[i].match(regStart);
 					if (match != null) {
 						conf.start = i;
-						iMax = iMax - i;
+						iMax = conf.lines;// iMax - i;
 						i += 1;
 						break;
 					}
@@ -162,12 +160,9 @@ result = subject.match(/^!(?=[^!])/img);
 						}
 					}
 				} // if 
-console.log('m: ', match, 'tmp: ', tmp, 'conf: ', conf, 'iMax', iMax);
 			} // if (conf.find)
 
-			if (conf.text) {
-				conf.text = tmp.slice(conf.start, conf.start+iMax).join('\n');
-			}
+			conf.text = tmp.slice(conf.start, conf.start+iMax).join('\n');
 
 			$(conf.output).empty();
 			wikify(conf.text, conf.output);
