@@ -2,3 +2,4 @@ modifier: PMario
 
 ./plugins/zCodeMirrorPlugin.js
 ./plugins/CMEditCommands.js
+./plugins/RenderBuffer.js
