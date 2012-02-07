@@ -9,7 +9,7 @@
 |''Documentation''|http://codemirror.tiddlyspace.com/|
 |''License''|[[CC-BY-NC-SA|http://creativecommons.org/licenses/by-nc-sa/3.0/]]|
 |''CoreVersion''|2.5.0|
-|''Requires''|codemirror.js|
+|''Requires''|codemirror.js |
 |''Keywords''|syntax highlighting color code mirror codemirror|
 !Documentation
 * Advanced info, see: [[CodeMirrorPluginInfo]]
@@ -352,6 +352,7 @@ config.formatters.push({
 
 })(config.formatters); //# end of alias
 //}}}
+
 /***
 !!!!! CM tools and helper functions 
 ***/
@@ -359,7 +360,7 @@ config.formatters.push({
 (function ($) {
 	var me;
 
-	config.tools = {};
+	if (!config.tools) config.tools = {};
 	config.tools.cm = me = {
 		locale: {
 		},
@@ -467,14 +468,21 @@ config.formatters.push({
 			}
 
 			// special handling for functions.
-			var p = ['onChange', 'onCursorActivity', 'onGutterClick', 'onFocus', 'onScroll', 'onHighlightComplete', 'onKeyEvent'];
+			var p = ['extraKeys', 'onChange', 'onCursorActivity', 'onGutterClick', 'onFocus', 'onScroll', 'onHighlightComplete', 'onKeyEvent'];
 			var ctca = config.tools.cm.addOns;
 
 			var x;
 			for (var i = 0, im = p.length; i<im; i += 1) {
 				x = settings[p[i]];
 				if (x) {
-					settings[p[i]] = (ctca && ctca[x]) ? ctca[x] : null;
+//					settings[p[i]] = (ctca && ctca[x]) ? ctca[x] : null;
+					if (typeof(x) == 'Object') {
+						$.extend(settings[p[i]], ctca[x]);
+					} 
+					else { 
+						settings[p[i]] = (ctca && ctca[x]) ? ctca[x] : null;
+					}
+					console.log('settings: ',settings, 'x: ', x, 'ctca[x]: ', ctca[x]);
 				}
 			}
 			return settings;
@@ -521,21 +529,15 @@ config.formatters.push({
 			// disable chkInsertTabs
 			var co = config.options;
 
+console.log('options: ',cmOptions);
+
 			if (co.chkInsertTabs) {
 				// whatever user says - TW setting wins ! TODO check/discuss
 				cmOptions.extraKeys = {"Tab": false, "Shift-Tab": false};
 			}
 			else {
 				// don't overwrite existing user configurations.
-				if (!cmOptions.extraKeys) {
-					cmOptions.extraKeys = { "Tab" : function(instance) {
-								if (instance.somethingSelected())
-									CodeMirror.commands.indentMore(instance);
-								else
-									CodeMirror.commands.insertTab(instance);
-							}
-					}; // cmOptions
-				}; // if
+				cmOptions.extraKeys = cmOptions.extraKeys;
 			}
 			
 			$.extend(cmOptions.extraKeys, {"F11": me.toggleMaxHeight});

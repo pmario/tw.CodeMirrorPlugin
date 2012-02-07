@@ -36,6 +36,8 @@ matchBrackets: true
 
 electricChars: false
 // Configures whether the editor should re-indent the current line, when an electric character is typed
+
+extraKeys: smartTab
 }}}
 
 !!! null
