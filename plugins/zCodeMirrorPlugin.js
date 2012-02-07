@@ -365,18 +365,6 @@ config.formatters.push({
 		locale: {
 		},
 
-		// sinze TW layout is very flexible, the actual hight for the editor viewport can be guessed only
-		// formular used: window.height - title.h * 2 - toolbar.h * 2 - correction 
-		// Editor scrolls into position, to be maximum visible.
-		// TODO correction may be given by the user. eg cookie
-		guessMaxHeight: function (corr) {
-			var wh = $(window).height(),
-				tih = ($('.title').height()) ? $('.title').height() : 0,
-				toh = ($('.toolbar').height()) ? $('.toolbar').height() : 0;
-				
-			return wh - (tih + toh) * 2 - ((corr) ? corr : 0); 			
-		},
-
 		// This function is used, if there is a browser resize, 
 		// or user want's to have max size
 		resizeEditor : function(height) {
@@ -414,7 +402,7 @@ config.formatters.push({
 		},
 
 		calcTextSlices: function (text) {
-			var slices = {};
+			var a = [], slices = {};
 
 			store.slicesRE.lastIndex = 0;
 			var m = store.slicesRE.exec(text);
@@ -424,24 +412,27 @@ config.formatters.push({
 						slices[m[2]] = '';
 					}
 					else if (isNaN(m[3])) {
-						slices[m[2]] = (m[3] in me.helper) ? me.helper[m[3]] : m[3];
+						if (!slices[m[2]]) {
+							slices[m[2]] = (m[3] in me.helper) ? me.helper[m[3]] : m[3];
+						}
+						else {
+							if (typeof(slices[m[2]]) != 'string') {
+								slices[m[2]].push((m[3] in me.helper) ? me.helper[m[3]] : m[3]);
+							}
+							else {
+								a[0] = slices[m[2]];
+								slices[m[2]] = a;
+								slices[m[2]].push((m[3] in me.helper) ? me.helper[m[3]] : m[3]);
+							}
+						}
 					}
 					else {
 						slices[m[2]] = parseFloat(m[3]);
 					}
-				} else {
-					if (m[6] === '') {
-						slices[m[5]] = '';
-					}
-					else if (isNaN(m[6])) {
-						slices[m[5]] = (m[6] in me.helper) ? me.helper[m[6]] : m[6];
-					}
-					else {
-						slices[m[5]] = parseFloat(m[6]);
-					}
 				}
 				m = store.slicesRE.exec(text);
 			}
+			// console.log('slices: ', slices);
 			return slices;
 		},
 
@@ -468,6 +459,7 @@ config.formatters.push({
 			}
 
 			// special handling for functions.
+			// There are only extraKeys addOns at the moment !!
 			var p = ['extraKeys', 'onChange', 'onCursorActivity', 'onGutterClick', 'onFocus', 'onScroll', 'onHighlightComplete', 'onKeyEvent'];
 			var ctca = config.tools.cm.addOns;
 
@@ -475,14 +467,16 @@ config.formatters.push({
 			for (var i = 0, im = p.length; i<im; i += 1) {
 				x = settings[p[i]];
 				if (x) {
-//					settings[p[i]] = (ctca && ctca[x]) ? ctca[x] : null;
-					if (typeof(x) == 'Object') {
-						$.extend(settings[p[i]], ctca[x]);
+					// it's possible to have arrays of addOns 
+					if (typeof(x) == 'object') {
+						settings[p[i]] = {};
+						for (var j = 0; j < x.length; j++) {
+							$.extend(settings[p[i]], (ctca && ctca[x[j]]) ? ctca[x[j]] : null);
+						}
 					} 
 					else { 
 						settings[p[i]] = (ctca && ctca[x]) ? ctca[x] : null;
 					}
-					console.log('settings: ',settings, 'x: ', x, 'ctca[x]: ', ctca[x]);
 				}
 			}
 			return settings;
@@ -505,42 +499,14 @@ config.formatters.push({
 			}
 		},
 
-		toggleMaxHeight: function (ed) {
-			var oldHeight, 
-				$scroll,
-				corr = 25;		// TODO make configurable
-			
-			$scroll = $(ed.getScrollerElement());
-			oH = $scroll.data('oldHeight');
-
-			if (!oH || oH == $scroll.height()) {
-				$scroll.data('oldHeight', $scroll.height());
-				$scroll.height(me.guessMaxHeight(corr));
-				window.scrollTo(0,ensureVisible(ed.getScrollerElement())+1);	// +1 sucks
-			}
-			else {
-				window.scrollTo(0,ensureVisible(ed.getScrollerElement())-1);	// -1 sucks
-				$scroll.height(oH);
-			}
-			ed.refresh();
-		},
-
 		startEditor: function(textArea, cmOptions) {
 			// disable chkInsertTabs
 			var co = config.options;
 
-console.log('options: ',cmOptions);
-
 			if (co.chkInsertTabs) {
 				// whatever user says - TW setting wins ! TODO check/discuss
-				cmOptions.extraKeys = {"Tab": false, "Shift-Tab": false};
+				$.extend(cmOptions.extraKeys, {"Tab": false, "Shift-Tab": false});
 			}
-			else {
-				// don't overwrite existing user configurations.
-				cmOptions.extraKeys = cmOptions.extraKeys;
-			}
-			
-			$.extend(cmOptions.extraKeys, {"F11": me.toggleMaxHeight});
 			
 			var editor = CodeMirror.fromTextArea(textArea[0], cmOptions);
 			$(textArea[0]).data('editor', editor);

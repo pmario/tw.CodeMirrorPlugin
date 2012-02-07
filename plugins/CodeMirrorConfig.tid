@@ -38,6 +38,12 @@ electricChars: false
 // Configures whether the editor should re-indent the current line, when an electric character is typed
 
 extraKeys: smartTab
+// IMPORTANT: chkInsertTabs cookie needs to be _de-activated_ otherwise extraKeys are ignored
+// smartTab .. tab insert tab char. If text is selected tab indent block, shift-tab unindent block  
+// simpleTab .. tab insert tab char. If text is selected, it will bedeleted!
+
+extraKeys: toggleMaxHeight
+// F11 .. maximize editor height
 }}}
 
 !!! null
