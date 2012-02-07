@@ -2,3 +2,5 @@ shadow: CodeMirrorConfig.tid
 tiddler: zCodeMirrorPlugin.js
 tiddler: CodeMirrorPluginInfo.tid
 tiddler: CMEditCommands.js
+tiddler: RenderBuffer.js
+tiddler: ExtraKeys.js

@@ -2,14 +2,14 @@
 |''Name''|zCodeMirrorPlugin|
 |''Description''|Enables syntax highlighting using CodeMirror|
 |''Author''|PMario|
-|''Version''|0.2.4|
+|''Version''|0.2.5|
 |''Status''|''beta''|
 |''Info''|CodeMirrorPluginInfo|
 |''Source''|https://github.com/pmario/tw.CodeMirrorPlugin|
 |''Documentation''|http://codemirror.tiddlyspace.com/|
 |''License''|[[CC-BY-NC-SA|http://creativecommons.org/licenses/by-nc-sa/3.0/]]|
 |''CoreVersion''|2.5.0|
-|''Requires''|codemirror.js|
+|''Requires''|codemirror.js |
 |''Keywords''|syntax highlighting color code mirror codemirror|
 !Documentation
 * Advanced info, see: [[CodeMirrorPluginInfo]]
@@ -65,6 +65,8 @@ Additional options ???????????????????
 ** Too many TODOs 
 !!!! Revision History
 <<<
+* V 0.2.5 2012-02-07
+** 
 * V 0.2.4 2012-01-31
 ** slightly better TAB key handling
 * V 0.2.3 2012-01-11
@@ -82,7 +84,7 @@ see full History at CodeMirrorPluginInfo
 !!!!! {{{<<cmModes>>, <<cmMimes>>, <<cmMimeObjects>>}}}
 ***/
 //{{{
-version.extensions.CodeMirrorPlugin = {major: 0, minor: 2, revision: 4, date: new Date(2012,1,31)};
+version.extensions.CodeMirrorPlugin = {major: 0, minor: 2, revision: 5, date: new Date(2012,2,7)};
 
 (function($) {
 
@@ -350,6 +352,7 @@ config.formatters.push({
 
 })(config.formatters); //# end of alias
 //}}}
+
 /***
 !!!!! CM tools and helper functions 
 ***/
@@ -357,21 +360,9 @@ config.formatters.push({
 (function ($) {
 	var me;
 
-	config.tools = {};
+	if (!config.tools) config.tools = {};
 	config.tools.cm = me = {
 		locale: {
-		},
-
-		// sinze TW layout is very flexible, the actual hight for the editor viewport can be guessed only
-		// formular used: window.height - title.h * 2 - toolbar.h * 2 - correction 
-		// Editor scrolls into position, to be maximum visible.
-		// TODO correction may be given by the user. eg cookie
-		guessMaxHeight: function (corr) {
-			var wh = $(window).height(),
-				tih = ($('.title').height()) ? $('.title').height() : 0,
-				toh = ($('.toolbar').height()) ? $('.toolbar').height() : 0;
-				
-			return wh - (tih + toh) * 2 - ((corr) ? corr : 0); 			
 		},
 
 		// This function is used, if there is a browser resize, 
@@ -411,7 +402,7 @@ config.formatters.push({
 		},
 
 		calcTextSlices: function (text) {
-			var slices = {};
+			var a = [], slices = {};
 
 			store.slicesRE.lastIndex = 0;
 			var m = store.slicesRE.exec(text);
@@ -421,24 +412,27 @@ config.formatters.push({
 						slices[m[2]] = '';
 					}
 					else if (isNaN(m[3])) {
-						slices[m[2]] = (m[3] in me.helper) ? me.helper[m[3]] : m[3];
+						if (!slices[m[2]]) {
+							slices[m[2]] = (m[3] in me.helper) ? me.helper[m[3]] : m[3];
+						}
+						else {
+							if (typeof(slices[m[2]]) != 'string') {
+								slices[m[2]].push((m[3] in me.helper) ? me.helper[m[3]] : m[3]);
+							}
+							else {
+								a[0] = slices[m[2]];
+								slices[m[2]] = a;
+								slices[m[2]].push((m[3] in me.helper) ? me.helper[m[3]] : m[3]);
+							}
+						}
 					}
 					else {
 						slices[m[2]] = parseFloat(m[3]);
 					}
-				} else {
-					if (m[6] === '') {
-						slices[m[5]] = '';
-					}
-					else if (isNaN(m[6])) {
-						slices[m[5]] = (m[6] in me.helper) ? me.helper[m[6]] : m[6];
-					}
-					else {
-						slices[m[5]] = parseFloat(m[6]);
-					}
 				}
 				m = store.slicesRE.exec(text);
 			}
+			// console.log('slices: ', slices);
 			return slices;
 		},
 
@@ -465,14 +459,24 @@ config.formatters.push({
 			}
 
 			// special handling for functions.
-			var p = ['onChange', 'onCursorActivity', 'onGutterClick', 'onFocus', 'onScroll', 'onHighlightComplete', 'onKeyEvent'];
+			// There are only extraKeys addOns at the moment !!
+			var p = ['extraKeys', 'onChange', 'onCursorActivity', 'onGutterClick', 'onFocus', 'onScroll', 'onHighlightComplete', 'onKeyEvent'];
 			var ctca = config.tools.cm.addOns;
 
 			var x;
 			for (var i = 0, im = p.length; i<im; i += 1) {
 				x = settings[p[i]];
 				if (x) {
-					settings[p[i]] = (ctca && ctca[x]) ? ctca[x] : null;
+					// it's possible to have arrays of addOns 
+					if (typeof(x) == 'object') {
+						settings[p[i]] = {};
+						for (var j = 0; j < x.length; j++) {
+							$.extend(settings[p[i]], (ctca && ctca[x[j]]) ? ctca[x[j]] : null);
+						}
+					} 
+					else { 
+						settings[p[i]] = (ctca && ctca[x]) ? ctca[x] : null;
+					}
 				}
 			}
 			return settings;
@@ -495,48 +499,14 @@ config.formatters.push({
 			}
 		},
 
-		toggleMaxHeight: function (ed) {
-			var oldHeight, 
-				$scroll,
-				corr = 25;		// TODO make configurable
-			
-			$scroll = $(ed.getScrollerElement());
-			oH = $scroll.data('oldHeight');
-
-			if (!oH || oH == $scroll.height()) {
-				$scroll.data('oldHeight', $scroll.height());
-				$scroll.height(me.guessMaxHeight(corr));
-				window.scrollTo(0,ensureVisible(ed.getScrollerElement())+1);	// +1 sucks
-			}
-			else {
-				window.scrollTo(0,ensureVisible(ed.getScrollerElement())-1);	// -1 sucks
-				$scroll.height(oH);
-			}
-			ed.refresh();
-		},
-
 		startEditor: function(textArea, cmOptions) {
 			// disable chkInsertTabs
 			var co = config.options;
 
 			if (co.chkInsertTabs) {
 				// whatever user says - TW setting wins ! TODO check/discuss
-				cmOptions.extraKeys = {"Tab": false, "Shift-Tab": false};
+				$.extend(cmOptions.extraKeys, {"Tab": false, "Shift-Tab": false});
 			}
-			else {
-				// don't overwrite existing user configurations.
-				if (!cmOptions.extraKeys) {
-					cmOptions.extraKeys = { "Tab" : function(instance) {
-								if (instance.somethingSelected())
-									CodeMirror.commands.indentMore(instance);
-								else
-									CodeMirror.commands.insertTab(instance);
-							}
-					}; // cmOptions
-				}; // if
-			}
-			
-			$.extend(cmOptions.extraKeys, {"F11": me.toggleMaxHeight});
 			
 			var editor = CodeMirror.fromTextArea(textArea[0], cmOptions);
 			$(textArea[0]).data('editor', editor);
