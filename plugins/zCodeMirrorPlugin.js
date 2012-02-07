@@ -2,7 +2,7 @@
 |''Name''|zCodeMirrorPlugin|
 |''Description''|Enables syntax highlighting using CodeMirror|
 |''Author''|PMario|
-|''Version''|0.2.4|
+|''Version''|0.2.5|
 |''Status''|''beta''|
 |''Info''|CodeMirrorPluginInfo|
 |''Source''|https://github.com/pmario/tw.CodeMirrorPlugin|
@@ -65,6 +65,8 @@ Additional options ???????????????????
 ** Too many TODOs 
 !!!! Revision History
 <<<
+* V 0.2.5 2012-02-07
+** 
 * V 0.2.4 2012-01-31
 ** slightly better TAB key handling
 * V 0.2.3 2012-01-11
@@ -82,7 +84,7 @@ see full History at CodeMirrorPluginInfo
 !!!!! {{{<<cmModes>>, <<cmMimes>>, <<cmMimeObjects>>}}}
 ***/
 //{{{
-version.extensions.CodeMirrorPlugin = {major: 0, minor: 2, revision: 4, date: new Date(2012,1,31)};
+version.extensions.CodeMirrorPlugin = {major: 0, minor: 2, revision: 5, date: new Date(2012,2,7)};
 
 (function($) {
 

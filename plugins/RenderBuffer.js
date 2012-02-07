@@ -1,19 +1,31 @@
 /***
 |''Name''|RenderBufferPlugin|
-|''Description''||
+|''Description''|Transcludes text from a tiddler, specified by line number and number of lines. |
 |''Author''|PMario|
 |''Version''|0.0.1|
 |''Status''|@@experimental@@|
 |''Source''||
 |''License''|[[CC by-nc-sa 3.0|http://creativecommons.org/licenses/by-nc-sa/3.0/]]|
 |''CoreVersion''|2.5.0|
-|''Keywords''|render wikify buffer tiddler|
+|''Keywords''|render wikify buffer tiddler transclusion|
 !Documentation
 <<<
 ..
 <<<
 !!!Usage
-..
+{{{
+<<renderBuffer text:'!!! heading\nSomeText'>>
+}}}
+<<renderBuffer text:'!!! heading\nSomeText'>>
+
+{{{
+<<renderBuffer tiddler:RenderBufferPlugin find:'!Doc' next:'!+ ?Usage'>>
+}}}
+<<renderBuffer tiddler:RenderBufferPlugin find:'!Doc' next:'!+ ?Usage'>>
+
+
+
+', 'tiddler', 'start', 'lines', 'find', 'next', 'id', 'button'
 <<<
 ***/
 //{{{
@@ -121,9 +133,10 @@ version.extensions.RenderBufferPlugin = {
 
 			tmp = conf.text.split('\n');
 			iMax = (tmp.length >= conf.lines) ? conf.lines : tmp.length;
-
+console.log('tmp: ', tmp, conf.text);
 			if (conf.find) {
-
+				// TODO may be remove special handling and move this to documentation
+				// <<renderBuffer find:"!(?=[^!])" should do it as well. Is difficult for users :(
 				if (conf.find      === '!')      regStart = new RegExp('^!(?=[^!])', 'im')
 				else if (conf.find === '!!')     regStart = new RegExp('^!!(?=[^!])', 'im')
 				else if (conf.find === '!!!')    regStart = new RegExp('^!!!(?=[^!])', 'im')
@@ -145,6 +158,7 @@ version.extensions.RenderBufferPlugin = {
 					match = tmp[i].match(regStart);
 					if (match != null) {
 						conf.start = i;
+						// set iMax to conf.lines. It will be recalculated if conf.next exists
 						iMax = conf.lines;// iMax - i;
 						i += 1;
 						break;
