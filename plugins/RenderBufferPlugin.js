@@ -2,8 +2,8 @@
 |''Name''|RenderBufferPlugin|
 |''Description''|Transcludes text from a tiddler, specified by line number and number of lines. |
 |''Author''|PMario|
-|''Version''|0.1.0|
-|''Status''|''beta''|
+|''Version''|0.0.1|
+|''Status''|@@experimental@@|
 |''Source''|http://codemirror-plugins.tiddlyspace.com/#RenderBuffer.js|
 |''License''|[[CC by-nc-sa 3.0|http://creativecommons.org/licenses/by-nc-sa/3.0/]]|
 |''CoreVersion''|2.5.0|
@@ -28,8 +28,8 @@ SomeText'>>
 <<<
 !!! History
 <<<
-* V 0.1.0 - 2012.02.14
-** initial release
+* V 0.0.1 - 2012.02.14
+** alpha release
 <<<
 !!! Code
 ***/
