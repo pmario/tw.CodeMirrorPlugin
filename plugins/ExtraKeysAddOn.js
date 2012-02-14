@@ -2,18 +2,30 @@
 |''Name''|ExtraKeysAddOn|
 |''Description''|This AddOn contains the extra key handling for zCodeMirrorPlugin|
 |''Author''|PMario|
-|''Version''|0.0.1|
-|''Status''|@@experimental@@|
-|''Source''||
+|''Version''|0.1.0|
+|''Status''|''beta''|
+|''Source''|http://codemirror-plugins.tiddlyspace.com/#RenderBuffer.js|
 |''License''|[[CC by-nc-sa 3.0|http://creativecommons.org/licenses/by-nc-sa/3.0/]]|
 |''CoreVersion''|2.5.0|
 |''Keywords''|TAB key handling |
-!Documentation
+! Documentation
 <<<
-..
+This addOn needs to be used together with [[zCodeMirrorPlugin]]. It contains:
+* simpleTab
+** If TAB key is pressed, it just inserts a tab. 
+** If some text is selected the text will be deleted and a tab will be inserted.
+* smartTab
+** If no text is selected it inserts a tab.
+** If some text or some lines are selected the selected lines will be indented by one tab.
+** If text is selected <shift><tab> will unindent the selected lines. This behaviour is preferred, for programming.
+* Using {{{simpleTab}}} or {{{smartTab}}} can be configured at CodeMirrorConfig tiddler.
+** Default is .. {{{ extraKeys: smartTab }}}
+* <F11> key toggles the editor height.
 <<<
-!!!Usage
+! Important
 <<<
+The option {{{chkInsertTabs}}} needs to be ''unchecked'' to use {{{smartTab}}} handling.
+<<option chkInsertTabs>> {{{chkInsertTabs}}} Use the tab key to insert tab characters instead of moving between fields.
 <<<
 ***/
 //{{{

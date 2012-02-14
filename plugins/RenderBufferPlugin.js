@@ -4,7 +4,7 @@
 |''Author''|PMario|
 |''Version''|0.0.1|
 |''Status''|@@experimental@@|
-|''Source''||
+|''Source''|http://codemirror-plugins.tiddlyspace.com/#RenderBuffer.js|
 |''License''|[[CC by-nc-sa 3.0|http://creativecommons.org/licenses/by-nc-sa/3.0/]]|
 |''CoreVersion''|2.5.0|
 |''Keywords''|render wikify buffer tiddler transclusion|
@@ -12,29 +12,34 @@
 <<<
 ..
 <<<
-!!!Usage
-{{{
-<<renderBuffer text:'!!! heading\nSomeText'>>
-}}}
-<<renderBuffer text:'!!! heading\nSomeText'>>
-
-{{{
-<<renderBuffer tiddler:RenderBufferPlugin find:'!Doc' next:'!+ ?Usage'>>
-}}}
-<<renderBuffer tiddler:RenderBufferPlugin find:'!Doc' next:'!+ ?Usage'>>
-
-
-
-', 'tiddler', 'start', 'lines', 'find', 'next', 'id', 'button'
+!!! Usage
 <<<
+{{{
+<<renderBuffer text:'!!! heading
+SomeText'>>
+}}}
+<<renderBuffer text:'!!! heading
+SomeText'>>
+
+{{{
+<<renderBuffer tiddler:RenderBufferPlugin find:'!Doc' next:'!+ ?Usage'>>
+}}}
+<<renderBuffer tiddler:RenderBufferPlugin find:'!Doc' next:'!+ ?Usage'>>
+<<<
+!!! History
+<<<
+* V 0.0.1 - 2012.02.14
+** alpha release
+<<<
+!!! Code
 ***/
 //{{{
 
 version.extensions.RenderBufferPlugin = {
 	major: 0,
-	minor: 0,
-	revision: 1,
-	date: new Date(2012, 2, 6)
+	minor: 1,
+	revision: 0,
+	date: new Date(2012, 2, 14)
 };
 
 (function ($) {
@@ -90,7 +95,7 @@ version.extensions.RenderBufferPlugin = {
 			// BUT initValue will overwrite me.defaults! code line above
 			me.paramsToObject(conf, names, params);
 
-            conf.place = place;        // place will be needed to find the containing element.
+			conf.place = place;        // place will be needed to find the containing element.
 			
 			// ============================================================================
 			// from here on, you can work with your "conf" object, that contains the params.
@@ -133,7 +138,7 @@ version.extensions.RenderBufferPlugin = {
 
 			tmp = conf.text.split('\n');
 			iMax = (tmp.length >= conf.lines) ? conf.lines : tmp.length;
-console.log('tmp: ', tmp, conf.text);
+// console.log('tmp: ', tmp, conf.text);
 			if (conf.find) {
 				// TODO may be remove special handling and move this to documentation
 				// <<renderBuffer find:"!(?=[^!])" should do it as well. Is difficult for users :(
@@ -192,3 +197,5 @@ console.log('tmp: ', tmp, conf.text);
 })(jQuery);
 
 //}}}
+
+

@@ -11,16 +11,16 @@
 |''CoreVersion''|2.5.0|
 |''Requires''|codemirror.js |
 |''Keywords''|syntax highlighting color code mirror codemirror|
-!Documentation
-* Advanced info, see: [[CodeMirrorPluginInfo]]
-!Description
+! Documentation
+* Full info, see: [[CodeMirrorPluginInfo]]
+! Description
 Enables syntax highlighting for <pre> and <code> blocks. Adds a new formatter for {{{<code class='???'>}}} 
-!Usage
-!!!!StyleSheet
+! Usage
+!!!! StyleSheet
 <<<
 * The plugin automatically creates a shadow tiddler: StyleSheetCodeMirror, that can be adjusted to your needs.
 <<<
-!!!!Macros
+!!!! Macros
 Modes: {{{<<cmModes>>}}} ... displays the usable modes seen below
 <<<
 Modes: <<cmModes>>
@@ -37,17 +37,17 @@ MIMEs: {{{<<cmMimeObjects>>}}} ... displays the usable mime types seen below. Sa
 <<<
 * Have a look at: [[CodeMirrorConfig]]
 <<<
-!!!!ViewTemplate
+!!!! ViewTemplate
 <<<
 * Same as macro, but will be executed automatically for every tiddler. see: [[CodeMirrorPluginInfo]]
 <<<
-!!!!Parameters
+!!!! Parameters
 <<<
 {{{<<highlightSyntax [tagName]>> }}}
 * will render all blocks, with any defined tag name. eg: tagName = {{{code}}}.
 * [tagName] is optional. Default is "pre".
 <<<
-!!!!Configuration options
+!!!! Configuration options
 <<<
 Guess syntax: <<option chkGuessSyntax>> .. If activated, ~TiddlyWiky <pre> blocks will be rendered according to there block braces. see [[CodeMirrorInfo]]
 Expert mode: <<option chkExpertSyntax>> .. If activated, additional values below will be used. see [[CodeMirrorInfo]]
@@ -57,29 +57,25 @@ Expert mode: <<option chkExpertSyntax>> .. If activated, additional values below
 {{{ //{{{ }}} txtShPlugin: <<option txtShPlugin>> 'brush:javascript'
 {{{ <!--{{{-->> }}} txtShXml: <<option txtShXml>> 'brush:xml'
 
-Additional options ???????????????????
+Additional options
 <<<
 !!!! Known Issues
 * Theme switching not supported yet
-* Code can be optimized
 ** Too many TODOs 
 !!!! Revision History
 <<<
 * V 0.2.5 2012-02-07
-** 
-* V 0.2.4 2012-01-31
-** slightly better TAB key handling
-* V 0.2.3 2012-01-11
-** renames everything codemirror2 -> codemirror
-** Toggle max height mode implemented hardcoded key: 'F11'
+** update codemirror library to v2.21 including all "support" libraries.
+** TAB key handling improved. Extra keys handling moved to ExtraKeysAddOn
+** F11 toggle editor height moved to ExtraKeysAddOn.
 * V 0.1.0 2011-09-07
 ** inital release
 see full History at CodeMirrorPluginInfo
 <<<
-!!!!ToDo
+!!!! ToDo
 <<<
 <<<
-!!!Code
+!!! Code
 
 !!!!! {{{<<cmModes>>, <<cmMimes>>, <<cmMimeObjects>>}}}
 ***/
