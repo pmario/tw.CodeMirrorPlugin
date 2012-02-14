@@ -50,6 +50,7 @@ help:
 	@echo "make getall .... load all dependencies from internet"
 	@echo "make test ...... creates tests.html"
 	@echo "make upstream .. creates a working upstream.html"
+	@echo "make vanilla ... create an empty vanilla.html"
 	@echo ""
 	@echo "make distall ...... calls the next three dist.."
 	@echo "make distcm ....... uploads documentation to codemirror.tiddyspace.com"
@@ -58,6 +59,8 @@ help:
 	@echo ""
 	@echo "make commited ..... create all the *.list files to use **make distgit**"
 	@echo "make distgit ...... uploads files, that have been recently commited to git."
+	@echo ""
+	@echo "make dropbox ... copy upstream.html to public dropbox folder."
 	@echo ""
 	@echo "make clean ..... remove all auto generated stuff"
 
