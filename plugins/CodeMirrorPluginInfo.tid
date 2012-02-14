@@ -1,5 +1,6 @@
 modifier: PMario
 tags: cmtw
+content-type: text/x-tiddlywiki
 
 |''Name''|CodeMirrorPluginInfo|
 |''Description''|Documentation for [[zCodeMirrorPlugin]]|
@@ -8,9 +9,12 @@ tags: cmtw
 |''Documentation''|http://codemirror.tiddlyspace.com/|
 |''License''|see: [[zCodeMirrorPlugin]]|
 |''Keywords''|editro syntax highlighting color code|
-!Usage
+!Documentation
+
 !!!! Macros
 <<<
+The plugin contains some additional macros, to get an overview, which modes are activated.
+
 Modes: {{{<<cmModes>>}}} ... displays the usable modes seen below.
 > Modes: <<cmModes>>
 MIMEs: {{{<<cmMimes>>}}} ... displays the usable mime types seen below. Same order as modes.
@@ -18,8 +22,8 @@ MIMEs: {{{<<cmMimes>>}}} ... displays the usable mime types seen below. Same ord
 <<<
 !!!! Global Settings
 <<<
-* <<option chkInsertTab>>chkInsertTab option cookie ''should be disabled'' to use CM key-handling. If {{{chkInsertTab}}} is active, keyhandling is hardcoded. {{{extraKeys}}} settings in CodeMirrorConfig are ignored.
-* Have a look at: CodeMirrorConfig
+* <<option chkInsertTab>>chkInsertTab option cookie ''should be disabled'' to use CM key-handling. If {{{chkInsertTab}}} is active, keyhandling is hardcoded. {{{extraKeys}}} settings in CodeMirrorConfig are ignored. 
+* Learn more at ExtraKeysAddOn plugin. 
 <<<
 !!!! StyleSheet
 <<<
@@ -180,8 +184,15 @@ All possible "brushes" can be found at: [[CodeMirror homepage|http://codemirror.
 <<<
 !!! Revision History
 <<<
+* V 0.2.5 2012-02-07
+** update codemirror library to v2.21 including all "support" libraries.
+** TAB key handling improved. Extra keys handling moved to ExtraKeysAddOn
+** F11 toggle editor height moved to ExtraKeysAddOn.
+* V 0.2.4 2012-01-31
+** slightly better TAB key handling. Internal testing only
 * V 0.2.3 2012-01-11
-** renames everything from codemirror2 -> codemirror
+** renames everything codemirror2 -> codemirror
+** Toggle max height mode implemented hardcoded key: 'F11'
 * V 0.2.1 2012-01-10
 ** Toggle max height mode implemented hardcoded key: 'F11'
 * V 0.2.0 2011-10-23
@@ -197,5 +208,6 @@ All possible "brushes" can be found at: [[CodeMirror homepage|http://codemirror.
 * V 0.1.0 2011-09-07
 ** inital release
 <<<
+
 
 
