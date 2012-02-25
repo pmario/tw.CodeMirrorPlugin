@@ -1,13 +1,2 @@
 recipe: ../../tiddlywiki/tiddlywiki.html.recipe
-recipe: lib/split.recipe
-recipe: plugins/split.recipe
-recipe: upstream/themes/split.recipe
-recipe: upstream/shadows/split.recipe
-
-tiddler: upstream/plugins/FieldsEditorPlugin.js
-tiddler: upstream/plugins/SimpleSearchPlugin.js
-
-tiddler: upstream/content/ToolbarCommands.tid
-tiddler: upstream/content/ViewTemplate.tid
-tiddler: upstream/content/EditTemplate.tid
-
+recipe: cmbasics.html.recipe
