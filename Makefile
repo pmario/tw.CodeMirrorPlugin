@@ -25,7 +25,7 @@ CM_LIST=      `cat cm.list`
 
 #CM_TAG = master
 
-CM_TAG = v2.21
+CM_TAG = v2.22
 CM_RAW = https://raw.github.com/marijnh/CodeMirror2
 CM_LIB_DIR =   $(CM_RAW)/$(CM_TAG)/lib
 CM_MODE_DIR =  $(CM_RAW)/$(CM_TAG)/mode
@@ -118,7 +118,7 @@ libs.list:
 	ls -C1 lib | awk '{print "lib/"$$1}' > names.list
 
 	egrep -o 'lib/.*(\.js|\.svg|\.tid|\.tiddler)$$' names.list > libs.list
-	@echo ""git 
+	@echo ""
 	cat libs.list
 
 distall: distcm distplugins distlibs
@@ -195,6 +195,7 @@ getmodes: getlibs copymode
 	curl -o "tmp/xml.js"        $(CM_MODE_DIR)/xml/xml.js
 
 copymode:
+	cp ../../../CodeMirror2/lib/util/runmode.js tmp/runmode.js
 	cp ../../../CodeMirror2/mode/tiddlywiki/tiddlywiki.js tmp/tiddlywiki.js
 	cp ../../../CodeMirror2/mode/tiddlywiki/tiddlywiki.css tmp/tiddlywiki.css
 
