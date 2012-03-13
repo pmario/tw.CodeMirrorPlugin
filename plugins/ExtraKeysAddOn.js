@@ -2,7 +2,7 @@
 |''Name''|ExtraKeysAddOn|
 |''Description''|This AddOn contains the extra key handling for zCodeMirrorPlugin|
 |''Author''|PMario|
-|''Version''|0.1.1|
+|''Version''|0.1.2|
 |''Status''|''beta''|
 |''Source''|http://codemirror-plugins.tiddlyspace.com/#RenderBuffer.js|
 |''License''|[[CC by-nc-sa 3.0|http://creativecommons.org/licenses/by-nc-sa/3.0/]]|
@@ -29,8 +29,9 @@ The option {{{chkInsertTabs}}} needs to be ''unchecked'' to use {{{smartTab}}} h
 <<<
 ! History
 <<<
-* V 0.1.1 2012-03-13
+* V 0.1.2 2012-03-13
 ** Added functions to make editor height persistent.
+** + bug fixes introduce with V 0.1.1
 <<<
 ***/
 //{{{
@@ -82,11 +83,11 @@ if (!config.tools.cm.addOns) config.tools.cm.addOns = {};
 			if (!oH || oH == $scroll.height()) {
 				$scroll.data('oldHeight', $scroll.height());
 				$scroll.height(config.tools.cm.guessMaxHeight(corr));
-				window.scrollTo(0,ensureVisible(ed.getScrollerElement())+1);	// +1 sucks
+				window.scrollTo(0,ensureVisible(ed.getScrollerElement())+1); // +1 sucks but I want to see the border!
 				cmHeight = 'max';
 			}
 			else {
-				window.scrollTo(0,ensureVisible(ed.getScrollerElement())-1);	// -1 sucks
+				window.scrollTo(0,ensureVisible(ed.getScrollerElement())-1); // -1 sucks
 				$scroll.height(oH);
 				cmHeight = 'min';
 			}

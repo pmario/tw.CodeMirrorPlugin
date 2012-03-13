@@ -2,7 +2,7 @@
 |''Name''|zCodeMirrorPlugin|
 |''Description''|Enables syntax highlighting using CodeMirror|
 |''Author''|PMario|
-|''Version''|0.2.6|
+|''Version''|0.2.7|
 |''Status''|''stable''|
 |''Info''|CodeMirrorPluginInfo|
 |''Source''|https://github.com/pmario/tw.CodeMirrorPlugin|
@@ -64,8 +64,8 @@ Additional options
 ** Too many TODOs 
 !!!! Revision History
 <<<
-* V 0.2.6 2012-03-13
-** Added functions to make editor height persistent.
+* V 0.2.7 2012-03-13
+** Editor refresh fixed, TypeChooser height fixed.
 * V 0.1.0 2011-09-07
 ** inital release
 see full History at CodeMirrorPluginInfo
@@ -161,7 +161,7 @@ config.macros.typeChooser.onTypeClick = function(ev)
 		mode;
 
 	// TODO doesn't seem to be right here. 
-	// SyntaxHL change should work in read only too, for demo purpose. TODO
+	// SyntaxHL change should work in read only too, for demo purpose.
 	if(!readOnly) {		
 			// read actual global configuraiton
 			config.tools.cm.init();
@@ -188,10 +188,20 @@ config.macros.typeChooser.onTypeClick = function(ev)
 			if (editor) $(editor.getWrapperElement()).remove();
 
 			mode = cm.getModeObject(type);
-	
+
 			$.extend( cmOptions, conf['global']);
 			$.extend( cmOptions, conf[mode.name]);
 			$.extend( cmOptions.mode, mode);	// IMPORTANT overwrite mode, because it may be an object !!
+
+			var tid = store.getTiddler(title);
+			var cmField = story.hasTiddlerField(title, 'cm.height');
+			// if there is a cmField it will win, because there may be a new setting.
+			if (cmField) {
+				$.extend(cmOptions, {cmHeight: cmField.getAttribute('value')});
+			}
+			else if (tid && tid.fields['cm.height']) {
+				$.extend(cmOptions, {cmHeight: tid.fields['cm.height']});
+			} // TODO this code is used several times -> refactoring needed
 			
 			cm.startEditor(text, cmOptions);					
 	}
@@ -511,7 +521,7 @@ config.formatters.push({
 			var co = config.options;
 
 			if (co.chkInsertTabs) {
-				// whatever user says - TW setting wins ! TODO check/discuss
+				// it's better to disalbe this option. see: smartTab mode.
 				$.extend(cmOptions.extraKeys, {"Tab": false, "Shift-Tab": false});
 			}
 			
@@ -522,6 +532,8 @@ config.formatters.push({
 				height = config.tools.cm.guessMaxHeight(25); // TODO 25 should be an option. 
 			}
 			config.tools.cm.resizeEditor(height);
+			editor.focus();
+			editor.refresh();
 		}
 
 	}; // end plugin
