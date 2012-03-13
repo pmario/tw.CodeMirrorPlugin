@@ -6,6 +6,11 @@ tags: default mainMenu cmInfo
 * Realtime highlighting in edit mode for {{{tiddlywiki, javascript, css, html, xml, python}}} syntax.
 ** Other modes are possible too. 
 * F11 toggles editor height.
+** This setting is persistent. So if the tiddler is opened again, it will be set to "max" or "min".
+* smart tab handling.
+** <tab> key inserts a tab character
+** If some text/lines are selected it indents the block.
+*** <shift><tab> unindents the block.
 ! Info
 * This is the presentation space of the TiddlyWiki implementaion of CodeMirror Library. »The in-browser code editing library«
 * @codemirror-plugin space contains all plugins needed. 
@@ -46,4 +51,5 @@ The following tiddlers are used to test the edit mode identification process
 * [[testContentType]] .. toolbar command: more: fields shows the content-type field 
 * [[testServerContentType]]  .. toolbar command: more: fields shows the server.content-type field
 * The tag has the highest priority.
+
 
