@@ -2,8 +2,8 @@
 |''Name''|zCodeMirrorPlugin|
 |''Description''|Enables syntax highlighting using CodeMirror|
 |''Author''|PMario|
-|''Version''|0.2.5|
-|''Status''|''beta''|
+|''Version''|0.2.6|
+|''Status''|''stable''|
 |''Info''|CodeMirrorPluginInfo|
 |''Source''|https://github.com/pmario/tw.CodeMirrorPlugin|
 |''Documentation''|http://codemirror.tiddlyspace.com/|
@@ -64,10 +64,8 @@ Additional options
 ** Too many TODOs 
 !!!! Revision History
 <<<
-* V 0.2.5 2012-02-07
-** update codemirror library to v2.21 including all "support" libraries.
-** TAB key handling improved. Extra keys handling moved to ExtraKeysAddOn
-** F11 toggle editor height moved to ExtraKeysAddOn.
+* V 0.2.6 2012-03-13
+** Added functions to make editor height persistent.
 * V 0.1.0 2011-09-07
 ** inital release
 see full History at CodeMirrorPluginInfo
@@ -360,13 +358,25 @@ config.formatters.push({
 	config.tools.cm = me = {
 		locale: {
 		},
-
+		
+		// since TW layout is very flexible, the actual hight for the editor viewport can be guessed only
+		// formular used: window.height - title.h * 2 - toolbar.h * 2 - correction 
+		// Editor scrolls into position, to be maximum visible.
+		// TODO correction may be given by the user. eg cookie
+		guessMaxHeight: function (corr) {
+			var wh = $(window).height(),
+				tih = ($('.title').height()) ? $('.title').height() : 0,
+				toh = ($('.toolbar').height()) ? $('.toolbar').height() : 0;
+				
+			return wh - (tih + toh) * 2 - ((corr) ? corr : 0); 			
+		},
+		
 		// This function is used, if there is a browser resize, 
 		// or user want's to have max size
 		resizeEditor : function(height) {
 			var $cm =  $('.CodeMirror');
 			$cm.width($cm.closest('.editor').width());
-			if (height) { $cm.height(height)};
+			if (height) { $cm.find('.CodeMirror-scroll').height(height)};
 		},
 		
 		listMimeNames: function() {
@@ -497,6 +507,7 @@ config.formatters.push({
 
 		startEditor: function(textArea, cmOptions) {
 			// disable chkInsertTabs
+			var height =  null;
 			var co = config.options;
 
 			if (co.chkInsertTabs) {
@@ -506,7 +517,11 @@ config.formatters.push({
 			
 			var editor = CodeMirror.fromTextArea(textArea[0], cmOptions);
 			$(textArea[0]).data('editor', editor);
-			config.tools.cm.resizeEditor();
+			if (cmOptions.cmHeight == 'max') {
+				$(editor.getScrollerElement()).data('oldHeight', $(editor.getScrollerElement()).height());
+				height = config.tools.cm.guessMaxHeight(25); // TODO 25 should be an option. 
+			}
+			config.tools.cm.resizeEditor(height);
 		}
 
 	}; // end plugin

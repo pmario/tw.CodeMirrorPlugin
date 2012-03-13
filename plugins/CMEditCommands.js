@@ -1,8 +1,8 @@
 /***
 |''Name''|CMEditCommands|
 |''Description''|Opens a tiddler in edit mode and starts CodeMirror editor.|
-|''Version''|0.1.1|
-|''Date''|2012-01-11|
+|''Version''|0.1.2|
+|''Date''|2012-03-13|
 |''Status''|''beta''|
 |''Source''|https://github.com/pmario/tw.CodeMirrorPlugin|
 |''License''|CC-BY-SA|
@@ -17,7 +17,13 @@ eg:
 |~ViewToolbar|tagSearch cmEdit +editTiddler  ...
 }}}
 <<<
-
+!!! History
+<<<
+* V 0.1.2 2012-03-13
+** Added functions to make editor height persistent.
+* V 0.1.1 
+** Initial release
+<<<
 !!!Code
 ***/
 //{{{
@@ -108,6 +114,9 @@ config.commands.cmEdit.handler = function(event,src,title)
 				}					
 			} // if 
 		} // for
+		if (tid.fields['cm.height']) {
+			jQuery.extend(cmOptions, {cmHeight: tid.fields['cm.height']});
+		}
 	} // if tid
 	
 	// if no mode was found, init with null -> text/plain

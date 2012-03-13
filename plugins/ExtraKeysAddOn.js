@@ -2,7 +2,7 @@
 |''Name''|ExtraKeysAddOn|
 |''Description''|This AddOn contains the extra key handling for zCodeMirrorPlugin|
 |''Author''|PMario|
-|''Version''|0.1.0|
+|''Version''|0.1.1|
 |''Status''|''beta''|
 |''Source''|http://codemirror-plugins.tiddlyspace.com/#RenderBuffer.js|
 |''License''|[[CC by-nc-sa 3.0|http://creativecommons.org/licenses/by-nc-sa/3.0/]]|
@@ -27,6 +27,11 @@ This addOn needs to be used together with [[zCodeMirrorPlugin]]. It contains:
 The option {{{chkInsertTabs}}} needs to be ''unchecked'' to use {{{smartTab}}} handling.
 <<option chkInsertTabs>> {{{chkInsertTabs}}} Use the tab key to insert tab characters instead of moving between fields.
 <<<
+! History
+<<<
+* V 0.1.1 2012-03-13
+** Added functions to make editor height persistent.
+<<<
 ***/
 //{{{
 
@@ -37,42 +42,62 @@ version.extensions.ExtraKeyAddOns = {
 	date: new Date(2012, 2, 7)
 };
 
+// Returns the specified field (input or textarea element) in a tiddler
+// or null if it found no field 
+Story.prototype.hasTiddlerField = function(title,field)
+{
+	var tiddlerElem = this.getTiddler(title);
+	var e = null;
+	if(tiddlerElem) {
+		var t,children = tiddlerElem.getElementsByTagName("*");
+		for(t=0; t<children.length; t++) {
+			var c = children[t];
+			if(c.tagName.toLowerCase() == "input" || c.tagName.toLowerCase() == "textarea") {
+				if(c.getAttribute("edit") == field)
+					e = c;
+			}
+		}
+	}
+	return e;
+};
+
 if (!config.tools) config.tools = {};
 if (!config.tools.cm) config.tools.cm = {};
 if (!config.tools.cm.addOns) config.tools.cm.addOns = {};
 
 (function ($) {
+
     var me;
 	config.tools.cm.addOns.toggleMaxHeight = me = {
 
-		// sinze TW layout is very flexible, the actual hight for the editor viewport can be guessed only
-		// formular used: window.height - title.h * 2 - toolbar.h * 2 - correction 
-		// Editor scrolls into position, to be maximum visible.
-		// TODO correction may be given by the user. eg cookie
-		guessMaxHeight: function (corr) {
-			var wh = $(window).height(),
-				tih = ($('.title').height()) ? $('.title').height() : 0,
-				toh = ($('.toolbar').height()) ? $('.toolbar').height() : 0;
-				
-			return wh - (tih + toh) * 2 - ((corr) ? corr : 0); 			
-		},
-
-		F11: function (ed) {
+		F11: function (ed) {		
 			var oldHeight, 
 				$scroll,
+				tidEl = story.findContainingTiddler(ed.getWrapperElement()),
+				cmHeight,
 				corr = 25;		// TODO make configurable
-		
+
 			$scroll = $(ed.getScrollerElement());
 			oH = $scroll.data('oldHeight');
-
 			if (!oH || oH == $scroll.height()) {
 				$scroll.data('oldHeight', $scroll.height());
-				$scroll.height(me.guessMaxHeight(corr));
+				$scroll.height(config.tools.cm.guessMaxHeight(corr));
 				window.scrollTo(0,ensureVisible(ed.getScrollerElement())+1);	// +1 sucks
+				cmHeight = 'max';
 			}
 			else {
 				window.scrollTo(0,ensureVisible(ed.getScrollerElement())-1);	// -1 sucks
 				$scroll.height(oH);
+				cmHeight = 'min';
+			}
+			var title = tidEl.getAttribute('tiddler');
+
+			var f = story.hasTiddlerField(title,'cm.height'); 
+			if (!f ) {
+				story.addCustomFields(tidEl, 'cm.height:'+cmHeight);
+			}
+			else {
+				f.setAttribute('value', cmHeight);		
 			}
 			ed.refresh();
 		}
