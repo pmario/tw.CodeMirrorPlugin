@@ -184,6 +184,8 @@ All possible "brushes" can be found at: [[CodeMirror homepage|http://codemirror.
 <<<
 !!! Revision History
 <<<
+* V 0.2.6 2012-03-13
+** Added functions to make editor height persistent.
 * V 0.2.5 2012-02-07
 ** update codemirror library to v2.21 including all "support" libraries.
 ** TAB key handling improved. Extra keys handling moved to ExtraKeysAddOn
