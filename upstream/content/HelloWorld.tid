@@ -2,20 +2,15 @@ modifier: PMario
 modified: 201110051200
 tags: default mainMenu cmInfo
 
-! Info
-* This is the presentation space of the TiddlyWiki implementaion of CodeMirror Library. »The in-browser code editing library«
-* codemirror-plugin space contains all plugins needed. 
-** [[zCodeMirrorPlugin]] .. wraps the CodeMirror library into TW.
-** CMEditCommands .. creates the "cmEdit" and "cmSave" toolbar buttons.
-* Read CodeMirrorPluginInfo to get more information about the possibilities.
-* Feedback is very welcome at [[TiddlyWiki group|TWGroup]]
 ! Features
 * Realtime highlighting in edit mode for {{{tiddlywiki, javascript, css, html, xml, python}}} syntax.
 ** Other modes are possible too. 
 * F11 toggles editor height.
-! It's still beta
-* ''But I don't wanna miss it :)''
-* I use the plugins with my [[pmario space|http://pmario.tiddlyspace.com]], for several months now.
+! Info
+* This is the presentation space of the TiddlyWiki implementaion of CodeMirror Library. »The in-browser code editing library«
+* @codemirror-plugin space contains all plugins needed. 
+* Read CodeMirrorPluginInfo to get more information about the possibilities.
+* Feedback is very welcome at [[TiddlyWiki group|TWGroup]]
 ! ~ToolbarCommands
 ''Your ToolbarCommands tiddler has to contain {{{cmEdit}}} and {{{cmSave}}} commands!'' This is not automatically updated by the plugin!
 ! Modes
