@@ -147,7 +147,7 @@ distlibs: libs.list
 
 distgit: commited distplugins distcm
 	@echo " -- uploading recently commited "	
-	rm /commits/*.list || true
+	rm commits/*.list || true
 
 commited: 
 	@echo " -- if you need fresh *.list files, run **make clean** first "
