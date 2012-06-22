@@ -25,7 +25,7 @@ At the moment, there are 2 modes:
 * edit mode
 ** edit mode depends on: ''tags'', ''content-type'' and ''server.content-type'' fields
 ** tag has the highest priority and can be adjusted at: CodeMirrorConfig 
-** content-type can be edited in "edit mode :)". The selector button is near the toolbar commands. Have a look at the EditTemplate {{{<span macro='tagChooser excludeLists'></span>}}}
+** content-type can be edited in "edit mode :)". The selector button is near the toolbar commands. Have a look at the EditTemplate {{{<span macro='typeChooser'></span>}}}
 ! ''Important for TiddlySpace''
 * ''Include the [[codemirror-plugins]] space into your TW if you want to use it!''
 * Then carefully read the documentation.
