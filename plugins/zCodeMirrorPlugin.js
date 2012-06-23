@@ -1,8 +1,8 @@
 /***
 |''Name''|zCodeMirrorPlugin|
-|''Description''|Enables syntax highlighting using CodeMirror|
+|''Description''|Enables syntax highlighting for <pre> and <code> blocks. Adds a new formatter for {{{<code class='???'>}}}. Using the wonderfull CodeMirror library.|
 |''Author''|PMario|
-|''Version''|0.2.7|
+|''Version''|0.2.8|
 |''Status''|''stable''|
 |''Info''|CodeMirrorPluginInfo|
 |''Source''|https://github.com/pmario/tw.CodeMirrorPlugin|
@@ -12,9 +12,8 @@
 |''Requires''|codemirror.js |
 |''Keywords''|syntax highlighting color code mirror codemirror|
 ! Documentation
+* ViewTemplate, EditTemplate and ToolbarCommands tiddler have to be adjusted. see: [[CodeMirrorPluginInfo]] 
 * Full info, see: [[CodeMirrorPluginInfo]]
-! Description
-Enables syntax highlighting for <pre> and <code> blocks. Adds a new formatter for {{{<code class='???'>}}} 
 ! Usage
 !!!! StyleSheet
 <<<
@@ -60,21 +59,18 @@ Expert mode: <<option chkExpertSyntax>> .. If activated, additional values below
 Additional options
 <<<
 !!!! Known Issues
-* Theme switching not supported yet
-** Too many TODOs 
+* If you find something, just post at [[Google discussion group|http://groups.google.com/group/tiddlywiki?hl=en]]
+* I'm happy to get some general feedback too!
 !!!! Revision History
 <<<
-* V 0.2.7 2012-03-13
-** Editor refresh fixed, TypeChooser height fixed.
+* V 0.2.8 2012-06-23
+** "smartTab" handling adjusted. see: ExtraKeysAddOn
+** minor documentation adjustments about ViewTemplate, EditTemplate requirements.
 * V 0.1.0 2011-09-07
 ** inital release
 see full History at CodeMirrorPluginInfo
 <<<
-!!!! ToDo
-<<<
-<<<
 !!! Code
-
 !!!!! {{{<<cmModes>>, <<cmMimes>>, <<cmMimeObjects>>}}}
 ***/
 //{{{
@@ -612,5 +608,6 @@ config.shadowTiddlers["StyleSheetCodeMirror"]="/*{{{*/\n"+
 	"/*}}}*/";
 store.addNotification("StyleSheetCodeMirror",refreshStyles);
 //}}}
+
 
 

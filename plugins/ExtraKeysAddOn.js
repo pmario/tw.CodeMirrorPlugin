@@ -2,7 +2,7 @@
 |''Name''|ExtraKeysAddOn|
 |''Description''|This AddOn contains the extra key handling for zCodeMirrorPlugin|
 |''Author''|PMario|
-|''Version''|0.1.2|
+|''Version''|0.1.3|
 |''Status''|''beta''|
 |''Source''|http://codemirror-plugins.tiddlyspace.com/#RenderBuffer.js|
 |''License''|[[CC by-nc-sa 3.0|http://creativecommons.org/licenses/by-nc-sa/3.0/]]|
@@ -29,6 +29,8 @@ The option {{{chkInsertTabs}}} needs to be ''unchecked'' to use {{{smartTab}}} h
 <<<
 ! History
 <<<
+* V 0.1.3 2012-06-33
+** Updated "shift-tab" handling for "smartTab" mode.
 * V 0.1.2 2012-03-13
 ** Added functions to make editor height persistent.
 ** + bug fixes introduce with V 0.1.1
@@ -40,7 +42,7 @@ version.extensions.ExtraKeyAddOns = {
 	major: 0,
 	minor: 0,
 	revision: 1,
-	date: new Date(2012, 2, 7)
+	date: new Date(2012, 6, 23)
 };
 
 // Returns the specified field (input or textarea element) in a tiddler
@@ -108,7 +110,11 @@ if (!config.tools.cm.addOns) config.tools.cm.addOns = {};
 	//	if _no_ text is selected, it inserts a tab char
 	//	if text is selected, it indents the selected block
 	config.tools.cm.addOns.smartTab = {
-		Tab: function (instance) {
+		"Shift-Tab": function (instance) {
+			CodeMirror.commands.indentLess(instance);
+		},
+
+		"Tab": function (instance) {
 			if (instance.somethingSelected())
 				CodeMirror.commands.indentMore(instance);
 			else
