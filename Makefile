@@ -25,7 +25,7 @@ CM_LIST=      `cat cm.list`
 
 #CM_TAG = master
 
-CM_TAG = v2.22
+CM_TAG = v2.23
 CM_RAW = https://raw.github.com/marijnh/CodeMirror2
 CM_LIB_DIR =   $(CM_RAW)/$(CM_TAG)/lib
 CM_MODE_DIR =  $(CM_RAW)/$(CM_TAG)/mode

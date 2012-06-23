@@ -7,18 +7,36 @@ content-type: text/x-tiddlywiki
 |''Author''|PMario|
 |''Source''|https://github.com/pmario/tw.CodeMirrorPlugin|
 |''Documentation''|http://codemirror.tiddlyspace.com/|
+|''Feedback''|Feedback is very welcome at [[TWGroup]]|
 |''License''|see: [[zCodeMirrorPlugin]]|
-|''Keywords''|editro syntax highlighting color code|
+|''Keywords''|editor syntax highlighting color code|
 !Documentation
-
-!!!! Macros
+!!!! ToolbarCommands
 <<<
-The plugin contains some additional macros, to get an overview, which modes are activated.
-
-Modes: {{{<<cmModes>>}}} ... displays the usable modes seen below.
-> Modes: <<cmModes>>
-MIMEs: {{{<<cmMimes>>}}} ... displays the usable mime types seen below. Same order as modes.
-> Modes: <<cmMimes>>
+There are 2 new toolbar commands:
+* {{{cmEdit}}} .. open tiddler for codemirror edit mode. Add this one to ToolbarCommands "~ViewToolbar" slice.
+* {{{cmSave}}} .. open tiddler for codemirror edit mode. Add this one to ToolbarCommands "~EditToolbar" slice.
+<<<
+!!!! ViewTemplate
+<<<
+Add the following span to the ViewTemplate tiddler at "subtitle" definition.
+<!--{{{-->
+(type: <span macro='view content-type link'></span>)
+<!--}}}-->
+<<<
+!!!! EditTemplate
+<<<
+To change the source type, add the following line to the EditTemplate, right below the "edit title" macro.
+<!--{{{-->
+<div class='toolbar' macro='typeChooser'></div>
+<!--}}}-->
+<<<
+!!!! TiddlySpace Icons
+<<<
+If you use codemirror editor with TiddlySpace you'll need to create new icons
+* Just create a new tiddler named [[cmEdit]] and copy the [[editTiddler]] content into "cmEdit". 
+* [[saveTiddler]] goes to [[cmSave]].
+* There is an [[editTiddlerReadOnly]] icon, which is basically a "view icon". For codemirror, there is no need to change this one.
 <<<
 !!!! Global Settings
 <<<
@@ -29,22 +47,24 @@ MIMEs: {{{<<cmMimes>>}}} ... displays the usable mime types seen below. Same ord
 <<<
 * The plugin automatically creates a shadow StyleSheetCodeMirror tiddler, that can be adjusted to your needs.
 <<<
-!! Feedback / Support
-Feedback is very welcome at [[TiddlyWiki group|TWGroup]]
-!!Examples
+!!!! Macros
 <<<
-Available Modes: <<cmModes>>
-Available MIMEs: <<cmMimes>>
+The plugin contains some additional macros, to get an overview, which modes are activated.
+
+Modes: {{{<<cmModes>>}}} ... displays the usable modes seen below.
+> Available Modes: <<cmModes>>
+MIMEs: {{{<<cmMimes>>}}} ... displays the usable mime types seen below. Same order as modes.
+> Available MIMEs: <<cmMimes>>
 <<<
 !!!! Text
 <<<
 {{{
  {{{
- This is some plain text!
+ This will produce a plain text block!
  }}}
 }}}
 {{{
-This is some plain text!
+This is a plain text block!
 }}}
 <<<
 !!!! CSS
@@ -184,6 +204,11 @@ All possible "brushes" can be found at: [[CodeMirror homepage|http://codemirror.
 <<<
 !!! Revision History
 <<<
+* V 0.2.8 2012-06-23
+** "smartTab" handling adjusted. see: ExtraKeysAddOn
+** minor documentation adjustments about ViewTemplate, EditTemplate requirements.
+* V 0.2.7 2012-03-13
+** Editor refresh fixed, TypeChooser height fixed.
 * V 0.2.6 2012-03-13
 ** Added functions to make editor height persistent.
 * V 0.2.5 2012-02-07
@@ -210,6 +235,4 @@ All possible "brushes" can be found at: [[CodeMirror homepage|http://codemirror.
 * V 0.1.0 2011-09-07
 ** inital release
 <<<
-
-
 
